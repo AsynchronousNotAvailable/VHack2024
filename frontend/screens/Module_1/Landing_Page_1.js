@@ -18,11 +18,11 @@ function Landing_Page_1({ navigation }) {
     useEffect(() => {
         Animated.timing(fadeAnim, {
             toValue: 1,
-            duration: 1000, 
-            useNativeDriver: true, 
+            duration: 1000,
+            useNativeDriver: true,
         }).start();
 
-    
+
 
     }, []);
 

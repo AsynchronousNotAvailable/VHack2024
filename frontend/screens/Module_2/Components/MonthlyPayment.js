@@ -1,20 +1,29 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 function MonthlyPayment() {
+    const monthlyPayment = "2579.95";
+    const monthlyLoans = "2113.39";
+
     return (
         <View style={styles.card}>
-            <View style={styles.section}>
-                <MaterialIcons name="attach-money" size={24} color="red" />
-                <Text style={styles.textTitle}>Monthly Payment</Text>
-                <Text style={styles.textAmount}>RM 2579.95</Text>
+            <View style={styles.column}>
+                <MaterialCommunityIcons name="currency-usd" size={24} color="red" />
+                <View style={styles.textContainer}>
+                    <Text style={styles.label}>Monthly Payment</Text>
+                    <Text style={styles.value}>RM {monthlyPayment}</Text>
+                </View>
             </View>
-            <View style={styles.separator} />
-            <View style={styles.section}>
-                <MaterialIcons name="account-balance-wallet" size={24} color="orange" />
-                <Text style={styles.textTitle}>Monthly Loans</Text>
-                <Text style={styles.textAmount}>RM 2113.39</Text>
+
+            <View style={styles.divider} />
+
+            <View style={styles.column}>
+                <MaterialCommunityIcons name="bank" size={24} color="orange" />
+                <View style={styles.textContainer}>
+                    <Text style={styles.label}>Monthly Loans</Text>
+                    <Text style={styles.value}>RM {monthlyLoans}</Text>
+                </View>
             </View>
         </View>
     );
@@ -23,34 +32,44 @@ function MonthlyPayment() {
 const styles = StyleSheet.create({
     card: {
         flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
         backgroundColor: '#fff',
         borderRadius: 20,
-        padding: 16,
+        padding: 18,
+        paddingRight: 32,
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 1 },
-        shadowOpacity: 0.22,
-        shadowRadius: 2.22,
-        elevation: 3,
-        alignItems: 'center',
-        justifyContent: 'space-around',
-        margin: 10,
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.1,
+        shadowRadius: 4,
+        elevation: 4,
+        margin: 8,
+        marginLeft: 15,
+        marginRight: 15,
     },
-    section: {
-        alignItems: 'center',
-    },
-    separator: {
+    divider: {
         height: '100%',
         width: 1,
         backgroundColor: '#ddd',
+        marginHorizontal: 16,
     },
-    textTitle: {
-        marginTop: 4,
-        fontSize: 16,
+    column: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    textContainer: {
+        marginLeft: 8,
+    },
+    label: {
+        fontFamily: 'InterMedium',
+        fontSize: 14,
+        color: '#333',
+    },
+    value: {
+        fontFamily: 'InterSemiBold',
+        fontSize: 18,
         fontWeight: 'bold',
-    },
-    textAmount: {
-        fontSize: 16,
-        color: '#555',
+        color: '#333',
     },
 });
 

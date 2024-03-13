@@ -14,8 +14,10 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Consult_Main from "./screens/Module_5/Consult_Main";
 import GlobalState from "./context";
-import Home2 from "./screens/Module_2/Home2";
 import { useFonts } from "expo-font";
+import NotificationsPage from "./screens/Module_2/Notification/NotificationsPage";
+import LoanCalculatorScreen from "./screens/Module_2/LoanCalculator/LoanCalculatorScreen";
+import LoanResultsScreen from "./screens/Module_2/LoanCalculator/LoanResultsScreen";
 
 export default function App() {
     const [isAuth, setIsAuth] = useState(false);
@@ -38,7 +40,7 @@ export default function App() {
     const LandingStack = createNativeStackNavigator();
     function LandingStackScreen() {
         return (
-            <LandingStack.Navigator screenOptions={{headerShown: false}}>
+            <LandingStack.Navigator screenOptions={{ headerShown: false }}>
                 <LandingStack.Screen
                     name="Landing1"
                     component={Landing_Page_1}
@@ -61,7 +63,10 @@ export default function App() {
         return (
             <HomeStack.Navigator>
                 <HomeStack.Screen name="Home_Main" component={Home_Main} />
-                <HomeStack.Screen name="Home_2" component={Home2} />
+                <HomeStack.Screen name="Notifications" component={NotificationsPage} />
+                <HomeStack.Screen name="LoanCalculator" component={LoanCalculatorScreen} />
+                <HomeStack.Screen name="LoanResults" component={LoanResultsScreen} />
+
                 {/* screen2 */}
                 {/* screen3 */}
             </HomeStack.Navigator>

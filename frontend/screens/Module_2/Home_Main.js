@@ -3,12 +3,14 @@ import { Text, View, StyleSheet, ScrollView, TouchableOpacity } from 'react-nati
 import { Ionicons } from '@expo/vector-icons';
 import DebtFreeCountdownCard from './Components/DebtFreeCountdownCard';
 import MonthlyPayment from './Components/MonthlyPayment';
+import ServicesList from './Components/ServicesList';
 
-function Home_Main() {
+
+function Home_Main({ navigation }) {
   const username = "Jason";
 
   const handleNotificationPress = () => {
-    console.log('Notification bell tapped!');
+    navigation.navigate('Notifications');
   };
 
   return (
@@ -21,6 +23,7 @@ function Home_Main() {
       </View>
       <DebtFreeCountdownCard />
       <MonthlyPayment />
+      <ServicesList navigation={navigation} />
     </ScrollView>
   );
 }
