@@ -15,15 +15,30 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Consult_Main from "./screens/Module_5/Consult_Main";
 import GlobalState from "./context";
 import Home2 from "./screens/Module_2/Home2";
+import { useFonts } from "expo-font";
 
 export default function App() {
-    const Stack = createStackNavigator();
     const [isAuth, setIsAuth] = useState(false);
+    const [fontsLoaded, fontError] = useFonts({
+        "InterBlack": require("./assets/fonts/Inter-Bold.ttf"),
+        "InterExtraLight": require("./assets/fonts/Inter-ExtraLight.ttf"),
+        "InterLight": require("./assets/fonts/Inter-Light.ttf"),
+        "InterMedium": require("./assets/fonts/Inter-Medium.ttf"),
+        "InterRegular": require("./assets/fonts/Inter-Regular.ttf"),
+        "InterSemiBold": require("./assets/fonts/Inter-SemiBold.ttf"),
+        "InterThin": require("./assets/fonts/Inter-Thin.ttf"),
+        "OpenSansBold": require("./assets/fonts/OpenSans-Bold.ttf"),
+    });
 
+    if (!fontsLoaded && !fontError) {
+        return null;
+    }
+
+    const Stack = createStackNavigator();
     const LandingStack = createNativeStackNavigator();
     function LandingStackScreen() {
         return (
-            <LandingStack.Navigator>
+            <LandingStack.Navigator screenOptions={{headerShown: false}}>
                 <LandingStack.Screen
                     name="Landing1"
                     component={Landing_Page_1}
@@ -100,30 +115,36 @@ export default function App() {
 
     const Tab = createBottomTabNavigator();
 
-  return (
-      <GlobalState>
-        <NavigationContainer>
-            {isAuth === false ? (
-                <Stack.Navigator screenOptions={{ headerShown: false }}>
-                    <Stack.Screen
-                        name="Landing"
-                        component={LandingStackScreen}
-                    ></Stack.Screen>
-                </Stack.Navigator>
-            ) : (
-                <Tab.Navigator screenOptions={{ headerShown: false }}>
-                    <Tab.Screen name="Home" component={HomeStackScreen} />
-                    <Tab.Screen name="Debt" component={DebtStackScreen} />
-                    <Tab.Screen
-                        name="Expenses"
-                        component={ExpensesStackScreen}
-                    />
-                    <Tab.Screen name="Consult" component={ConsultStackScreen} />
-                    <Tab.Screen name="Profile" component={ProfileStackScreen} />
-                </Tab.Navigator>
-            )}
-      </NavigationContainer>
-      </GlobalState>
+    return (
+        <GlobalState>
+            <NavigationContainer>
+                {isAuth === false ? (
+                    <Stack.Navigator screenOptions={{ headerShown: false }}>
+                        <Stack.Screen
+                            name="Landing"
+                            component={LandingStackScreen}
+                        ></Stack.Screen>
+                    </Stack.Navigator>
+                ) : (
+                    <Tab.Navigator screenOptions={{ headerShown: false }}>
+                        <Tab.Screen name="Home" component={HomeStackScreen} />
+                        <Tab.Screen name="Debt" component={DebtStackScreen} />
+                        <Tab.Screen
+                            name="Expenses"
+                            component={ExpensesStackScreen}
+                        />
+                        <Tab.Screen
+                            name="Consult"
+                            component={ConsultStackScreen}
+                        />
+                        <Tab.Screen
+                            name="Profile"
+                            component={ProfileStackScreen}
+                        />
+                    </Tab.Navigator>
+                )}
+            </NavigationContainer>
+        </GlobalState>
     );
 }
 
