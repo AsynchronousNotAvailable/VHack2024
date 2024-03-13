@@ -11,25 +11,12 @@ import {
 import { GlobalContext } from "../../context";
 import { colors, fonts, sh, sw } from "../../styles/GlobalStyles";
 
-function Login({ navigation, route }) {
-    const { setIsAuth, firstLaunch } = route.params;
-    // const [username, setUsername] = useState("");
-    const [email, setEmail] = useState("");
+function SignUp({ navigation }) {
+    const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
+    const [email, setEmail] = useState("");
     const { currentUsername, setCurrentUsername } = useContext(GlobalContext);
-    const handleAuth = () => {
-        if (email != "") {
-            setCurrentUsername(email);
-        }
-        if (firstLaunch) {
-            navigation.navigate("Onboarding1");
-        }
-        else {
-            setIsAuth(true);
-        }
-        
-    };
-
     const dismissKeyboard = () => {
         Keyboard.dismiss();
     };
@@ -37,16 +24,34 @@ function Login({ navigation, route }) {
     return (
         <TouchableWithoutFeedback onPress={dismissKeyboard}>
             <View style={styles.mainContainer}>
-                <Text style={styles.title}>Welcome Back!</Text>
+                <Text style={styles.title}>Create Your Account</Text>
                 <TextInput
+                    style={styles.input}
+                    placeholder="Username"
+                    keyboardType="default"
+                    returnKeyType="next"
+                    autoCapitalize="none"
+                    onChangeText={(username) => {
+                        // Handle text input changes here
+                        setUsername(username);
+                    }}
+                    onSubmitEditing={() => {
+                        emailInput.focus();
+                    }}
+                />
+
+                <TextInput
+                    ref={(input) => {
+                        emailInput = input;
+                    }}
                     style={styles.input}
                     placeholder="Email"
                     keyboardType="default"
                     returnKeyType="next"
                     autoCapitalize="none"
-                    onChangeText={(text) => {
+                    onChangeText={(email) => {
                         // Handle text input changes here
-                        setEmail(text);
+                        setEmail(email);
                     }}
                     onSubmitEditing={() => {
                         passwordInput.focus();
@@ -59,21 +64,36 @@ function Login({ navigation, route }) {
                     }}
                     style={styles.input}
                     placeholder="Password"
-                    keyboardType="default"
-                    returnKeyType="next"
-                    secureTextEntry
+                    secureTextEntry={true}
                     autoCapitalize="none"
                     onChangeText={(password) => {
                         // Handle text input changes here
                         setPassword(password);
                     }}
                     onSubmitEditing={() => {
-                        dismissKeyboard;
+                        confirmPasswordInput.focus();
                     }}
                 />
 
-                <TouchableOpacity style={styles.button} onPress={handleAuth}>
-                    <Text style={styles.signUpText}>Login</Text>
+                <TextInput
+                    ref={(input) => {
+                        confirmPasswordInput = input;
+                    }}
+                    style={styles.input}
+                    placeholder="Confirm Password"
+                    secureTextEntry={true}
+                    autoCapitalize="none"
+                    onChangeText={(confirm_password) => {
+                        // Handle text input changes here
+                        setConfirmPassword(confirm_password);
+                    }}
+                    onSubmitEditing={dismissKeyboard}
+                />
+                <TouchableOpacity
+                    style={styles.button}
+                    onPress={() => navigation.navigate("Login")}
+                >
+                    <Text style={styles.signUpText}>Sign Up</Text>
                 </TouchableOpacity>
 
                 <View
@@ -83,13 +103,13 @@ function Login({ navigation, route }) {
                     }}
                 >
                     <Text style={styles.toLoginText}>
-                        Don't have an account?{" "}
+                        Already Have An Account?{" "}
                     </Text>
                     <TouchableOpacity
                         style={{
                             fontFamily: fonts.interRegular,
                         }}
-                        onPress={() => navigation.navigate("SignUp")}
+                        onPress={() => navigation.navigate("Login")}
                     >
                         <Text
                             style={{
@@ -97,7 +117,7 @@ function Login({ navigation, route }) {
                                 fontFamily: fonts.interRegular,
                             }}
                         >
-                            Sign Up
+                            Log In
                         </Text>
                     </TouchableOpacity>
                 </View>
@@ -106,7 +126,7 @@ function Login({ navigation, route }) {
     );
 }
 
-export default Login;
+export default SignUp;
 
 const styles = StyleSheet.create({
     mainContainer: {
