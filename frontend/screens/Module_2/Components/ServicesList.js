@@ -23,10 +23,15 @@ const services = [
     },
 ];
 
-const ServiceCard = ({ title, description, icon, gradientColors, navigation, navigate }) => {
-    // Handler function for onPress event
+const ServiceCard = ({ title, description, icon, gradientColors, navigation, navigate1, navigate2, navigate3 }) => {
     const handlePress = () => {
-        if (navigate) {
+        if (navigate1) {
+            navigation.navigate('Debt Management Programme');
+        }
+        if (navigate2) {
+            navigation.navigate('Debt Negotiation Platform');
+        }
+        if (navigate3) {
             navigation.navigate('LoanCalculator');
         }
     };
@@ -60,7 +65,9 @@ const ServicesList = ({ navigation }) => {
                     icon={service.icon}
                     gradientColors={service.gradientColors}
                     navigation={navigation}
-                    navigate={service.title === 'Plan to have a big purchase?'}
+                    navigate1={service.title === 'Debt Management Programme (DMP)'}
+                    navigate2={service.title === 'Debt Negotiation Platform'}
+                    navigate3={service.title === 'Plan to have a big purchase?'}
                 />
             ))}
         </ScrollView>

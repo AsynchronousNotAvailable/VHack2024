@@ -2,8 +2,8 @@ import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-function MonthlyPayment() {
-    const monthlyPayment = "2579.95";
+function monthlyBills() {
+    const monthlyBills = "2579.95";
     const monthlyLoans = "2113.39";
 
     return (
@@ -12,7 +12,7 @@ function MonthlyPayment() {
                 <MaterialCommunityIcons name="currency-usd" size={24} color="red" />
                 <View style={styles.textContainer}>
                     <Text style={styles.label}>Monthly Payment</Text>
-                    <Text style={styles.value}>RM {monthlyPayment}</Text>
+                    <Text style={styles.value}>RM {monthlyBills}</Text>
                 </View>
             </View>
 
@@ -73,4 +73,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default MonthlyPayment;
+export default monthlyBills;

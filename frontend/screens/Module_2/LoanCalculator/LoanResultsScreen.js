@@ -1,23 +1,26 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
 
+
 function LoanResultsScreen({ route }) {
     const { monthlyIncome, loanAmount, interestRate, tenure, monthlyPayment } = route.params;
+    const monthlyBills = "2579.95";
+    const netIncome = monthlyIncome - monthlyBills;
 
     const getPurchaseAdvice = (stressLevel) => {
         let advice;
-        if (stressLevel >= 40) {
-            advice = "Your monthly loan payment consumes about " + stressLevel.toFixed(2) + "% of your income, nearing the affordability limit. This commitment might limit funds for other needs and savings, risking financial stress.";
-        } else if (stressLevel >= 25) {
-            advice = "Your monthly loan payment accounts for approximately " + stressLevel.toFixed(2) + "% of your monthly income. While this is manageable, it's advisable to maintain a cautious budget to accommodate other living expenses and savings.";
+        if (stressLevel >= 50) {
+            advice = "Your monthly loan payment consumes about " + stressLevel.toFixed(2) + "% of your net income, nearing the affordability limit. This commitment might limit funds for other needs and savings, risking financial stress.";
+        } else if (stressLevel >= 35) {
+            advice = "Your monthly loan payment accounts for approximately " + stressLevel.toFixed(2) + "% of your monthly net income. While this is manageable, it's advisable to maintain a cautious budget to accommodate other living expenses and savings.";
         } else {
-            advice = "Your monthly loan payment represents about " + stressLevel.toFixed(2) + "% of your monthly income. This is within a comfortable range, allowing for savings and other expenses without straining your finances.";
+            advice = "Your monthly loan payment represents about " + stressLevel.toFixed(2) + "% of your monthly net income. This is within a comfortable range, allowing for savings and other expenses without straining your finances.";
         }
         return advice;
     };
 
-    const stressLevel = monthlyPayment ? (monthlyPayment / monthlyIncome) * 100 : 0;
-    const stressLevelText = stressLevel >= 40 ? 'Stressful Purchase' : stressLevel >= 25 ? 'Manageable Purchase' : 'Comfortable Purchase';
+    const stressLevel = monthlyPayment ? (monthlyPayment / netIncome) * 100 : 0;
+    const stressLevelText = stressLevel >= 50 ? 'Stressful Purchase' : stressLevel >= 35 ? 'Manageable Purchase' : 'Comfortable Purchase';
     const purchaseAdvice = getPurchaseAdvice(stressLevel);
 
     const totalPayments = monthlyPayment * tenure * 12;
@@ -28,7 +31,7 @@ function LoanResultsScreen({ route }) {
 
     const StressGauge = ({ level }) => {
         const gaugeWidth = `${Math.min(Math.max(level, 0), 100)}%`;
-        const gaugeColor = level >= 40 ? 'red' : level >= 25 ? 'orange' : 'green';
+        const gaugeColor = level >= 50 ? 'red' : level >= 35 ? 'orange' : 'green';
 
         return (
             <View style={styles.stressGaugeContainer}>
@@ -45,13 +48,16 @@ function LoanResultsScreen({ route }) {
 
             <Text style={styles.header}>Stress Test Results</Text>
             <StressGauge level={stressLevel} />
-            <Text style={[styles.stressLevelText, { color: stressLevel >= 40 ? 'red' : 'green' }]}>
-                Stress Level: {stressLevelText} ({stressLevel.toFixed(2)}% of income)
+            <Text style={[styles.stressLevelText, { color: stressLevel >= 50 ? 'red' : stressLevel >= 35 ? 'orange' : 'green' }]}>
+                Stress Level: {stressLevelText} ({stressLevel.toFixed(2)}% of net income)
             </Text>
             <Text style={styles.adviceDescription}>{purchaseAdvice}</Text>
             <View style={styles.resultContainer}>
                 <Text style={styles.resultText}>Monthly Payment: RM{monthlyPayment}</Text>
-                <Text style={styles.resultText}>Your Monthly Income: RM{monthlyIncome.toFixed(2)}</Text>
+                <Text style={styles.resultText}>
+                    Net Income (Income - Monthly Bills): RM{monthlyIncome.toFixed(2)} - RM{monthlyBills} = RM{netIncome.toFixed(2)}
+                </Text>
+                <Text style={styles.resultText}>Current Monthly Bills: RM{monthlyBills}</Text>
                 <Text style={styles.resultText}>Loan Amount: RM{loanAmount}</Text>
                 <Text style={styles.resultText}>Total Interest: RM{totalInterest.toFixed(2)}</Text>
                 <Text style={styles.resultText}>Total Payment: RM{totalPayments.toFixed(2)}</Text>

@@ -11,11 +11,23 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Consult_Main from "../screens/Module_5/Consult_Main";
 import { GlobalContext } from "../context";
-import Home2 from "../screens/Module_2/Home2";
 import Onboarding1 from "../screens/Module_1/Onboarding1";
 import Onboarding2 from "../screens/Module_1/Onboarding2";
 import Onboarding3 from "../screens/Module_1/Onboarding3";
+import NotificationsPage from "../screens/Module_2/Notification/NotificationsPage";
+import LoanCalculatorScreen from "../screens/Module_2/LoanCalculator/LoanCalculatorScreen";
+import LoanResultsScreen from "../screens/Module_2/LoanCalculator/LoanResultsScreen";
 import { useContext } from "react";
+import DMP1 from "../screens/Module_2/DMP/DMP1";
+import DMP2 from "../screens/Module_2/DMP/DMP2";
+import DMP3 from "../screens/Module_2/DMP/DMP3";
+import DNPDashboard from "../screens/Module_2/DebtNegotiationPlatform/DNPDashboard";
+import DNP1 from "../screens/Module_2/DebtNegotiationPlatform/DNP1";
+import DNP2 from "../screens/Module_2/DebtNegotiationPlatform/DNP2";
+import DNP3 from "../screens/Module_2/DebtNegotiationPlatform/DNP3";
+import DNP4 from "../screens/Module_2/DebtNegotiationPlatform/DNP4";
+import DNPChat from "../screens/Module_2/DebtNegotiationPlatform/DNPChat";
+import DNPResult from "../screens/Module_2/DebtNegotiationPlatform/DNPResult";
 
 function AppNav() {
     const Stack = createStackNavigator();
@@ -83,9 +95,20 @@ function AppNav() {
         return (
             <HomeStack.Navigator>
                 <HomeStack.Screen name="Home_Main" component={Home_Main} />
-                <HomeStack.Screen name="Home_2" component={Home2} />
-                {/* screen2 */}
-                {/* screen3 */}
+                <HomeStack.Screen name="Notifications" component={NotificationsPage} />
+                <HomeStack.Screen name="Debt Management Programme" component={DMP1} />
+                <HomeStack.Screen name="Debt Management Programme2" component={DMP2} />
+                <HomeStack.Screen name="Debt Management Programme3" component={DMP3} />
+                <HomeStack.Screen name="Debt Negotiation Platform" component={DNPDashboard} />
+                <HomeStack.Screen name="Debt Negotiation Platform1" component={DNP1} />
+                <HomeStack.Screen name="Debt Negotiation Platform2" component={DNP2} />
+                <HomeStack.Screen name="Debt Negotiation Platform3" component={DNP3} />
+                <HomeStack.Screen name="Debt Negotiation Platform4" component={DNP4} />
+                <HomeStack.Screen name="Negotiation Results" component={DNPResult} />
+                <HomeStack.Screen name="Chat with Creditor" component={DNPChat} />
+                <HomeStack.Screen name="LoanCalculator" component={LoanCalculatorScreen} />
+                <HomeStack.Screen name="LoanResults" component={LoanResultsScreen} />
+
             </HomeStack.Navigator>
         );
     }
