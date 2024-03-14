@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, View } from 'react-native';
 import DonutChart from './DonutChart';
 import { useFont } from '@shopify/react-native-skia';
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from 'react-native';
 import { useSharedValue, withTiming } from 'react-native-reanimated';
 import { calculatePercentage } from './calculatePercentage';
 import { generateRandomNumbers } from './generateRandomNumbers';
@@ -45,8 +45,8 @@ const DonutChartContainer = () => {
         setData(arrayOfObjects);
     };
 
-    const font = useFont(require('./src/assets/fonts/Roboto-Bold.ttf'), 60);
-    const smallFont = useFont(require('./src/assets/fonts/Roboto-Light.ttf'), 25);
+    const font = useFont(require('../../../assets/fonts/Inter-Bold.ttf'), 60);
+    const smallFont = useFont(require('../../../assets/fonts/Inter-Light.ttf'), 25);
 
     if (!font || !smallFont) {
         return <View />;
