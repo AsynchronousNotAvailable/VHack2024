@@ -10,10 +10,17 @@ import React, { useEffect, useState, useRef } from "react";
 import { useFonts } from "expo-font";
 import { colors, fonts, sh, sw } from "../../styles/GlobalStyles";
 
-function Landing_Page_1({ navigation }) {
+function Landing_Page_1({ navigation, route }) {
     const fadeAnim = useRef(new Animated.Value(0)).current;
+    const { firstLaunch } = route.params;
     const nextPage = () => {
-        navigation.navigate("Landing2");
+        if (firstLaunch) {
+            navigation.navigate("SignUp");
+        }
+        else {
+            navigation.navigate("Login");
+        }
+        
     }
     useEffect(() => {
         Animated.timing(fadeAnim, {
@@ -109,6 +116,7 @@ const styles = StyleSheet.create({
         fontFamily: fonts.interSemiBold,
         fontSize: 32,
         color: "#0F4D66",
+        marginBottom: sh(10)
     },
     subtitle: {
         fontFamily: fonts.interRegular,

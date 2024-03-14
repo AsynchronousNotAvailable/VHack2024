@@ -17,7 +17,7 @@ function LoanResultsScreen({ route }) {
     };
 
     const stressLevel = monthlyPayment ? (monthlyPayment / monthlyIncome) * 100 : 0;
-    const stressLevelText = stressLevel >= 40 ? 'Stressful Purchase Scenario' : stressLevel >= 25 ? 'Manageable Purchase Scenario' : 'Comfortable Purchase Scenario';
+    const stressLevelText = stressLevel >= 40 ? 'Stressful Purchase' : stressLevel >= 25 ? 'Manageable Purchase' : 'Comfortable Purchase';
     const purchaseAdvice = getPurchaseAdvice(stressLevel);
 
     const totalPayments = monthlyPayment * tenure * 12;
