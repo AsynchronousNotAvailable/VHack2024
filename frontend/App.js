@@ -6,7 +6,7 @@ import Landing_Page_2 from "./screens/Module_1/Landing_Page_2";
 import Login from "./screens/Module_1/Login";
 import { useState } from "react";
 import Home_Main from "./screens/Module_2/Home_Main";
-import Debt_Main from "./screens/Module_3/Debt_Main";
+import DebtMain from "./screens/Module_3/Screens/DebtMain";
 import Expenses_Main from "./screens/Module_4/Expenses_Main";
 import Profile_Main from "./screens/Module_6/Profile_Main";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -57,7 +57,7 @@ export default function App() {
     function DebtStackScreen() {
         return (
             <DebtStack.Navigator>
-                <DebtStack.Screen name="Debt_Main" component={Debt_Main} />
+                <DebtStack.Screen name="DebtMain" component={DebtMain} />
             </DebtStack.Navigator>
         );
     }
