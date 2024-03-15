@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, ScrollView, Button, StyleSheet } from 'react-native';
 import SegmentedControlTab from 'react-native-segmented-control-tab';
 import PersonalLoanCard from '../Components/PersonalLoanCard';
+import { colors, fonts, sh, sw } from "../../../styles/GlobalStyles";
 
 
 function NegotiationCard({ title, email, amount, total, expiration, proposal, isCreditor }) {
@@ -70,17 +71,20 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
     },
     tabStyle: {
-        borderColor: '#007bff',
+        borderColor: '#5F84A1',
         backgroundColor: '#f0f0f0',
     },
     activeTabStyle: {
-        backgroundColor: '#007bff',
+        backgroundColor: '#5F84A1',
     },
     tabTextStyle: {
-        color: '#007bff',
+        color: '#5F84A1',
+        fontWeight: 'semibold',
     },
     activeTabTextStyle: {
         color: '#fff',
+
+
     },
     sectionHeader: {
         fontSize: 18,
@@ -109,41 +113,24 @@ const styles = StyleSheet.create({
         color: 'grey',
         marginBottom: 10,
     },
-    loanInfo: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-    },
-    loanText: {
-        fontSize: 16,
-    },
-    loanAmount: {
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
-    loanTotal: {
-        fontSize: 14,
-        color: 'grey',
-    },
-    loanExpiration: {
-        fontSize: 14,
-        color: 'grey',
-    },
+
     loanProposal: {
         fontSize: 16,
         marginVertical: 10,
+        textAlign: 'center',
     },
     negotiationButton: {
-        backgroundColor: '#dedede',
+        backgroundColor: '#FFF9DD',
         borderRadius: 20,
         padding: 10,
+        alignItems: 'center',
     },
     negotiationButtonText: {
         fontSize: 16,
-        color: '#007bff',
+        color: '#000000',
     },
     addButton: {
-        backgroundColor: '#007bff',
+        backgroundColor: '#5F84A1',
         paddingVertical: 12,
         borderRadius: 8,
         alignItems: 'center',
@@ -158,6 +145,7 @@ const styles = StyleSheet.create({
     addButtonText: {
         color: '#ffffff',
         fontSize: 18,
+        fontWeight: 'bold',
     },
 });
 

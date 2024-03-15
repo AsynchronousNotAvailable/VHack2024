@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { colors, fonts, sh, sw } from "../../../styles/GlobalStyles";
 
 function ProposalCard({ onAccept }) {
     const handleAccept = () => {
@@ -31,12 +32,11 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.22,
         shadowRadius: 2.22,
-        elevation: 3,
         margin: 20
     },
     sender: {
         alignSelf: 'flex-start',
-        marginLeft: 20,
+        marginLeft: 10,
         backgroundColor: '#F8F9FE',
         maxWidth: '70%',
         borderBottomLeftRadius: 0,
@@ -59,10 +59,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     acceptButton: {
-        backgroundColor: '#c8e6c9', // Light green color
+        backgroundColor: '#c8e6c9',
     },
     rejectButton: {
-        backgroundColor: '#ffcdd2', // Light red color
+        backgroundColor: '#ffcdd2',
     },
     buttonText: {
         fontSize: 16,

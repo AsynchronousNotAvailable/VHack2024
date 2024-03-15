@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
 import { Swipeable, GestureHandlerRootView } from 'react-native-gesture-handler';
+import { colors, fonts, sh, sw } from "../../../styles/GlobalStyles";
 
 function NotificationsPage() {
     const [notifications, setNotifications] = useState([

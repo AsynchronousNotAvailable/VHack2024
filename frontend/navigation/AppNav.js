@@ -29,11 +29,42 @@ import DNP4 from "../screens/Module_2/DebtNegotiationPlatform/DNP4";
 import DNPChat from "../screens/Module_2/DebtNegotiationPlatform/DNPChat";
 import DNPResult from "../screens/Module_2/DebtNegotiationPlatform/DNPResult";
 
+import { Image } from "react-native";
+import HomeIcon from '../assets/TabIcon/HomeIcon.png';
+import DebtIcon from '../assets/TabIcon/DebtIcon.png';
+import ExpensesIcon from '../assets/TabIcon/ExpenseIcon.png';
+import ConsultIcon from '../assets/TabIcon/ConsultIcon.png';
+import ProfileIcon from '../assets/TabIcon/ProfileIcon.png';
+
 function AppNav() {
     const Stack = createStackNavigator();
     const LandingStack = createNativeStackNavigator();
     const { isAuth, setIsAuth, firstLaunch, setFirstLaunch } =
         useContext(GlobalContext);
+
+    const screenOptions = ({ route }) => ({
+        headerShown: false,
+        tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+            if (route.name === 'Home') {
+                iconName = HomeIcon;
+            } else if (route.name === 'Debt') {
+                iconName = DebtIcon;
+            } else if (route.name === 'Expenses') {
+                iconName = ExpensesIcon;
+            } else if (route.name === 'Consult') {
+                iconName = ConsultIcon;
+            } else if (route.name === 'Profile') {
+                iconName = ProfileIcon;
+            }
+
+            return <Image source={iconName} style={{ width: size, height: size, tintColor: color }} />;
+        },
+        tabBarActiveTintColor: '#5F84A1',
+        tabBarInactiveTintColor: '#000',
+    });
+
+
     function LandingStackScreen() {
         return (
             <LandingStack.Navigator screenOptions={{ headerShown: false }}>
@@ -178,13 +209,10 @@ function AppNav() {
                     ></Stack.Screen>
                 </Stack.Navigator>
             ) : (
-                <Tab.Navigator screenOptions={{ headerShown: false }}>
+                <Tab.Navigator screenOptions={screenOptions}>
                     <Tab.Screen name="Home" component={HomeStackScreen} />
                     <Tab.Screen name="Debt" component={DebtStackScreen} />
-                    <Tab.Screen
-                        name="Expenses"
-                        component={ExpensesStackScreen}
-                    />
+                    <Tab.Screen name="Expenses" component={ExpensesStackScreen} />
                     <Tab.Screen name="Consult" component={ConsultStackScreen} />
                     <Tab.Screen name="Profile" component={ProfileStackScreen} />
                 </Tab.Navigator>

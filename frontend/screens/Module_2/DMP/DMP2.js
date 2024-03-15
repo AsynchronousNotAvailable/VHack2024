@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image, StyleSheet, ScrollView } from "react-native";
+import { View, Text, TouchableHighlight, Image, StyleSheet, ScrollView } from "react-native";
 import { colors, fonts, sh, sw } from "../../../styles/GlobalStyles";
 import PersonalLoanCard from "../Components/PersonalLoanCard";
 import HouseLoanCard from "../Components/HouseLoanCard";
@@ -39,16 +39,19 @@ function DMP2({ navigation }) {
                 <Text style={styles.description}>
                     Select the loan that related, you may multiselect
                 </Text>
-
                 <View style={{ width: "75%" }}>
-                    <TouchableOpacity onPress={handleSelection}>
-                        <HouseLoanCard />
-                    </TouchableOpacity>
+                    <TouchableHighlight underlayColor="#DFEEF8" onPress={handleSelection}>
+                        <View>
+                            <HouseLoanCard />
+                        </View>
+                    </TouchableHighlight>
                 </View>
                 <View style={{ width: "75%" }}>
-                    <TouchableOpacity onPress={handleSelection}>
-                        <PersonalLoanCard />
-                    </TouchableOpacity>
+                    <TouchableHighlight underlayColor="#DFEEF8" onPress={handleSelection}>
+                        <View>
+                            <PersonalLoanCard />
+                        </View>
+                    </TouchableHighlight>
                 </View>
 
                 <View style={{ marginTop: sh(20), marginEnd: sw(30), alignSelf: "flex-end" }}>
@@ -85,18 +88,23 @@ const styles = StyleSheet.create({
         marginBottom: sh(10),
     },
     selectContainer: {
-        paddingVertical: sh(15),
         paddingHorizontal: sw(20),
-        width: "100%",
-        borderRadius: 10,
-        marginVertical: sh(10),
-        borderColor: "#EFF1F5",
-        borderWidth: 2,
-        alignItems: "center",
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        borderRadius: 15,
+        padding: 15,
+        paddingVertical: 15,
+        marginVertical: 8,
+        shadowColor: '#535990',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.08,
+        shadowRadius: 4,
+        elevation: 4,
     },
     optionText: {
         fontFamily: fonts.interMedium,
-        fontSize: 18,
+        fontSize: 17,
+        textAlign: 'center',
     },
     imageStyle: {
         width: sw(200),

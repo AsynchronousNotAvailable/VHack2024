@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Image, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { colors, fonts, sh, sw } from "../../../styles/GlobalStyles";
 
 const services = [
     {

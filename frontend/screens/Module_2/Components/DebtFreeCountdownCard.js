@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+import { colors, fonts, sh, sw } from "../../../styles/GlobalStyles";
 
 function DebtFreeCountdownCard() {
     const targetDate = new Date('2042-01-01');
@@ -16,7 +17,6 @@ function DebtFreeCountdownCard() {
         months -= 12;
     }
 
-    // "Month YYYY" format
     const formatDate = (date) => {
         const options = { year: 'numeric', month: 'short' };
         return date.toLocaleDateString('en-US', options);

@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { colors, fonts, sh, sw } from "../../../styles/GlobalStyles";
 
 function monthlyBills() {
     const monthlyBills = "2579.95";

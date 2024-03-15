@@ -1,11 +1,12 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView } from 'react-native';
+import { colors, fonts, sh, sw } from "../../../styles/GlobalStyles";
 
 
 function LoanResultsScreen({ route }) {
     const { monthlyIncome, loanAmount, interestRate, tenure, monthlyPayment } = route.params;
-    const monthlyBills = "2579.95";
-    const netIncome = monthlyIncome - monthlyBills;
+    const monthlyBills = 2579.95;
+    const netIncome = monthlyIncome - monthlyBills - monthlyPayment;
 
     const getPurchaseAdvice = (stressLevel) => {
         let advice;
@@ -52,12 +53,12 @@ function LoanResultsScreen({ route }) {
                 Stress Level: {stressLevelText} ({stressLevel.toFixed(2)}% of net income)
             </Text>
             <Text style={styles.adviceDescription}>{purchaseAdvice}</Text>
+            <Text style={styles.adviceDescription}>
+                Net Income (Income - Monthly Bills - New Loan): RM{monthlyIncome.toFixed(2)} - RM{monthlyBills} -RM{monthlyPayment} = RM{netIncome.toFixed(2)}
+            </Text>
             <View style={styles.resultContainer}>
                 <Text style={styles.resultText}>Monthly Payment: RM{monthlyPayment}</Text>
-                <Text style={styles.resultText}>
-                    Net Income (Income - Monthly Bills): RM{monthlyIncome.toFixed(2)} - RM{monthlyBills} = RM{netIncome.toFixed(2)}
-                </Text>
-                <Text style={styles.resultText}>Current Monthly Bills: RM{monthlyBills}</Text>
+
                 <Text style={styles.resultText}>Loan Amount: RM{loanAmount}</Text>
                 <Text style={styles.resultText}>Total Interest: RM{totalInterest.toFixed(2)}</Text>
                 <Text style={styles.resultText}>Total Payment: RM{totalPayments.toFixed(2)}</Text>
@@ -96,6 +97,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
         fontSize: 18,
         color: '#333',
+
     },
     stressGaugeContainer: {
 
@@ -113,17 +115,17 @@ const styles = StyleSheet.create({
     },
     resultContainer: {
         padding: 20,
-        marginTop: 20,
+        marginTop: 0,
         borderRadius: 10,
         backgroundColor: '#ffffff',
-        shadowColor: "#000",
+        shadowColor: "#EFF1F5",
         shadowOffset: {
             width: 0,
             height: 2,
         },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-        elevation: 5,
+        elevation: 4,
         alignItems: 'left',
     },
     stressLevelText: {
@@ -132,6 +134,7 @@ const styles = StyleSheet.create({
         marginTop: 10,
         color: '#333',
         textAlign: 'center',
+
     },
 
 });

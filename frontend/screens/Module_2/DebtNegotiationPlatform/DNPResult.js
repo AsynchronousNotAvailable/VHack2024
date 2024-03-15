@@ -48,7 +48,7 @@ function DNPResult({ navigation }) {
 
                 </View>
 
-                <Text style={[styles.optionText, { paddingTop: 30 }]}>Valid by</Text>
+                <Text style={[styles.text, { paddingTop: 30 }]}>Valid by</Text>
                 <AKPKNameCard />
 
                 <Text style={[styles.description, { paddingTop: 40 }]}>
@@ -59,9 +59,6 @@ function DNPResult({ navigation }) {
                         source={require("../../../assets/images/landing_progress_complete.png")}
                     ></Image>
                 </TouchableOpacity>
-
-                {/* <View style={{ marginTop: sh(20), marginEnd: sw(30), alignSelf: "flex-end" }}>
-                </View> */}
             </View>
         </ScrollView >
     );
@@ -117,11 +114,6 @@ const styles = StyleSheet.create({
         padding: 20,
         paddingHorizontal: 30,
         borderRadius: 8,
-        // shadowColor: '#000',
-        // shadowOffset: { width: 0, height: 1 },
-        // shadowOpacity: 0.22,
-        // shadowRadius: 2.22,
-        // elevation: 3,
         backgroundColor: "#F6F8FA",
         marginVertical: 8,
         marginHorizontal: 16,

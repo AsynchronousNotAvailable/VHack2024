@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image, StyleSheet, ScrollView } from "react-native";
+import { View, Text, TouchableHighlight, Image, StyleSheet, ScrollView } from "react-native";
 import { colors, fonts, sh, sw } from "../../../styles/GlobalStyles";
 import PersonalLoanCard from "../Components/PersonalLoanCard";
 
@@ -43,22 +43,26 @@ function DNP3({ navigation }) {
                     Based on the information provided, here are our AI-driven strategies for your negotiation.
                 </Text>
                 <View style={{ width: "75%" }}>
-                    <TouchableOpacity onPress={handleSelection}>
-                        <View style={[styles.selectContainer, { borderColor: "#EFF1F5" }]}>
-                            <Text style={styles.optionText}>Request a payment pause for 3 months</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={handleSelection}>
-                        <View style={[styles.selectContainer, { borderColor: "#EFF1F5" }]}>
-                            <Text style={styles.optionText}>Negotiate a reduced interest rate from 9% to 7%</Text>
-                        </View>
-                    </TouchableOpacity>
+                    <TouchableHighlight
+                        underlayColor={colors.aliceBlue}
+                        onPress={handleSelection}
+                        style={styles.selectContainer}>
+                        <Text style={styles.optionText}>Request a payment pause for 3 months</Text>
+                    </TouchableHighlight>
 
-                    <TouchableOpacity onPress={handleSelection}>
-                        <View style={[styles.selectContainer, { borderColor: "#EFF1F5" }]}>
-                            <Text style={styles.optionText}>Extend the loan term from 24 months to 48 months</Text>
-                        </View>
-                    </TouchableOpacity>
+                    <TouchableHighlight
+                        underlayColor={colors.aliceBlue}
+                        onPress={handleSelection}
+                        style={styles.selectContainer}>
+                        <Text style={styles.optionText}>Negotiate a reduced interest rate from 9% to 7%</Text>
+                    </TouchableHighlight>
+
+                    <TouchableHighlight
+                        underlayColor={colors.aliceBlue}
+                        onPress={handleSelection}
+                        style={styles.selectContainer}>
+                        <Text style={styles.optionText}>Extend the loan term from 24 months to 48 months</Text>
+                    </TouchableHighlight>
                 </View>
 
                 <View style={{ marginTop: sh(20), marginEnd: sw(30), alignSelf: "flex-end" }}>
@@ -95,18 +99,23 @@ const styles = StyleSheet.create({
         marginBottom: sh(10),
     },
     selectContainer: {
-        paddingVertical: sh(15),
         paddingHorizontal: sw(20),
-        width: "100%",
-        borderRadius: 10,
-        marginVertical: sh(10),
-        borderColor: "#EFF1F5",
-        borderWidth: 2,
-        alignItems: "center",
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        borderRadius: 15,
+        padding: 15,
+        paddingVertical: 15,
+        marginVertical: 8,
+        shadowColor: '#535990',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.08,
+        shadowRadius: 4,
+        elevation: 4,
     },
     optionText: {
         fontFamily: fonts.interMedium,
-        fontSize: 18,
+        fontSize: 17,
+        textAlign: 'center',
     },
     imageStyle: {
         width: sw(200),
@@ -118,11 +127,6 @@ const styles = StyleSheet.create({
         padding: 20,
         paddingHorizontal: 30,
         borderRadius: 8,
-        // shadowColor: '#000',
-        // shadowOffset: { width: 0, height: 1 },
-        // shadowOpacity: 0.22,
-        // shadowRadius: 2.22,
-        // elevation: 3,
         backgroundColor: "#F6F8FA",
         marginVertical: 8,
         marginHorizontal: 16,

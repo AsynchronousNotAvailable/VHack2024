@@ -1,4 +1,4 @@
-import { View, Text, TouchableOpacity, Image, StyleSheet, ScrollView, Linking } from "react-native";
+import { View, Text, TouchableHighlight, Image, StyleSheet, ScrollView, Linking } from "react-native";
 import { colors, fonts, sh, sw } from "../../../styles/GlobalStyles";
 
 function DMP3({ navigation }) {
@@ -11,8 +11,27 @@ function DMP3({ navigation }) {
         navigation.navigate("Debt Negotiation Platform");
     };
 
+    const handleSelection3 = () => {
+        navigation.navigate("Consult");
+    };
+
     const openLink = async () => {
         const url = 'https://www.akpk.org.my/debt-management-programme';
+        try {
+            const supported = await Linking.canOpenURL(url);
+            if (supported) {
+                await Linking.openURL(url);
+            } else {
+                console.error("Can't handle URL: " + url);
+            }
+        } catch (error) {
+            console.error("An error occurred", error);
+        }
+    };
+
+
+    const openLinkvoluntary = async () => {
+        const url = 'https://www.akpk.org.my/faq-details/17';
         try {
             const supported = await Linking.canOpenURL(url);
             if (supported) {
@@ -48,39 +67,45 @@ function DMP3({ navigation }) {
                     Here are some steps you can take right now.
                 </Text>
 
-                <View style={{ width: "75%" }}>
-                    <TouchableOpacity onPress={openLink}>
-                        <View style={[styles.selectContainer, { borderColor: "#EFF1F5" }]}>
-                            <Text style={styles.optionText}>Debt Restructuring</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={handleSelection1}>
-                        <View style={[styles.selectContainer, { borderColor: "#EFF1F5" }]}>
-                            <Text style={styles.optionText}>DebtFree Negotiation for
-                                Debt Relief Plan</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={handleSelection}>
-                        <View style={[styles.selectContainer, { borderColor: "#EFF1F5" }]}>
-                            <Text style={styles.optionText}>Voluntary Arrangement</Text>
-                        </View>
-                    </TouchableOpacity>
+                <View style={{ width: "75%", alignSelf: "center" }}>
+                    <TouchableHighlight
+                        underlayColor={colors.aliceBlue}
+                        style={styles.selectContainer}
+                        onPress={openLink}>
+                        <Text style={styles.optionText}>Debt Restructuring</Text>
+                    </TouchableHighlight>
 
-                    <Text style={styles.description}>
+                    <TouchableHighlight
+                        underlayColor={colors.aliceBlue}
+                        style={styles.selectContainer}
+                        onPress={handleSelection1}>
+                        <Text style={styles.optionText}>DebtFree Negotiation for Debt Relief Plan</Text>
+                    </TouchableHighlight>
+
+                    <TouchableHighlight
+                        underlayColor={colors.aliceBlue}
+                        style={styles.selectContainer}
+                        onPress={openLinkvoluntary}>
+                        <Text style={styles.optionText}>Voluntary Arrangement</Text>
+                    </TouchableHighlight>
+
+                    <Text style={[styles.description, { paddingTop: 30 }]}>
                         Need further assistance?
                     </Text>
 
-                    <TouchableOpacity onPress={handleSelection}>
-                        <View style={[styles.selectContainer, { borderColor: "#EFF1F5" }]}>
-                            <Text style={styles.optionText}>Debt Counselling</Text>
-                        </View>
-                    </TouchableOpacity>
+                    <TouchableHighlight
+                        underlayColor={colors.aliceBlue}
+                        style={styles.selectContainer}
+                        onPress={handleSelection3}>
+                        <Text style={styles.optionText}>Debt Counselling</Text>
+                    </TouchableHighlight>
                 </View>
+
 
                 <View style={{ marginTop: sh(20), marginEnd: sw(30), alignSelf: "flex-end" }}>
                 </View>
             </View>
-        </ScrollView>
+        </ScrollView >
     );
 }
 
@@ -111,18 +136,23 @@ const styles = StyleSheet.create({
         marginBottom: sh(10),
     },
     selectContainer: {
-        paddingVertical: sh(15),
         paddingHorizontal: sw(20),
-        width: "100%",
-        borderRadius: 10,
-        marginVertical: sh(10),
-        borderColor: "#EFF1F5",
-        borderWidth: 2,
-        alignItems: "center",
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        borderRadius: 15,
+        padding: 15,
+        paddingVertical: 15,
+        marginVertical: 8,
+        shadowColor: '#535990',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.08,
+        shadowRadius: 4,
+        elevation: 4,
     },
     optionText: {
         fontFamily: fonts.interMedium,
-        fontSize: 18,
+        fontSize: 17,
+        textAlign: 'center',
     },
     imageStyle: {
         width: sw(200),

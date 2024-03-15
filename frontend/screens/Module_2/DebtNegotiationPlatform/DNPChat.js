@@ -24,7 +24,7 @@ function TopBar() {
         <View style={styles.topBar}>
             <View style={styles.leftContainer}>
                 <Image
-                    source={require('../../../assets/Module_2/EasyLoanKL.png')} // Replace with your actual logo image path
+                    source={require('../../../assets/Module_2/EasyLoanKL.png')}
                     resizeMode="contain"
                     style={styles.logo}
                 />
@@ -32,13 +32,11 @@ function TopBar() {
             </View>
 
             <View style={styles.rightContainer}>
-                <TouchableOpacity onPress={() => console.log('Videocall pressed')}>
+                <TouchableOpacity onPress={() => console.log('Videocall pressed')} style={styles.iconMargin}>
                     <Ionicons name="videocam-outline" size={24} color="black" />
                 </TouchableOpacity>
 
-
-
-                <TouchableOpacity onPress={() => console.log('Call pressed')}>
+                <TouchableOpacity onPress={() => console.log('Call pressed')} style={styles.iconMargin}>
                     <Ionicons name="call-outline" size={24} color="black" />
                 </TouchableOpacity>
             </View>
@@ -64,7 +62,7 @@ const DNPChat = ({ navigation }) => {
         },
         {
             id: 2,
-            text: "Hi, Jason, sorry to hear that, we proposed",
+            text: "Hi, Jason, sorry to hear that, we proposed:",
             time: "12:36pm",
             isSender: false,
         },
@@ -86,6 +84,14 @@ const DNPChat = ({ navigation }) => {
     return (
         <View style={styles.container}>
             <TopBar />
+            <View style={styles.doccard}>
+                <Image
+                    source={require('../../../assets/Module_2/pdfIcon.png')}
+                    style={styles.docicon}
+                />
+                <Text style={styles.doctext}>PersonalLoan_with
+                    _ELKL.pdf</Text>
+            </View>
             <ScrollView
                 style={styles.messagesContainer}
                 ref={scrollView => { this.scrollView = scrollView; }}
@@ -94,13 +100,13 @@ const DNPChat = ({ navigation }) => {
                 {messages.map((msg, index) => (
                     <View key={msg.id}>
                         <MessageBubble message={msg.text} time={msg.time} isSender={msg.isSender} />
-                        {msg.text.includes('we proposed') && <ProposalCard onAccept={goToNextScreen} />}
+                        {msg.text.includes('we proposed:') && <ProposalCard onAccept={goToNextScreen} />}
                     </View>
                 ))}
             </ScrollView>
             <View style={styles.inputContainer}>
                 <TouchableOpacity style={styles.iconButton}>
-                    <Ionicons name="add" size={24} color="#007bff" />
+                    <Ionicons name="add" size={24} color="#5F84A1" />
                 </TouchableOpacity>
                 <TextInput
                     style={styles.input}
@@ -110,7 +116,7 @@ const DNPChat = ({ navigation }) => {
                     onSubmitEditing={sendMessage}
                 />
                 <TouchableOpacity style={styles.iconButton} onPress={sendMessage}>
-                    <Ionicons name="send" size={24} color="#007bff" />
+                    <Ionicons name="send" size={24} color="#5F84A1" />
                 </TouchableOpacity>
             </View>
         </View>
@@ -127,16 +133,18 @@ const styles = StyleSheet.create({
     messageBubble: {
         margin: 10,
         padding: 10,
-        borderRadius: 10,
+        borderRadius: 20,
         maxWidth: '80%',
     },
     sender: {
         alignSelf: 'flex-end',
         backgroundColor: '#e1ffc7',
+        borderBottomRightRadius: 0,
     },
     receiver: {
         alignSelf: 'flex-start',
         backgroundColor: '#F8F9FE',
+        borderBottomLeftRadius: 0,
     },
     messageText: {
         fontSize: 16,
@@ -155,14 +163,6 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         backgroundColor: '#f0f0f0',
         marginRight: 10,
-    },
-    sendButton: {
-        width: 40,
-        height: 40,
-        borderRadius: 20,
-        backgroundColor: '#007bff',
-        alignItems: 'center',
-        justifyContent: 'center',
     },
     sendButtonText: {
         color: '#fff',
@@ -194,6 +194,9 @@ const styles = StyleSheet.create({
     rightContainer: {
         flexDirection: 'row',
         alignItems: 'center',
+    },
+    iconMargin: {
+        marginLeft: 10,
     },
     logo: {
         height: 30,
@@ -230,6 +233,32 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    doccard: {
+
+        flexDirection: 'row',
+        alignItems: 'center',
+        borderRadius: 8,
+        padding: 20,
+        marginTop: 10,
+        marginLeft: 75,
+        marginVertical: 5,
+        backgroundColor: "#e1ffc7",
+        margin: 10,
+        borderBottomRightRadius: 0,
+    },
+    docicon: {
+        width: 40,
+        height: 40,
+        marginRight: 10,
+    },
+    doctext: {
+        flex: 1,
+        fontSize: 16,
+        fontWeight: '500',
+        color: '#000',
+    },
+
+
 
 });
 

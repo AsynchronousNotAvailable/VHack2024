@@ -47,7 +47,7 @@ function DNP4({ navigation }) {
                     Connect with Creditors
                 </Text>
 
-                <Text style={[styles.label, { paddingTop: 10 }]}>Selected Solution:</Text>
+                <Text style={[styles.label, { paddingTop: 30 }]}>Selected Solution:</Text>
 
 
                 <View style={{ width: "75%" }}>
@@ -73,7 +73,7 @@ function DNP4({ navigation }) {
 
                 </View>
                 <Text style={[styles.description, { paddingTop: 10 }]}>
-                    You can use this auto generated template, you may use it if you could not connect Creditors through DebtFree
+                    You may use this auto generated template if you could not connect Creditors through DebtFree
                 </Text>
 
                 <Text style={[styles.description, { paddingTop: 40 }]}>
@@ -142,11 +142,6 @@ const styles = StyleSheet.create({
         padding: 20,
         paddingHorizontal: 30,
         borderRadius: 8,
-        // shadowColor: '#000',
-        // shadowOffset: { width: 0, height: 1 },
-        // shadowOpacity: 0.22,
-        // shadowRadius: 2.22,
-        // elevation: 3,
         backgroundColor: "#F6F8FA",
         marginVertical: 8,
         marginHorizontal: 16,

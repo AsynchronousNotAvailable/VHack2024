@@ -1,8 +1,7 @@
-import { View, Text, TouchableOpacity, Image, StyleSheet, ScrollView } from "react-native";
+import { View, Text, TouchableOpacity, TouchableHighlight, Image, StyleSheet, ScrollView } from "react-native";
 import { colors, fonts, sh, sw } from "../../../styles/GlobalStyles";
 
 function DMP1({ navigation }) {
-    // Simplified selection function that navigates to the next page
     const handleSelection = () => {
         navigation.navigate("Debt Management Programme2");
     };
@@ -30,36 +29,20 @@ function DMP1({ navigation }) {
                     Select the option that best describes your current state. This will help us guide you to the most appropriate services.
                 </Text>
 
-                <View style={{ width: "75%" }}>
-                    <TouchableOpacity onPress={handleSelection}>
-                        <View style={[styles.selectContainer, { borderColor: "#EFF1F5" }]}>
-                            <Text style={styles.optionText}>Struggling with Credit Card Debt</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={handleSelection}>
-                        <View style={[styles.selectContainer, { borderColor: "#EFF1F5" }]}>
-                            <Text style={styles.optionText}>Facing Home Loan Arrears</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={handleSelection}>
-                        <View style={[styles.selectContainer, { borderColor: "#EFF1F5" }]}>
-                            <Text style={styles.optionText}>Difficulty Paying Personal Loans</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={handleSelection}>
-                        <View style={[styles.selectContainer, { borderColor: "#EFF1F5" }]}>
-                            <Text style={styles.optionText}>Need Help Managing Multiple Debts</Text>
-                        </View>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={handleSelection}>
-                        <View style={[styles.selectContainer, { borderColor: "#EFF1F5" }]}>
-                            <Text style={styles.optionText}>Other</Text>
-                        </View>
-                    </TouchableOpacity>
+                <View style={{ width: '80%' }}>
+                    {['Struggling with Credit Card Debt', 'Facing Home Loan Arrears', 'Difficulty Paying Personal Loans', 'Need Help Managing Multiple Debts', 'Other'].map((option, index) => (
+                        <TouchableHighlight
+                            key={index}
+                            underlayColor={colors.aliceBlue}
+                            style={styles.selectContainer}
+                            onPress={handleSelection}
+                        >
+                            <Text style={styles.optionText}>{option}</Text>
+                        </TouchableHighlight>
+                    ))}
                 </View>
 
                 <View style={{ marginTop: sh(20), marginEnd: sw(30), alignSelf: "flex-end" }}>
-                    {/* This button can be removed or repurposed since selection now navigates */}
                 </View>
             </View>
         </ScrollView>
@@ -93,18 +76,23 @@ const styles = StyleSheet.create({
         marginBottom: sh(10),
     },
     selectContainer: {
-        paddingVertical: sh(15),
         paddingHorizontal: sw(20),
-        width: "100%",
-        borderRadius: 10,
-        marginVertical: sh(10),
-        borderColor: "#EFF1F5",
-        borderWidth: 2,
-        alignItems: "center",
+        alignItems: 'center',
+        backgroundColor: '#fff',
+        borderRadius: 15,
+        padding: 15,
+        paddingVertical: 15,
+        marginVertical: 8,
+        shadowColor: '#535990',
+        shadowOffset: { width: 0, height: 4 },
+        shadowOpacity: 0.08,
+        shadowRadius: 4,
+        elevation: 4,
     },
     optionText: {
         fontFamily: fonts.interMedium,
-        fontSize: 18,
+        fontSize: 17,
+        textAlign: 'center',
     },
     imageStyle: {
         width: sw(200),

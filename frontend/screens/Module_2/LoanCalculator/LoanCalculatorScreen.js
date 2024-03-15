@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, ScrollView, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
-
-
+import { colors, fonts, sh, sw } from "../../../styles/GlobalStyles";
 
 
 
@@ -28,7 +27,6 @@ function LoanCalculatorScreen({ navigation }) {
             const monthlyPaymentValue = monthly.toFixed(2);
             setMonthlyPayment(monthlyPaymentValue);
 
-            // Navigate and pass data to LoanResultsScreen
             navigation.navigate('LoanResults', {
                 monthlyIncome,
                 loanAmount,
@@ -143,16 +141,18 @@ const styles = StyleSheet.create({
         marginVertical: 15,
         color: '#444',
         textAlign: 'center',
+        fontFamily: fonts.interMedium,
     },
     picker: {
         height: 50,
         marginBottom: 20,
+        fontFamily: fonts.interMedium,
     },
     title: {
         fontSize: 24,
-        fontWeight: 'bold',
         textAlign: 'center',
         marginBottom: 30,
+        fontFamily: fonts.interMedium,
     },
     inputContainer: {
         flexDirection: 'row',
@@ -168,6 +168,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 12,
         fontSize: 18,
         color: '#333',
+        fontFamily: fonts.interMedium,
     },
     input: {
         flex: 1,
@@ -177,7 +178,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 12,
     },
     calculateButton: {
-        backgroundColor: '#007bff',
+        backgroundColor: '#5F84A1',
         paddingVertical: 12,
         borderRadius: 8,
         alignItems: 'center',
@@ -193,6 +194,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         color: '#ffffff',
         fontWeight: 'bold',
+        fontFamily: fonts.interMedium,
     },
 
 

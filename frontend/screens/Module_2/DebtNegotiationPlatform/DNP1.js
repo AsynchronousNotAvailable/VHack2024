@@ -23,17 +23,6 @@ function DNP1({ navigation }) {
     //THIS ONE DONT HAVE "ALL ABOVE" OPTION
 
 
-
-
-
-
-
-
-
-
-
-
-
     return (
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
             <View style={styles.mainContainer}>
