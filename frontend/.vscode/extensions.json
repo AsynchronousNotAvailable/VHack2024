@@ -1,0 +1,14 @@
+{
+    "recommendations": [
+        "dbaeumer.vscode-eslint",
+        "esbenp.prettier-vscode",
+        "github.copilot",
+        "naumovs.color-highlight",
+        "mikestead.dotenv",
+        "eamodio.gitlens",
+        "wix.vscode-import-cost",
+        "kisstkondoros.vscode-gutter-preview",
+        "rohit-gohri.format-code-action",
+        "vscode-infra.image-viewer"
+    ]
+}

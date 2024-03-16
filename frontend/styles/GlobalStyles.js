@@ -31,3 +31,10 @@ export const fonts = {
     interThin: "InterThin",
     openSansBold: "OpenSansBold",
 };
+
+export const logo = {
+    car_logo: require('../assets/images/car_logo.png'),
+    home_logo: require('../assets/images/home_logo.png'),
+    tnb_logo: require('../assets/images/tnb_logo.png'),
+    unifi_logo: require('../assets/images/unifi_logo.png'),
+}

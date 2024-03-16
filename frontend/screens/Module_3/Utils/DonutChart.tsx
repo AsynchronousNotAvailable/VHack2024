@@ -3,6 +3,7 @@ import React from 'react';
 import { SharedValue, useDerivedValue } from 'react-native-reanimated';
 import { Canvas, Path, SkFont, Skia, Text } from '@shopify/react-native-skia';
 import DonutPath from './DonutPath';
+import { sw, sh } from '../../../styles/GlobalStyles';
 
 type Props = {
     n: number;
@@ -14,31 +15,19 @@ type Props = {
     colors: string[];
     totalValue: SharedValue<number>;
     font: SkFont;
-    smallFont: SkFont;
 };
 
-const DonutChart = ({
-    n,
-    gap,
-    decimals,
-    colors,
-    totalValue,
-    strokeWidth,
-    outerStrokeWidth,
-    radius,
-    font,
-    smallFont,
-}: Props) => {
+const DonutChart = ({ n, gap, decimals, colors, totalValue, strokeWidth, outerStrokeWidth, radius, font }: Props) => {
     const array = Array.from({ length: n });
     const innerRadius = radius - outerStrokeWidth / 2;
 
     const path = Skia.Path.Make();
     path.addCircle(radius, radius, innerRadius);
 
-    const targetText = useDerivedValue(() => `$${Math.round(totalValue.value)}`, []);
+    const targetText = useDerivedValue(() => `$${Math.round(totalValue.value * 100) / 100}`, []);
 
-    const fontSize = font.measureText('$00');
-    const smallFontSize = smallFont.measureText('Total Spent');
+    // Placeholder for the value
+    const fontSize = font.measureText('$' + totalValue);
 
     const textX = useDerivedValue(() => {
         const _fontSize = font.measureText(targetText.value);
@@ -72,13 +61,6 @@ const DonutChart = ({
                         />
                     );
                 })}
-                <Text
-                    x={radius - smallFontSize.width / 2}
-                    y={radius + smallFontSize.height / 2 - fontSize.height / 1.2}
-                    text={'Total Spent'}
-                    font={smallFont}
-                    color="black"
-                />
                 <Text
                     x={textX}
                     y={radius + fontSize.height / 2}

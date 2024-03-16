@@ -4,6 +4,7 @@ import SignUp from "../screens/Module_1/SignUp";
 import Login from "../screens/Module_1/Login";
 import Home_Main from "../screens/Module_2/Home_Main";
 import DebtMain from "../screens/Module_3/Screens/DebtMain";
+import DebtAddUpcomingBill from '../screens/Module_3/Screens/DebtAddUpcomingBill'
 import Expenses_Main from "../screens/Module_4/Expenses_Main";
 import Profile_Main from "../screens/Module_6/Profile_Main";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -81,7 +82,7 @@ function AppNav() {
     const HomeStack = createNativeStackNavigator();
     function HomeStackScreen() {
         return (
-            <HomeStack.Navigator>
+            <HomeStack.Navigator screenOptions={{ headerShown: false }}>
                 <HomeStack.Screen name="Home_Main" component={Home_Main} />
                 <HomeStack.Screen name="Home_2" component={Home2} />
                 {/* screen2 */}
@@ -93,8 +94,8 @@ function AppNav() {
     const DebtStack = createNativeStackNavigator();
     function DebtStackScreen() {
         return (
-            <DebtStack.Navigator>
-                <DebtStack.Screen name="DebtMain" component={DebtMain} />
+            <DebtStack.Navigator screenOptions={{ headerShown: false }}>
+                <DebtStack.Screen name="DebtMain" component={DebtAddUpcomingBill} />
             </DebtStack.Navigator>
         );
     }

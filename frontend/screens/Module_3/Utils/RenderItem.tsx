@@ -1,8 +1,10 @@
 import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import React from 'react';
 import Animated, { FadeInDown, FadeOutDown } from 'react-native-reanimated';
+import { sw, sh } from '../../../styles/GlobalStyles';
 
 interface Data {
+    name?: string;
     value: number;
     percentage?: number;
     color?: string;
@@ -14,17 +16,16 @@ type Props = {
 };
 
 const RenderItem = ({ item, index }: Props) => {
-    const { width } = useWindowDimensions();
     return (
         <Animated.View
-            style={[styles.container, { width: width * 0.9 }]}
+            style={[styles.container, { width: sw(150) }]}
             entering={FadeInDown.delay(index * 200)}
             exiting={FadeOutDown}
         >
             <View style={styles.contentContainer}>
                 <View style={[styles.color, { backgroundColor: item.color }]} />
+                <Text style={styles.text}>{item.name}</Text>
                 <Text style={styles.text}>{item.percentage}%</Text>
-                <Text style={styles.text}>${item.value}</Text>
             </View>
         </Animated.View>
     );
@@ -34,25 +35,24 @@ export default RenderItem;
 
 const styles = StyleSheet.create({
     container: {
-        paddingVertical: 20,
-        marginBottom: 10,
+        paddingVertical: sh(5),
+        marginBottom: sh(10),
         backgroundColor: '#f4f7fc',
-        borderRadius: 20,
+        borderRadius: sw(20),
     },
     contentContainer: {
-        flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginHorizontal: 20,
+        marginHorizontal: sw(20),
     },
     color: {
-        width: 60,
-        height: 60,
-        borderRadius: 10,
+        width: sw(20),
+        height: sh(20),
+        borderRadius: sw(10),
     },
     text: {
-        fontSize: 22,
+        fontSize: sw(10),
         fontWeight: 'bold',
         color: 'black',
     },
