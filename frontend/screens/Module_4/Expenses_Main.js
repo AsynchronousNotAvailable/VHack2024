@@ -15,7 +15,19 @@ import * as Progress from "react-native-progress";
 
 import * as shape from "d3-shape";
 
-function Expenses_Main() {
+function Expenses_Main({ navigation }) {
+    const toTransactionPage = () => {
+        navigation.navigate("Expenses_Transaction");
+    };
+
+    const toAddBudget = () => {
+        navigation.navigate("Expenses_Add_1");
+    };
+
+    const toAddBudgetBottom = () => {
+        navigation.navigate("Expenses_Budget");
+    
+    }
     // const data = [
     //     { month: "Jan", value: 50 },
     //     { month: "Feb", value: 100 },
@@ -141,7 +153,7 @@ function Expenses_Main() {
                 >
                     Transactions History
                 </Text>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={toTransactionPage}>
                     <Text
                         style={[
                             {
@@ -207,7 +219,7 @@ function Expenses_Main() {
                     {
                         marginVertical: sh(10),
                         marginHorizontal: sw(20),
-                        gap: 10,
+                        gap: 20,
                         position: "relative",
                     },
                 ]}
@@ -404,6 +416,33 @@ function Expenses_Main() {
                     />
                 </View>
 
+                <TouchableOpacity onPress={toAddBudgetBottom}>
+                    <View
+                        style={{
+                            paddingHorizontal: sw(15),
+                            paddingVertical: sh(30),
+                            backgroundColor: "rgba(128, 128, 128, 0.1)",
+                            width: "40%",
+                            borderRadius: 10,
+                            justifyContent: "center",
+                        }}
+                    >
+                        <Text
+                            style={[
+                                styles.cardTitle,
+                                {
+                                    color: "#5F84A1",
+                                    fontSize: 16,
+                                    position: "absolute",
+                                    alignSelf: "center",
+                                },
+                            ]}
+                        >
+                            Add Budget +
+                        </Text>
+                    </View>
+                </TouchableOpacity>
+
                 <View
                     style={{
                         position: "absolute",
@@ -412,7 +451,7 @@ function Expenses_Main() {
                         alignSelf: "flex-end",
                     }}
                 >
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={toAddBudget}>
                         <Svg
                             xmlns="http://www.w3.org/2000/svg"
                             width={60}

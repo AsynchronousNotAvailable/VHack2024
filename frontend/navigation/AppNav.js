@@ -18,8 +18,6 @@ import Onboarding3 from "../screens/Module_1/Onboarding3";
 import { useContext } from "react";
 import Expenses_Transaction from "../screens/Module_4/Expenses_Transaction";
 import Expenses_Add_1 from "../screens/Module_4/Expenses_Add_1";
-import Expenses_Add_2 from "../screens/Module_4/Expenses_Add_2";
-import Expenses_Add_3 from "../screens/Module_4/Expenses_Add_3";
 import Expenses_Add_Budget from "../screens/Module_4/Expenses_Add_Budget";
 
 function AppNav() {
@@ -111,32 +109,35 @@ function AppNav() {
                 <ExpensesStack.Screen
                     name="Expenses_Main"
                     component={Expenses_Main}
-                    options={{ title: "Expenses", headerTitleAlign: "center" }}
+                    options={{
+                        title: "Expenses",
+                        headerTitleAlign: "center",
+                        headerBackTitle: "",
+                    }}
                 />
                 <ExpensesStack.Screen
                     name="Expenses_Transaction"
                     component={Expenses_Transaction}
-                    options={{title: "Transaction"}}
+                    options={{
+                        title: "Transaction",
+                        headerTitleAlign: "center",
+                    }}
                 />
 
                 <ExpensesStack.Screen
                     name="Expenses_Add_1"
                     component={Expenses_Add_1}
-                />
-
-                <ExpensesStack.Screen
-                    name="Expenses_Add_2"
-                    component={Expenses_Add_2}
-                />
-
-                <ExpensesStack.Screen
-                    name="Expenses_Add_3"
-                    component={Expenses_Add_3}
+                    options={{ headerTitle: "", headerBackTitle: "" }}
                 />
 
                 <ExpensesStack.Screen
                     name="Expenses_Budget"
                     component={Expenses_Add_Budget}
+                    options={{
+                        headerTitle: "New Budget",
+                        headerTitleAlign: "center",
+                        headerBackTitle: "",
+                    }}
                 />
             </ExpensesStack.Navigator>
         );
@@ -186,7 +187,12 @@ function AppNav() {
                     ></Stack.Screen>
                 </Stack.Navigator>
             ) : (
-                <Tab.Navigator screenOptions={{ headerShown: false }}>
+                <Tab.Navigator
+                    screenOptions={{
+                        headerShown: false,
+                        tabBarHideOnKeyboard: true,
+                    }}
+                >
                     <Tab.Screen name="Home" component={HomeStackScreen} />
                     <Tab.Screen name="Debt" component={DebtStackScreen} />
                     <Tab.Screen
