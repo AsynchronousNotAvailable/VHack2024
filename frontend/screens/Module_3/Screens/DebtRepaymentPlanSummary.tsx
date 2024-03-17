@@ -14,6 +14,7 @@ import {
 import { fonts, sw, sh } from '../../../styles/GlobalStyles';
 import AppBar from '../Utils/AppBar';
 import RenderRepaymentPlanSummaryItem from '../Utils/RenderRepaymentPlanSummaryItem';
+import DebtRepaymentPlanSummaryImage from '../Utils/DebtRepaymentPlanSummaryImage';
 import { mockData3 } from '../MockData/mockData';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -77,11 +78,7 @@ function DebtRepaymentPlanSummary() {
                     }}
                     onPress={DebtRepaymentPlanChoicePage}
                 >
-                    <Image
-                        source={require('../../../assets/images/Module_3_Repayment_Plan_Image1.png')}
-                        resizeMode="contain"
-                        style={{ flex: 1 }}
-                    />
+                    <DebtRepaymentPlanSummaryImage />
                 </TouchableOpacity>
                 <Text style={styles.titleStyle}>Plan summary</Text>
                 {mockData3.map(({ image, itemName, firstTitle, firstContent, secondTitle, secondContent, index }) => {

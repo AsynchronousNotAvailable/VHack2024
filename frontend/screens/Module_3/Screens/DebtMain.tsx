@@ -8,6 +8,7 @@ import Animated from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import RootStackNavigatorParamsList from '../Utils/Module3StackParamsProps';
+import DebtMainBottomImage from '../Utils/DebtMainBottomImage';
 // Can be passed into DonutChartContainer if we wanna make it dynamic
 // const chart_data = {
 //     labels: ['Netflix', 'Unifi', 'Electric', 'Car', 'House'],
@@ -111,6 +112,13 @@ const styles = StyleSheet.create({
         fontWeight: '400',
         padding: sw(10),
     },
+    bottomTextContainer: {
+        flex: 0.7,
+        flexDirection: 'column',
+    },
+    bottomImageContainer: {
+        flex: 0.2,
+    },
 });
 
 const principlePaidAndBalanceTextColour = (colourCode: string, fontSize: number) => {
@@ -207,11 +215,7 @@ function DebtMain() {
                         }}
                         onPress={DebtRepaymentPlanSummaryPage}
                     >
-                        <Image
-                            source={require('../../../assets/images/Module_3_First_Page_Image1.png')}
-                            resizeMode="contain"
-                            style={{ flex: 1 }}
-                        />
+                        <DebtMainBottomImage />
                     </TouchableOpacity>
                 </ScrollView>
             </SafeAreaView>
