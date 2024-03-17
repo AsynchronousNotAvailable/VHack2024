@@ -1,3 +1,4 @@
+
 import { Dimensions } from "react-native";
 const designed_on_width = 412;
 const designed_on_height = 892;
@@ -30,3 +31,13 @@ export const fonts = {
     interThin: "InterThin",
     openSansBold: "OpenSansBold",
 };
+
+export const logo = {
+    car_logo: require('../assets/images/car_logo.png'),
+    home_logo: require('../assets/images/home_logo.png'),
+    tnb_logo: require('../assets/images/tnb_logo.png'),
+    unifi_logo: require('../assets/images/unifi_logo.png'),
+    repayment_plan_summary_logo_1: require('../assets/images/repayment_plan_summary_logo_1.png'),
+    repayment_plan_summary_logo_2: require('../assets/images/repayment_plan_summary_logo_2.png'),
+    repayment_plan_summary_logo_3: require('../assets/images/repayment_plan_summary_logo_3.png')
+}

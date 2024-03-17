@@ -1,0 +1,59 @@
+import { StyleSheet, Text, View, useWindowDimensions } from 'react-native';
+import React from 'react';
+import Animated, { FadeInDown, FadeOutDown } from 'react-native-reanimated';
+import { sw, sh } from '../../../styles/GlobalStyles';
+
+interface Data {
+    name?: string;
+    value: number;
+    percentage?: number;
+    color?: string;
+}
+
+type Props = {
+    item: Data;
+    index: number;
+};
+
+const RenderItem = ({ item, index }: Props) => {
+    return (
+        <Animated.View
+            style={[styles.container, { width: sw(150) }]}
+            entering={FadeInDown.delay(index * 200)}
+            exiting={FadeOutDown}
+        >
+            <View style={styles.contentContainer}>
+                <View style={[styles.color, { backgroundColor: item.color }]} />
+                <Text style={styles.text}>{item.name}</Text>
+                <Text style={styles.text}>{item.percentage}%</Text>
+            </View>
+        </Animated.View>
+    );
+};
+
+export default RenderItem;
+
+const styles = StyleSheet.create({
+    container: {
+        paddingVertical: sh(5),
+        marginBottom: sh(10),
+        backgroundColor: '#f4f7fc',
+        borderRadius: sw(20),
+    },
+    contentContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginHorizontal: sw(20),
+    },
+    color: {
+        width: sw(20),
+        height: sh(20),
+        borderRadius: sw(10),
+    },
+    text: {
+        fontSize: sw(10),
+        fontWeight: 'bold',
+        color: 'black',
+    },
+});
