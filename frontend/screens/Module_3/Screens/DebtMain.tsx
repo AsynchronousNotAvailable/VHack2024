@@ -5,6 +5,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { sw, sh, colors } from '../../../styles/GlobalStyles';
 import Animated from 'react-native-reanimated';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import RootStackNavigatorParamsList from '../Utils/Module3StackParamsProps';
 // Can be passed into DonutChartContainer if we wanna make it dynamic
 // const chart_data = {
 //     labels: ['Netflix', 'Unifi', 'Electric', 'Car', 'House'],
@@ -143,6 +146,14 @@ const greenPrinciplePaidNumber = principlePaidAndBalanceTextColour('#82B5B2', 20
 const redBalanceNumber = principlePaidAndBalanceTextColour('#F27F71', 20);
 
 function DebtMain() {
+    const navigation = useNavigation<StackNavigationProp<RootStackNavigatorParamsList>>();
+    const DebtSummaryPage = () => {
+        navigation.navigate('DebtSummary');
+    };
+    const DebtRepaymentPlanSummaryPage = () => {
+        navigation.navigate('DebtRepaymentPlanSummary');
+    };
+
     return (
         <LinearGradient
             colors={['#DFEEF8', '#FFFFFF']}
@@ -165,7 +176,10 @@ function DebtMain() {
                     </View>
                     <View style={styles.totalDebtAndSeeAllButton}>
                         <Text style={{ fontSize: sw(20), fontWeight: 'bold', padding: sw(10) }}>Total Debts</Text>
-                        <TouchableOpacity style={styles.seeAllButton}>
+                        <TouchableOpacity
+                            style={styles.seeAllButton}
+                            onPress={DebtSummaryPage}
+                        >
                             <Text style={{ alignItems: 'center', justifyContent: 'center' }}>See All</Text>
                         </TouchableOpacity>
                     </View>
@@ -189,7 +203,9 @@ function DebtMain() {
                             alignItems: 'center',
                             justifyContent: 'center',
                             marginBottom: sh(-10),
+                            zIndex: 99,
                         }}
+                        onPress={DebtRepaymentPlanSummaryPage}
                     >
                         <Image
                             source={require('../../../assets/images/Module_3_First_Page_Image1.png')}

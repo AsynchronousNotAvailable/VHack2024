@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-    ScrollView,
-    StyleSheet,
-    View,
-    Text,
-    TouchableOpacity,
-    Image,
-    SafeAreaView,
-    ImageSourcePropType,
-} from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Image, GestureResponderEvent } from 'react-native';
 import { sw, sh } from '../../../styles/GlobalStyles';
 
 const styles = StyleSheet.create({
@@ -20,15 +11,28 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
     },
+    button: {
+        flex: 1,
+        zIndex: 99,
+    },
 });
 
-const PlusButton = () => {
+interface Props {
+    navigation: (event: GestureResponderEvent) => void;
+}
+
+const PlusButton = ({ navigation }: Props) => {
     return (
         <View style={styles.buttonContainer}>
-            <Image
-                source={require('../../../assets/images/plus.png')}
-                resizeMode="contain"
-            ></Image>
+            <TouchableOpacity
+                style={styles.button}
+                onPress={navigation}
+            >
+                <Image
+                    source={require('../../../assets/images/plus.png')}
+                    resizeMode="contain"
+                ></Image>
+            </TouchableOpacity>
         </View>
     );
 };

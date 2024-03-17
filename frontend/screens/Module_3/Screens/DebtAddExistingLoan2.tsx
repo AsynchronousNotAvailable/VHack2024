@@ -14,6 +14,9 @@ import {
 import { fonts, sw, sh } from '../../../styles/GlobalStyles';
 import AppBar from '../Utils/AppBar';
 import { BottomButton } from '../Utils/RenderBottomButton';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import RootStackNavigatorParamsList from '../Utils/Module3StackParamsProps';
 
 const styles = StyleSheet.create({
     container: {
@@ -65,10 +68,21 @@ const styles = StyleSheet.create({
 });
 
 function DebtAddExistingLoan2() {
+    const navigation = useNavigation<StackNavigationProp<RootStackNavigatorParamsList>>();
+    const DebtMainPage = () => {
+        navigation.navigate('DebtMain');
+    };
+    const PreviousPage = () => {
+        navigation.goBack();
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <AppBar title="Add Loan" />
+                <AppBar
+                    title="Add Loan"
+                    navigation={PreviousPage}
+                />
                 <Text style={styles.titleStyle}>Loan Breakdown</Text>
                 <View style={styles.loanBreakdownContainer}>
                     <View style={styles.loanBreakdownContentContainer}>
@@ -97,7 +111,10 @@ function DebtAddExistingLoan2() {
                 </View>
                 <Text style={styles.smallTextStyle}>Auto added to your upcoming bills after confirmation</Text>
             </ScrollView>
-            <BottomButton value="Add" />
+            <BottomButton
+                value="Add"
+                navigation={DebtMainPage}
+            />
         </SafeAreaView>
     );
 }

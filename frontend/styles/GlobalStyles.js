@@ -37,4 +37,7 @@ export const logo = {
     home_logo: require('../assets/images/home_logo.png'),
     tnb_logo: require('../assets/images/tnb_logo.png'),
     unifi_logo: require('../assets/images/unifi_logo.png'),
+    repayment_plan_summary_logo_1: require('../assets/images/repayment_plan_summary_logo_1.png'),
+    repayment_plan_summary_logo_2: require('../assets/images/repayment_plan_summary_logo_2.png'),
+    repayment_plan_summary_logo_3: require('../assets/images/repayment_plan_summary_logo_3.png')
 }

@@ -15,6 +15,9 @@ import { fonts, sw, sh } from '../../../styles/GlobalStyles';
 import AppBar from '../Utils/AppBar';
 import { TextInput as TextInputPaper } from 'react-native-paper';
 import { BottomButton } from '../Utils/RenderBottomButton';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import RootStackNavigatorParamsList from '../Utils/Module3StackParamsProps';
 
 // import { InputOutline, InputStandard } from 'react-native-input-outline';
 
@@ -55,10 +58,21 @@ function DebtAddExistingLoan() {
     const startingYearRef = useRef<TextInput>(null);
     const [error, setError] = useState<string | undefined>(undefined);
 
+    const navigation = useNavigation<StackNavigationProp<RootStackNavigatorParamsList>>();
+    const DebtAddExistingLoan2Page = () => {
+        navigation.navigate('DebtAddExistingLoan2');
+    };
+    const PreviousPage = () => {
+        navigation.goBack();
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <AppBar title="Add Loan" />
+                <AppBar
+                    title="Add Loan"
+                    navigation={PreviousPage}
+                />
                 <View style={styles.contentContainer}>
                     <View style={styles.inputContainer}>
                         <TextInputPaper
@@ -143,7 +157,10 @@ function DebtAddExistingLoan() {
                     </View>
                 </View>
             </ScrollView>
-            <BottomButton value="Continue" />
+            <BottomButton
+                value="Continue"
+                navigation={DebtAddExistingLoan2Page}
+            />
         </SafeAreaView>
     );
 }

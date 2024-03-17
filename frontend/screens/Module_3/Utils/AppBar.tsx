@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
+import { StyleSheet, View, Text, TouchableOpacity, Image, GestureResponderEvent } from 'react-native';
 import { sw, sh } from '../../../styles/GlobalStyles';
 
 const styles = StyleSheet.create({
@@ -12,22 +12,25 @@ const styles = StyleSheet.create({
         borderBottomWidth: sw(1),
     },
     chevronLeftStyle: {
-        position: 'absolute',
         top: sh(10),
-        left: sw(20),
         aspectRatio: 1,
+        left: sw(20),
         width: sw(30),
     },
 });
 
 type AppBarProps = {
     title: string;
+    navigation: (event: GestureResponderEvent) => void;
 };
 
-const AppBar = ({ title }: AppBarProps) => {
+const AppBar = ({ title, navigation }: AppBarProps) => {
     return (
-        <View style={{ flex: 1 }}>
-            <TouchableOpacity>
+        <View style={{ flex: 1, flexDirection: 'row' }}>
+            <TouchableOpacity
+                onPress={navigation}
+                style={{ zIndex: 99 }}
+            >
                 <Image
                     source={require('../../../assets/images/chevron-left.png')}
                     resizeMode="contain"

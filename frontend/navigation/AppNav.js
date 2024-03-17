@@ -4,7 +4,12 @@ import SignUp from "../screens/Module_1/SignUp";
 import Login from "../screens/Module_1/Login";
 import Home_Main from "../screens/Module_2/Home_Main";
 import DebtMain from "../screens/Module_3/Screens/DebtMain";
-import DebtAddUpcomingBill from '../screens/Module_3/Screens/DebtAddUpcomingBill'
+import DebtSummary from '../screens/Module_3/Screens/DebtSummary';
+import DebtAddExistingLoan from '../screens/Module_3/Screens/DebtAddExistingLoan';
+import DebtAddExistingLoan2 from '../screens/Module_3/Screens/DebtAddExistingLoan2';
+import DebtAddUpcomingBill from '../screens/Module_3/Screens/DebtAddUpcomingBill';
+import DebtRepaymentPlanSummary from '../screens/Module_3/Screens/DebtRepaymentPlanSummary';
+import DebtRepaymentPlanChoice from '../screens/Module_3/Screens/DebtRepaymentPlanChoice';
 import Expenses_Main from "../screens/Module_4/Expenses_Main";
 import Profile_Main from "../screens/Module_6/Profile_Main";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -95,7 +100,13 @@ function AppNav() {
     function DebtStackScreen() {
         return (
             <DebtStack.Navigator screenOptions={{ headerShown: false }}>
-                <DebtStack.Screen name="DebtMain" component={DebtAddUpcomingBill} />
+                <DebtStack.Screen name="DebtMain" component={DebtMain} />
+                <DebtStack.Screen name="DebtSummary" component={DebtSummary} options={{ tabBarVisible: false }}/>
+                <DebtStack.Screen name="DebtAddExistingLoan" component={DebtAddExistingLoan} options={{ tabBarVisible: false }}/>
+                <DebtStack.Screen name="DebtAddExistingLoan2" component={DebtAddExistingLoan2} options={{ tabBarVisible: false }}/>
+                <DebtStack.Screen name="DebtAddUpcomingBill" component={DebtAddUpcomingBill} options={{ tabBarVisible: false }}/>
+                <DebtStack.Screen name="DebtRepaymentPlanSummary" component={DebtRepaymentPlanSummary} options={{ tabBarVisible: false }}/>
+                <DebtStack.Screen name="DebtRepaymentPlanChoice" component={DebtRepaymentPlanChoice} options={{ tabBarVisible: false }}/>
             </DebtStack.Navigator>
         );
     }
@@ -159,10 +170,7 @@ function AppNav() {
                 <Tab.Navigator screenOptions={{ headerShown: false }}>
                     <Tab.Screen name="Home" component={HomeStackScreen} />
                     <Tab.Screen name="Debt" component={DebtStackScreen} />
-                    <Tab.Screen
-                        name="Expenses"
-                        component={ExpensesStackScreen}
-                    />
+                    <Tab.Screen name="Expenses" component={ExpensesStackScreen}/>
                     <Tab.Screen name="Consult" component={ConsultStackScreen} />
                     <Tab.Screen name="Profile" component={ProfileStackScreen} />
                 </Tab.Navigator>

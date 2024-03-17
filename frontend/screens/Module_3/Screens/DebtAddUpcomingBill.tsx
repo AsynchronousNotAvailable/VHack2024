@@ -14,9 +14,11 @@ import {
 import { fonts, sw, sh } from '../../../styles/GlobalStyles';
 import AppBar from '../Utils/AppBar';
 import { BottomButton } from '../Utils/RenderBottomButton';
-import { Provider, TextInput as TextInputPaper } from 'react-native-paper';
+import { TextInput as TextInputPaper } from 'react-native-paper';
 import { Dropdown } from 'react-native-element-dropdown';
-import AntDesign from '@expo/vector-icons/AntDesign';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import RootStackNavigatorParamsList from '../Utils/Module3StackParamsProps';
 
 const styles = StyleSheet.create({
     container: {
@@ -96,10 +98,21 @@ function DebtAddUpcomingBill() {
         { label: 'Item 8', value: '8' },
     ];
 
+    const navigation = useNavigation<StackNavigationProp<RootStackNavigatorParamsList>>();
+    const DebtMainPage = () => {
+        navigation.navigate('DebtMain');
+    };
+    const PreviousPage = () => {
+        navigation.goBack();
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <AppBar title="Add Upcoming Bills" />
+                <AppBar
+                    title="Add Upcoming Bills"
+                    navigation={PreviousPage}
+                />
                 <View style={styles.contentContainer}>
                     <TextInputPaper
                         style={styles.inputPaper}
@@ -154,7 +167,10 @@ function DebtAddUpcomingBill() {
                     />
                 </View>
             </ScrollView>
-            <BottomButton value="Add" />
+            <BottomButton
+                value="Add"
+                navigation={DebtMainPage}
+            />
         </SafeAreaView>
     );
 }

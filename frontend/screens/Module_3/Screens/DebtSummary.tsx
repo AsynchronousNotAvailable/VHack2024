@@ -15,6 +15,9 @@ import PlusButton from '../Utils/RenderSummaryPlusButton';
 import RenderWidget1 from '../Utils/RenderSummaryWidget1';
 import RenderWidget2 from '../Utils/RenderSummaryWidget2';
 import { mockData1, mockData2 } from '../MockData/mockData';
+import { useNavigation } from '@react-navigation/native';
+import { StackNavigationProp } from '@react-navigation/stack';
+import RootStackNavigatorParamsList from '../Utils/Module3StackParamsProps';
 
 const styles = StyleSheet.create({
     container: {
@@ -57,13 +60,27 @@ const styles = StyleSheet.create({
 });
 
 function DebtSummary() {
+    const navigation = useNavigation<StackNavigationProp<RootStackNavigatorParamsList>>();
+    const DebtAddExistingLoanPage = () => {
+        navigation.navigate('DebtAddExistingLoan');
+    };
+    const DebtAddUpcomingBillPage = () => {
+        navigation.navigate('DebtAddUpcomingBill');
+    };
+    const PreviousPage = () => {
+        navigation.goBack();
+    };
+
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <AppBar title="Debt Summary" />
+                <AppBar
+                    title="Debt Summary"
+                    navigation={PreviousPage}
+                />
                 <View style={styles.subtitleContainer}>
                     <Text style={styles.text}>Current Loans</Text>
-                    <PlusButton />
+                    <PlusButton navigation={DebtAddExistingLoanPage} />
                 </View>
                 {mockData1.map(({ image, backgroundColor, itemName, expiryDate, currentLoan, totalLoan, index }) => {
                     return (
@@ -81,7 +98,7 @@ function DebtSummary() {
                 })}
                 <View style={styles.subtitleContainer}>
                     <Text style={styles.text}>Upcoming Bills</Text>
-                    <PlusButton />
+                    <PlusButton navigation={DebtAddUpcomingBillPage} />
                 </View>
                 {mockData2.map(({ image, backgroundColor, itemName, paymentDate, upcomingBills, index }) => {
                     return (
