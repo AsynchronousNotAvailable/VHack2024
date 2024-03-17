@@ -491,7 +491,12 @@ const styles = StyleSheet.create({
         paddingVertical: sh(15),
         marginVertical: sh(15),
         marginHorizontal: sw(20),
-        borderRadius: 10,
+        borderRadius: 20,
+        shadowColor: "#000",
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
     },
     balanceContainer: {
         flexDirection: "column",
