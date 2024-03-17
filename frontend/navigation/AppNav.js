@@ -11,7 +11,7 @@ import DebtAddUpcomingBill from '../screens/Module_3/Screens/DebtAddUpcomingBill
 import DebtRepaymentPlanSummary from '../screens/Module_3/Screens/DebtRepaymentPlanSummary';
 import DebtRepaymentPlanChoice from '../screens/Module_3/Screens/DebtRepaymentPlanChoice';
 import Expenses_Main from "../screens/Module_4/Expenses_Main";
-import Profile_Main from "../screens/Module_6/Profile_Main";
+import ProfileMain from "../screens/Module_6/Screens/ProfileMain";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -26,8 +26,7 @@ import { useContext } from "react";
 function AppNav() {
     const Stack = createStackNavigator();
     const LandingStack = createNativeStackNavigator();
-    const { isAuth, setIsAuth, firstLaunch, setFirstLaunch } =
-        useContext(GlobalContext);
+    const { isAuth, setIsAuth, firstLaunch, setFirstLaunch } = useContext(GlobalContext);
     function LandingStackScreen() {
         return (
             <LandingStack.Navigator screenOptions={{ headerShown: false }}>
@@ -140,8 +139,8 @@ function AppNav() {
         return (
             <ProfileStack.Navigator>
                 <ProfileStack.Screen
-                    name="Profile_Main"
-                    component={Profile_Main}
+                    name="ProfileMain"
+                    component={ProfileMain}
                     initialParams={{ setIsAuth: setIsAuth }}
                 />
             </ProfileStack.Navigator>
