@@ -16,6 +16,12 @@ import Onboarding1 from "../screens/Module_1/Onboarding1";
 import Onboarding2 from "../screens/Module_1/Onboarding2";
 import Onboarding3 from "../screens/Module_1/Onboarding3";
 import { useContext } from "react";
+import Consult_Message from "../screens/Module_5/Consult_Message";
+import Consult_Chatscreen from "../screens/Module_5/Consult_Chatscreen";
+import Consult_Advisors from "../screens/Module_5/Consult_Advisors";
+import Consult_AdvisorDetails from "../screens/Module_5/Consult_AdvisorDetails";
+import Consult_Match from "../screens/Module_5/Consult_Match";
+import Consult_TopMatch from "../screens/Module_5/Consult_TopMatch";
 
 function AppNav() {
     const Stack = createStackNavigator();
@@ -115,14 +121,16 @@ function AppNav() {
     function ConsultStackScreen() {
         return (
             <ConsultStack.Navigator>
-                <ConsultStack.Screen
-                    name="Consult_Main"
-                    component={Consult_Main}
-                />
+                <ConsultStack.Screen name="Consult_Main" component={Consult_Main} options={{ headerShown: false }} />
+                <ConsultStack.Screen name="Consult_Message" component={Consult_Message} options={{ title: 'Messages', headerTitleAlign: 'center' }} />
+                <ConsultStack.Screen name="Consult_Chatscreen" component={Consult_Chatscreen} options={({ route }) => ({ title: route.params.username, headerTitleAlign: 'center', })} />
+                <ConsultStack.Screen name="Consult_Advisors" component={Consult_Advisors} options={{ title: 'Advisors', headerTitleAlign: 'center' }} />
+                <ConsultStack.Screen name="Consult_AdvisorDetails" component={Consult_AdvisorDetails} options={{ title: ' ' }} />
+                <ConsultStack.Screen name="Consult_Match" component={Consult_Match} options={{ title: ' ' }} />
+                <ConsultStack.Screen name="Consult_TopMatch" component={Consult_TopMatch} options={{ title: ' ' }} />
             </ConsultStack.Navigator>
         );
     }
-
     const ProfileStack = createNativeStackNavigator();
     function ProfileStackScreen() {
         return (
