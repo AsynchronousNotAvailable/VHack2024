@@ -7,7 +7,6 @@ import { sw, sh, colors } from '../../../styles/GlobalStyles';
 import Animated from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import RootStackNavigatorParamsList from '../Utils/Module3StackParamsProps';
 import DebtMainBottomImage from '../Utils/DebtMainBottomImage';
 // Can be passed into DonutChartContainer if we wanna make it dynamic
 // const chart_data = {
@@ -121,7 +120,7 @@ const styles = StyleSheet.create({
     },
 });
 
-const principlePaidAndBalanceTextColour = (colourCode: string, fontSize: number) => {
+const principlePaidAndBalanceTextColour = (colourCode, fontSize) => {
     return StyleSheet.create({
         principlePaidAndBalanceText: {
             color: `${colourCode}`,
@@ -132,7 +131,7 @@ const principlePaidAndBalanceTextColour = (colourCode: string, fontSize: number)
     });
 };
 
-const progressBarStyles = (percentage: number) => {
+const progressBarStyles = (percentage) => {
     return StyleSheet.create({
         principleProgressBar: {
             backgroundColor: '#82B5B2',
@@ -142,19 +141,18 @@ const progressBarStyles = (percentage: number) => {
     });
 };
 
-const monthlyLoans: number = 2113.39;
-const overdueAmount: number = 541.73;
-const principlePaid: number = 250000;
-const balance: number = 400000;
-const progressBarNumber: number = (principlePaid / (principlePaid + balance)) * 100;
+const monthlyLoansText = 2113.39;
+const overdueAmount = 541.73;
+const principlePaid= 250000;
+const balance= 400000;
+const progressBarNumber= (principlePaid / (principlePaid + balance)) * 100;
 const progressBarPercentage = progressBarStyles(progressBarNumber);
 const greenPrinciplePaidText = principlePaidAndBalanceTextColour('#82B5B2', 15);
 const redBalanceText = principlePaidAndBalanceTextColour('#F27F71', 15);
 const greenPrinciplePaidNumber = principlePaidAndBalanceTextColour('#82B5B2', 20);
 const redBalanceNumber = principlePaidAndBalanceTextColour('#F27F71', 20);
 
-function DebtMain() {
-    const navigation = useNavigation<StackNavigationProp<RootStackNavigatorParamsList>>();
+function DebtMain({navigation}) {
     const DebtSummaryPage = () => {
         navigation.navigate('DebtSummary');
     };
@@ -171,11 +169,11 @@ function DebtMain() {
         >
             <SafeAreaView style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false}>
-                    <DonutChartContainer />
+                    <DonutChartContainer/>
                     <View style={styles.twoBoxesContainer}>
                         <View style={styles.boxContainer}>
                             <Text style={styles.monthlyLoansTitleText}>Monthly Loans</Text>
-                            <Text style={styles.monthlyLoansText}>RM{monthlyLoans}</Text>
+                            <Text style={styles.monthlyLoansText}>RM{monthlyLoansText}</Text>
                         </View>
                         <View style={styles.boxContainer2}>
                             <Text style={styles.overdueTitleText}>Overdue</Text>

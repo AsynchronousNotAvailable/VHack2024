@@ -19,12 +19,8 @@ const styles = StyleSheet.create({
     },
 });
 
-type AppBarProps = {
-    title: string;
-    navigation: (event: GestureResponderEvent) => void;
-};
 
-const AppBar = ({ title, navigation }: AppBarProps) => {
+const AppBar = ({title, navigation}) => {
     return (
         <View style={{ flex: 1, flexDirection: 'row' }}>
             <TouchableOpacity

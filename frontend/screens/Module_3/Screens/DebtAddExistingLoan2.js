@@ -16,7 +16,6 @@ import AppBar from '../Utils/AppBar';
 import { BottomButton } from '../Utils/RenderBottomButton';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import RootStackNavigatorParamsList from '../Utils/Module3StackParamsProps';
 
 const styles = StyleSheet.create({
     container: {
@@ -67,8 +66,7 @@ const styles = StyleSheet.create({
     },
 });
 
-function DebtAddExistingLoan2() {
-    const navigation = useNavigation<StackNavigationProp<RootStackNavigatorParamsList>>();
+function DebtAddExistingLoan2({navigation}) {
     const DebtMainPage = () => {
         navigation.navigate('DebtMain');
     };

@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, ImageSourcePropType } from 'react-native';
-import { Icon } from 'react-native-vector-icons/Icon';
 import Animated, { FadeInDown, FadeOutDown } from 'react-native-reanimated';
 import { sw, sh } from '../../../styles/GlobalStyles';
 
@@ -47,25 +46,16 @@ const styles = StyleSheet.create({
     },
 });
 
-type Widget1Props = {
-    image?: ImageSourcePropType;
-    backgroundColor?: string;
-    itemName: string;
-    expiryDate: string;
-    currentLoan: number;
-    totalLoan: number;
-    index: number;
-};
 
-const RenderWidget1 = ({
-    image,
+const RenderWidget1 = (
+    {image,
     backgroundColor,
     itemName,
     expiryDate,
     currentLoan,
     totalLoan,
-    index,
-}: Widget1Props) => {
+    index,}
+) => {
     return (
         <Animated.View
             style={styles.widgetContainer}

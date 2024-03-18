@@ -1,6 +1,5 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, ImageSourcePropType } from 'react-native';
-import { Icon } from 'react-native-vector-icons/Icon';
 import Animated, { FadeInDown, FadeOutDown } from 'react-native-reanimated';
 import { sw, sh, fonts } from '../../../styles/GlobalStyles';
 
@@ -55,25 +54,15 @@ const styles = StyleSheet.create({
     },
 });
 
-type Props = {
-    image?: ImageSourcePropType;
-    itemName: string;
-    firstTitle: string;
-    firstContent: string;
-    secondTitle: string;
-    secondContent: string;
-    index: number;
-};
-
-const RenderRepaymentPlanSummaryItem = ({
-    image,
+const RenderRepaymentPlanSummaryItem = (
+    {image,
     itemName,
     firstTitle,
     firstContent,
     secondTitle,
     secondContent,
-    index,
-}: Props) => {
+    index,}
+) => {
     return (
         <Animated.View
             style={styles.widgetContainer}

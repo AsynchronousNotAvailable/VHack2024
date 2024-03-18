@@ -3,19 +3,8 @@ import React from 'react';
 import Animated, { FadeInDown, FadeOutDown } from 'react-native-reanimated';
 import { sw, sh } from '../../../styles/GlobalStyles';
 
-interface Data {
-    name?: string;
-    value: number;
-    percentage?: number;
-    color?: string;
-}
 
-type Props = {
-    item: Data;
-    index: number;
-};
-
-const RenderItem = ({ item, index }: Props) => {
+const RenderItem = ({item, index}) => {
     return (
         <Animated.View
             style={[styles.container, { width: sw(150) }]}

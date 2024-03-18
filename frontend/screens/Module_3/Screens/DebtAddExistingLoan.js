@@ -17,7 +17,6 @@ import { TextInput as TextInputPaper } from 'react-native-paper';
 import { BottomButton } from '../Utils/RenderBottomButton';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import RootStackNavigatorParamsList from '../Utils/Module3StackParamsProps';
 
 // import { InputOutline, InputStandard } from 'react-native-input-outline';
 
@@ -44,21 +43,20 @@ const styles = StyleSheet.create({
     },
 });
 
-function DebtAddExistingLoan() {
-    const [loanName, setLoanName] = useState<string>('');
-    const [loanAmount, setLoanAmount] = useState<string>('');
-    const [tenureYears, setTenureYears] = useState<string>('');
-    const [interestRate, setInterestRate] = useState<string>('');
-    const [startingYear, setStartingYear] = useState<string>('');
+function DebtAddExistingLoan({navigation}) {
+    const [loanName, setLoanName] = useState('');
+    const [loanAmount, setLoanAmount] = useState('');
+    const [tenureYears, setTenureYears] = useState('');
+    const [interestRate, setInterestRate] = useState('');
+    const [startingYear, setStartingYear] = useState('');
 
     // Reference for all constant
-    const loanAmountRef = useRef<TextInput>(null);
-    const tenureYearsRef = useRef<TextInput>(null);
-    const interestRateRef = useRef<TextInput>(null);
-    const startingYearRef = useRef<TextInput>(null);
-    const [error, setError] = useState<string | undefined>(undefined);
+    const loanAmountRef = useRef(null);
+    const tenureYearsRef = useRef(null);
+    const interestRateRef = useRef(null);
+    const startingYearRef = useRef(null);
+    const [error, setError] = useState(undefined);
 
-    const navigation = useNavigation<StackNavigationProp<RootStackNavigatorParamsList>>();
     const DebtAddExistingLoan2Page = () => {
         navigation.navigate('DebtAddExistingLoan2');
     };
@@ -83,7 +81,7 @@ function DebtAddExistingLoan() {
                             keyboardType="default"
                             returnKeyType="next"
                             autoCapitalize="none"
-                            onChangeText={(loanName: string) => {
+                            onChangeText={(loanName) => {
                                 setLoanName(loanName);
                             }}
                             onSubmitEditing={() => {
@@ -99,7 +97,7 @@ function DebtAddExistingLoan() {
                             keyboardType="default"
                             returnKeyType="next"
                             autoCapitalize="none"
-                            onChangeText={(loanAmount: string) => {
+                            onChangeText={(loanAmount) => {
                                 setLoanAmount(loanAmount);
                             }}
                             onSubmitEditing={() => {
@@ -115,7 +113,7 @@ function DebtAddExistingLoan() {
                             keyboardType="default"
                             returnKeyType="next"
                             autoCapitalize="none"
-                            onChangeText={(tenureYears: string) => {
+                            onChangeText={(tenureYears) => {
                                 setTenureYears(tenureYears);
                             }}
                             onSubmitEditing={() => {
@@ -131,7 +129,7 @@ function DebtAddExistingLoan() {
                             keyboardType="default"
                             returnKeyType="next"
                             autoCapitalize="none"
-                            onChangeText={(interestRate: string) => {
+                            onChangeText={(interestRate) => {
                                 setInterestRate(interestRate);
                             }}
                             onSubmitEditing={() => {
@@ -147,7 +145,7 @@ function DebtAddExistingLoan() {
                             keyboardType="default"
                             returnKeyType="next"
                             autoCapitalize="none"
-                            onChangeText={(startingYear: string) => {
+                            onChangeText={(startingYear) => {
                                 setStartingYear(startingYear);
                             }}
                             onSubmitEditing={() => {

@@ -18,7 +18,6 @@ import DebtRepaymentPlanSummaryImage from '../Utils/DebtRepaymentPlanSummaryImag
 import { mockData3 } from '../MockData/mockData';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import RootStackNavigatorParamsList from '../Utils/Module3StackParamsProps';
 
 const styles = StyleSheet.create({
     container: {
@@ -52,8 +51,7 @@ const styles = StyleSheet.create({
     },
 });
 
-function DebtRepaymentPlanSummary() {
-    const navigation = useNavigation<StackNavigationProp<RootStackNavigatorParamsList>>();
+function DebtRepaymentPlanSummary({navigation}) {
     const DebtRepaymentPlanChoicePage = () => {
         navigation.navigate('DebtRepaymentPlanChoice');
     };

@@ -5,19 +5,7 @@ import { Canvas, Path, SkFont, Skia, Text } from '@shopify/react-native-skia';
 import DonutPath from './DonutPath';
 import { sw, sh } from '../../../styles/GlobalStyles';
 
-type Props = {
-    n: number;
-    gap: number;
-    radius: number;
-    strokeWidth: number;
-    outerStrokeWidth: number;
-    decimals: SharedValue<number[]>;
-    colors: string[];
-    totalValue: SharedValue<number>;
-    font: SkFont;
-};
-
-const DonutChart = ({ n, gap, decimals, colors, totalValue, strokeWidth, outerStrokeWidth, radius, font }: Props) => {
+const DonutChart = ({n, gap, decimals, colors, totalValue, strokeWidth, outerStrokeWidth, radius, font}) => {
     const array = Array.from({ length: n });
     const innerRadius = radius - outerStrokeWidth / 2;
 
@@ -50,14 +38,14 @@ const DonutChart = ({ n, gap, decimals, colors, totalValue, strokeWidth, outerSt
                 {array.map((_, index) => {
                     return (
                         <DonutPath
-                            key={index}
                             radius={radius}
+                            gap={gap}
                             strokeWidth={strokeWidth}
                             outerStrokeWidth={outerStrokeWidth}
                             color={colors[index]}
                             decimals={decimals}
                             index={index}
-                            gap={gap}
+                            key={index}
                         />
                     );
                 })}

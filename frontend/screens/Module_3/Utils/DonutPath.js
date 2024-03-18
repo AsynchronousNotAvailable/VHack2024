@@ -2,17 +2,7 @@ import React from 'react';
 import { Path, Skia } from '@shopify/react-native-skia';
 import { SharedValue, useDerivedValue, withTiming } from 'react-native-reanimated';
 
-type Props = {
-    strokeWidth: number;
-    outerStrokeWidth: number;
-    gap: number;
-    radius: number;
-    color?: string;
-    decimals: SharedValue<number[]>;
-    index: number;
-};
-
-const DonutPath = ({ radius, gap, strokeWidth, outerStrokeWidth, color, decimals, index }: Props) => {
+const DonutPath = ({radius, gap, strokeWidth, outerStrokeWidth, color, decimals, index}) => {
     const innerRadius = radius - outerStrokeWidth / 2;
 
     const path = Skia.Path.Make();

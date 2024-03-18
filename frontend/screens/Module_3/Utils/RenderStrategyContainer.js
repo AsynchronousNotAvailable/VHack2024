@@ -16,7 +16,6 @@ import { fonts, sw, sh } from '../../../styles/GlobalStyles';
 import Animated, { FadeInDown, FadeOutDown } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import RootStackNavigatorParamsList from '../Utils/Module3StackParamsProps';
 
 const styles = StyleSheet.create({
     widgetContainer: {
@@ -76,12 +75,7 @@ const styles = StyleSheet.create({
     },
 });
 
-interface buttonValue {
-    value: string;
-    navigation: (event: GestureResponderEvent) => void;
-}
-
-export const SmallBottomButton = ({ value, navigation }: buttonValue) => {
+export const SmallBottomButton = ({value, navigation}) => {
     return (
         <View style={styles.footer}>
             <TouchableOpacity
@@ -94,18 +88,7 @@ export const SmallBottomButton = ({ value, navigation }: buttonValue) => {
     );
 };
 
-interface Props {
-    title: string;
-    content1: string;
-    content2: string;
-    content3: string;
-    content4: string;
-    content5: string;
-    index: number;
-}
-
-const PaymentStrategyContainer = ({ title, content1, content2, content3, content4, content5, index }: Props) => {
-    const navigation = useNavigation<StackNavigationProp<RootStackNavigatorParamsList>>();
+const PaymentStrategyContainer = ({navigation, title, content1, content2, content3, content4, content5, index}) => {
     const DebtMainPage = () => {
         navigation.navigate('DebtMain');
     };
