@@ -1,8 +1,8 @@
 export function calculatePercentage(
-    numbers: number[],
-    total: number,
-  ): number[] {
-    const percentageArray: number[] = [];
+    numbers,
+    total
+  ) {
+    const percentageArray = [];
   
     numbers.forEach(number => {
       const percentage = Math.round((number / total) * 100);

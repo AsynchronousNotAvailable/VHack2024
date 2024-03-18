@@ -17,7 +17,6 @@ import RenderWidget2 from '../Utils/RenderSummaryWidget2';
 import { mockData1, mockData2 } from '../MockData/mockData';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import RootStackNavigatorParamsList from '../Utils/Module3StackParamsProps';
 
 const styles = StyleSheet.create({
     container: {
@@ -59,8 +58,7 @@ const styles = StyleSheet.create({
     },
 });
 
-function DebtSummary() {
-    const navigation = useNavigation<StackNavigationProp<RootStackNavigatorParamsList>>();
+function DebtSummary({navigation}) {
     const DebtAddExistingLoanPage = () => {
         navigation.navigate('DebtAddExistingLoan');
     };

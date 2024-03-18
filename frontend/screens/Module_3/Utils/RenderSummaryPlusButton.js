@@ -17,11 +17,8 @@ const styles = StyleSheet.create({
     },
 });
 
-interface Props {
-    navigation: (event: GestureResponderEvent) => void;
-}
 
-const PlusButton = ({ navigation }: Props) => {
+const PlusButton = ({navigation}) => {
     return (
         <View style={styles.buttonContainer}>
             <TouchableOpacity

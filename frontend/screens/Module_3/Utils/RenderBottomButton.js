@@ -28,12 +28,7 @@ const styles = StyleSheet.create({
     },
 });
 
-interface buttonValue {
-    value: string;
-    navigation: (event: GestureResponderEvent) => void;
-}
-
-export const BottomButton = ({ value, navigation }: buttonValue) => {
+export const BottomButton = ({value, navigation}) => {
     return (
         <View style={styles.footer}>
             <TouchableOpacity

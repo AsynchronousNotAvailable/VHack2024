@@ -137,7 +137,7 @@ function AppNav() {
     const ProfileStack = createNativeStackNavigator();
     function ProfileStackScreen() {
         return (
-            <ProfileStack.Navigator>
+            <ProfileStack.Navigator screenOptions={{ headerShown: false }}>
                 <ProfileStack.Screen
                     name="ProfileMain"
                     component={ProfileMain}

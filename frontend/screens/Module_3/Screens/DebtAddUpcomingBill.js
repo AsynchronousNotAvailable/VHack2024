@@ -18,7 +18,6 @@ import { TextInput as TextInputPaper } from 'react-native-paper';
 import { Dropdown } from 'react-native-element-dropdown';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import RootStackNavigatorParamsList from '../Utils/Module3StackParamsProps';
 
 const styles = StyleSheet.create({
     container: {
@@ -77,15 +76,15 @@ const styles = StyleSheet.create({
     },
 });
 
-function DebtAddUpcomingBill() {
-    const [upcomingBillName, setUpcomingBillName] = useState<string>('');
-    const [upcomingBillAmount, setUpcomingBillAmount] = useState<string>('');
+function DebtAddUpcomingBill({navigation}) {
+    const [upcomingBillName, setUpcomingBillName] = useState('');
+    const [upcomingBillAmount, setUpcomingBillAmount] = useState('');
     const [showDropDown, setShowDropDown] = useState(false);
 
-    const upcomingBillAmountRef = useRef<TextInput>(null);
+    const upcomingBillAmountRef = useRef(null);
 
-    const [value, setValue] = useState<string | null>(null);
-    const [isFocus, setIsFocus] = useState<boolean>(false);
+    const [value, setValue] = useState(null);
+    const [isFocus, setIsFocus] = useState(false);
 
     const data = [
         { label: 'Item 1', value: '1' },
@@ -98,7 +97,6 @@ function DebtAddUpcomingBill() {
         { label: 'Item 8', value: '8' },
     ];
 
-    const navigation = useNavigation<StackNavigationProp<RootStackNavigatorParamsList>>();
     const DebtMainPage = () => {
         navigation.navigate('DebtMain');
     };
@@ -122,7 +120,7 @@ function DebtAddUpcomingBill() {
                         keyboardType="default"
                         returnKeyType="next"
                         autoCapitalize="none"
-                        onChangeText={(upcomingBillName: string) => {
+                        onChangeText={(upcomingBillName) => {
                             setUpcomingBillName(upcomingBillName);
                         }}
                         onSubmitEditing={() => {
@@ -138,7 +136,7 @@ function DebtAddUpcomingBill() {
                         keyboardType="default"
                         returnKeyType="next"
                         autoCapitalize="none"
-                        onChangeText={(upcomingBillAmount: string) => {
+                        onChangeText={(upcomingBillAmount) => {
                             setUpcomingBillAmount(upcomingBillAmount);
                         }}
                         // onSubmitEditing={() => {

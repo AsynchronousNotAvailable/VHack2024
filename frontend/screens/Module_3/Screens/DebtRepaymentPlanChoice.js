@@ -17,7 +17,6 @@ import { mockData4 } from '../MockData/mockData';
 import PaymentStrategyContainer from '../Utils/RenderStrategyContainer';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import RootStackNavigatorParamsList from '../Utils/Module3StackParamsProps';
 
 const styles = StyleSheet.create({
     container: {
@@ -33,8 +32,7 @@ const styles = StyleSheet.create({
     },
 });
 
-function DebtRepaymentPlanChoice() {
-    const navigation = useNavigation<StackNavigationProp<RootStackNavigatorParamsList>>();
+function DebtRepaymentPlanChoice({navigation}) {
     const DebtMainPage = () => {
         navigation.navigate('DebtMain');
     };
@@ -53,6 +51,7 @@ function DebtRepaymentPlanChoice() {
                 {mockData4.map(({ title, content1, content2, content3, content4, content5, index }) => {
                     return (
                         <PaymentStrategyContainer
+                            navigation={navigation}
                             title={title}
                             content1={content1}
                             content2={content2}

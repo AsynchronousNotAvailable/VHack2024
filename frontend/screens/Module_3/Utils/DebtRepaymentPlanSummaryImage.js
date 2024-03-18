@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Svg, { SvgProps, Rect, Path, Defs, Pattern, Use, Image } from 'react-native-svg';
-const DebtRepaymentPlanSummaryImage = (props: SvgProps) => (
+const DebtRepaymentPlanSummaryImage = (props) => (
     <Svg
         width={350}
         height={83}

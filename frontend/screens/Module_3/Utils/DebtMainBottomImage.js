@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Svg, { SvgProps, G, Rect, Path, Defs, LinearGradient, Stop, Pattern, Use, Image } from 'react-native-svg';
 /* SVGR has dropped some elements not supported by react-native-svg: filter */
-const DebtMainBottomImage = (props: SvgProps) => (
+const DebtMainBottomImage = (props) => (
     <Svg
         width={390}
         height={160}
