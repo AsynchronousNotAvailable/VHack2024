@@ -6,11 +6,11 @@ import {
     TextInput,
 } from "react-native";
 import React from "react";
-import { colors, sw, sh, fonts } from "../../styles/GlobalStyles.js";
+import { colors, sw, sh, fonts } from "../../../styles/GlobalStyles.js";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Keyboard } from "react-native";
 
-const Expenses_Tab_2 = ({
+const Expenses_Tab_1 = ({
     openCalendar,
     openDate,
     setOpenDate,
@@ -131,7 +131,7 @@ const Expenses_Tab_2 = ({
     );
 };
 
-export default Expenses_Tab_2;
+export default Expenses_Tab_1;
 
 const styles = StyleSheet.create({
     columnContainer: { flexDirection: "column" },

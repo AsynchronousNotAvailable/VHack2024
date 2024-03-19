@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, useWindowDimensions } from "react-native";
 import React from "react";
 import Animated, { FadeInDown, FadeOutDown } from "react-native-reanimated";
-import { sw, sh } from "../../../styles/GlobalStyles";
+import { sw, sh } from "../../../../styles/GlobalStyles";
 
 const RenderItem = ({ item, index }) => {
     return (

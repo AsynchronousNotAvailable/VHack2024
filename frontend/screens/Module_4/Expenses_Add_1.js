@@ -3,7 +3,6 @@ import {
     Text,
     StyleSheet,
     TouchableOpacity,
-    TextInput,
     TouchableWithoutFeedback,
     KeyboardAvoidingView,
     Platform,
@@ -11,11 +10,10 @@ import {
 import React, { useState } from "react";
 import { colors, sw, sh, fonts } from "../../styles/GlobalStyles";
 import { Svg, Path } from "react-native-svg";
-import DateTimePicker from "@react-native-community/datetimepicker";
 import { Keyboard } from "react-native";
-import Expenses_Tab_1 from "../../components/Expenses/Expenses_Tab_1";
-import Expenses_Tab_2 from "../../components/Expenses/Expenses_Tab_2";
-import Expenses_Tab_3 from "../../components/Expenses/Expenses_Tab_3";
+import Expenses_Tab_1 from "./Utils/Expenses_Tab_1";
+import Expenses_Tab_2 from "./Utils/Expenses_Tab_2";
+import Expenses_Tab_3 from "./Utils/Expenses_Tab_3";
 const Expenses_Add_1 = () => {
     const [isPressed1, setIsPressed1] = useState(true);
     const [isPressed2, setIsPressed2] = useState(false);

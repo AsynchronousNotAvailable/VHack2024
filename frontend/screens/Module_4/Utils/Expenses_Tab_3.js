@@ -6,20 +6,20 @@ import {
     TextInput,
 } from "react-native";
 import React from "react";
-import { colors, sw, sh, fonts } from "../../styles/GlobalStyles.js";
+import { colors, sw, sh, fonts } from "../../../styles/GlobalStyles.js";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Keyboard } from "react-native";
 
-const Expenses_Tab_1 = ({
+const Expenses_Tab_3 = ({
     openCalendar,
     openDate,
     setOpenDate,
     date,
     setDate,
-    account,
-    setAccount,
-    category,
-    setCategory,
+    fromInput,
+    setFromInput,
+    toInput,
+    setToInput,
     description,
     setDescription,
     amount,
@@ -39,36 +39,36 @@ const Expenses_Tab_1 = ({
             </TouchableOpacity>
             <TextInput
                 style={styles.input}
-                placeholder="Account"
+                placeholder="From"
                 keyboardType="default"
                 returnKeyType="next"
                 autoCapitalize="none"
                 placeholderTextColor="#DADADA"
                 ref={(input) => {
-                    accountInput = input;
+                    fromInput = input;
                 }}
-                value={account}
+                value={fromInput}
                 onChangeText={(text) => {
-                    setAccount(text);
+                    setFromInput(text);
                 }}
                 onSubmitEditing={() => {
-                    categoryInput.focus();
+                    toInput.focus();
                 }}
             />
             <TextInput
                 style={styles.input}
-                placeholder="Category"
+                placeholder="To"
                 keyboardType="default"
                 returnKeyType="next"
                 autoCapitalize="none"
-                value={category}
+                value={toInput}
                 placeholderTextColor="#DADADA"
                 onChangeText={(text) => {
                     // Handle text input changes here
-                    setCategory(text);
+                    setToInput(text);
                 }}
                 ref={(input) => {
-                    categoryInput = input;
+                    toInput = input;
                 }}
                 onSubmitEditing={() => {
                     descriptionInput.focus();
@@ -131,7 +131,7 @@ const Expenses_Tab_1 = ({
     );
 };
 
-export default Expenses_Tab_1;
+export default Expenses_Tab_3;
 
 const styles = StyleSheet.create({
     columnContainer: { flexDirection: "column" },

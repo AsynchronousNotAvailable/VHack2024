@@ -28,29 +28,6 @@ function Expenses_Main({ navigation }) {
         navigation.navigate("Expenses_Budget");
     
     }
-    // const data = [
-    //     { month: "Jan", value: 50 },
-    //     { month: "Feb", value: 100 },
-    //     { month: "Mar", value: 400 },
-    //     { month: "Apr", value: 250 },
-    //     { month: "May", value: 300 },
-    //     { month: "Jun", value: 280 },
-    //     { month: "Jul", value: 470 },
-    //     { month: "Aug", value: 600 },
-    //     { month: "Sep", value: 500 },
-    //     { month: "Oct", value: 200 },
-    //     { month: "Nov", value: 350 },
-    //     { month: "Dec", value: 120 },
-    // ];
-
-    // const formatData = (data) => {
-    //     return data.map((point) => ({
-    //         x: point.month,
-    //         y: point.value,
-    //     }));
-    // };
-
-    // const formattedData = formatData(data);
 
     const data = [50, 10, 40, 95, 30, 24, 85, 91, 35, 53, 53, 24];
     const xLabels = [
@@ -496,7 +473,7 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
-        elevation: 5,
+        elevation: 10,
     },
     balanceContainer: {
         flexDirection: "column",

@@ -8,14 +8,8 @@ import { useSharedValue, withTiming } from "react-native-reanimated";
 import { calculatePercentage } from "./calculatePercentage";
 import RenderItem from "./RenderItem";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { sw, sh, fonts } from "../../../styles/GlobalStyles";
+import { sw, sh, fonts } from "../../../../styles/GlobalStyles";
 
-// interface Data {
-//     name?: string;
-//     value: number;
-//     percentage?: number;
-//     color?: string;
-// }
 
 const RADIUS = sw(100);
 const STROKE_WIDTH = sw(30);
@@ -56,7 +50,7 @@ const DonutChartContainer = () => {
     const data = arrayOfObjects;
 
     const font = useFont(
-        require("../../../assets/fonts/Inter-Bold.ttf"),
+        require("../../../../assets/fonts/Inter-Bold.ttf"),
         sw(20)
     );
 
@@ -113,7 +107,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#FFFFFF",
         alignItems: "flex-start",
-        // margin: sw(10),
         borderRadius: 10,
     },
     container: {
