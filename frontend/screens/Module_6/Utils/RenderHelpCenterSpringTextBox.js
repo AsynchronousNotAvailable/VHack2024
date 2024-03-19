@@ -37,10 +37,10 @@ const styles = StyleSheet.create({
 
 const CollapsibleView = ({ question, answer, defaultValue = true}) => {
     const initialCollapsedState = defaultValue
-    console.log("initial Collapsed State: "+initialCollapsedState)
     const [collapsed, setCollapsed] = useState(initialCollapsedState);
     const [collapsedIcon, setCollapsedIcon] = useState(logo.plus_icon);
     const [animation] = useState(new Animated.Value(0));
+    const [toggleCalled, setToggleCalled] = useState(false);
 
     useEffect(() => {
         Animated.timing(animation, {
@@ -53,11 +53,13 @@ const CollapsibleView = ({ question, answer, defaultValue = true}) => {
 
     const toggleCollapse = () => {
         setCollapsed(!collapsed);
+        setToggleCalled(!toggleCalled)
     };
 
-    if (initialCollapsedState != collapsed){
-        setCollapsed(initialCollapsedState)
+    if (initialCollapsedState != collapsed && toggleCalled == false) {
+        setCollapsed(!collapsed);
     }
+
 
     const heightInterpolate = animation.interpolate({
         inputRange: [0, 1],
