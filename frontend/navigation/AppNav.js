@@ -12,6 +12,12 @@ import DebtRepaymentPlanSummary from '../screens/Module_3/Screens/DebtRepaymentP
 import DebtRepaymentPlanChoice from '../screens/Module_3/Screens/DebtRepaymentPlanChoice';
 import Expenses_Main from "../screens/Module_4/Expenses_Main";
 import ProfileMain from "../screens/Module_6/Screens/ProfileMain";
+import ProfileCurrencyPage from "../screens/Module_6/Screens/ProfileCurrencyPage";
+import ProfileEditPage from "../screens/Module_6/Screens/ProfileEditPage";
+import ProfileFeedbackPage from "../screens/Module_6/Screens/ProfileFeedbackPage";
+import ProfileHelpCenter from "../screens/Module_6/Screens/ProfileHelpCenter";
+import ProfileNotificationPage from "../screens/Module_6/Screens/ProfileNotificationPage";
+import ProfileReport from "../screens/Module_6/Screens/ProfileReport";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -22,6 +28,7 @@ import Onboarding1 from "../screens/Module_1/Onboarding1";
 import Onboarding2 from "../screens/Module_1/Onboarding2";
 import Onboarding3 from "../screens/Module_1/Onboarding3";
 import { useContext } from "react";
+import { StatusBar } from "react-native";
 
 function AppNav() {
     const Stack = createStackNavigator();
@@ -142,7 +149,14 @@ function AppNav() {
                     name="ProfileMain"
                     component={ProfileMain}
                     initialParams={{ setIsAuth: setIsAuth }}
+                    screenOptions={{ statusBarHidden: false }}
                 />
+                <ProfileStack.Screen name="ProfileEditPage" component={ProfileEditPage} options={{ tabBarVisible: false }}/>
+                <ProfileStack.Screen name="ProfileNotificationPage" component={ProfileNotificationPage} options={{ tabBarVisible: false }}/>
+                <ProfileStack.Screen name="ProfileCurrencyPage" component={ProfileCurrencyPage} options={{ tabBarVisible: false }}/>
+                <ProfileStack.Screen name="ProfileHelpCenter" component={ProfileHelpCenter} options={{ tabBarVisible: false }}/>
+                <ProfileStack.Screen name="ProfileReport" component={ProfileReport} options={{ tabBarVisible: false }}/>
+                <ProfileStack.Screen name="ProfileFeedbackPage" component={ProfileFeedbackPage} options={{ tabBarVisible: false }}/>
             </ProfileStack.Navigator>
         );
     }
