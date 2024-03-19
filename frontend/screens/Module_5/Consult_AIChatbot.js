@@ -7,7 +7,10 @@ import { OPENAI_API_KEY } from "@env"
 const ConsultChatscreen = ({ }) => {
     const [messages, setMessages] = useState([]);
     const [message, setMessage] = useState('');
+    const [sendingMessage, setSendingMessage] = useState(false);
+
     const sendMessageToOpenAI = async () => {
+        setSendingMessage(true); 
         try {
             const response = await axios.post(
                 'https://api.openai.com/v1/chat/completions',
@@ -27,7 +30,7 @@ const ConsultChatscreen = ({ }) => {
                 const { choices } = response.data;
                 const aiReply = choices[0].message.content;
                 setMessages(prevMessages => [
-                    ...prevMessages,
+                    ...prevMessages.filter(msg => msg.type !== 'waiting'),
                     { text: aiReply, type: 'received' }
                 ]);
             } else {
@@ -35,12 +38,14 @@ const ConsultChatscreen = ({ }) => {
             }
         } catch (error) {
             console.error('Error sending message to OpenAI:', error);
+        } finally {
+            setSendingMessage(false); 
         }
     };
 
     const sendMessage = () => {
         if (message) {
-            setMessages([...messages, { text: message, type: 'sent' }]);
+            setMessages([...messages, { text: message, type: 'sent' }, { text: '...', type: 'waiting' }]);
             setMessage('');
             sendMessageToOpenAI();
         }

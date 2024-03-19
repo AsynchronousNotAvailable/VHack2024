@@ -206,9 +206,7 @@ function Consult_Main({ navigation, route }) {
             <TouchableOpacity
               key={index}
               style={styles.sessionCard}
-              onPress={() => {
-                navigation.navigate('Consult_Details', { advisor: advisor, session: session });
-              }}
+              onPress={() => {}}
             >
               <View style={styles.advisorRow}>
                 <View style={styles.leftContent}>
