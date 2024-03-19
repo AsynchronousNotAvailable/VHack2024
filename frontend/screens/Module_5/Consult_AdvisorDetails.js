@@ -1,15 +1,25 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, Image, Modal, TouchableOpacity, ScrollView } from 'react-native';
 import { fonts, sh, sw } from "../../styles/GlobalStyles";
 import { Ionicons } from '@expo/vector-icons';
 
-const Consult_AdvisorDetails = ({navigation, route }) => {
+const Consult_AdvisorDetails = ({ navigation, route }) => {
     const { advisor } = route.params;
     const [startDate, setStartDate] = useState(new Date());;
     const [dates, setDates] = useState([]);
     const [selectedDay, setSelectedDay] = useState(null);
     const [selectedTime, setSelectedTime] = useState(null);
     const [selectedDayIndex, setSelectedDayIndex] = useState(null);
+    const [showModal, setShowModal] = useState(false);
+    const [isBookmarked, setIsBookmarked] = useState(false);
+
+    const toggleBookmark = () => {
+        setIsBookmarked(!isBookmarked);
+        setShowModal(true);
+        setTimeout(() => {
+            setShowModal(false);
+        }, 2000);
+    };
 
     const generateDates = (start) => {
         const dateArray = [];
@@ -76,6 +86,18 @@ const Consult_AdvisorDetails = ({navigation, route }) => {
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={showModal}
+                onRequestClose={() => setShowModal(false)}
+            >
+                <View style={styles.modalContainer}>
+                    <View style={styles.modalContent}>
+                        <Text>{isBookmarked ? 'Added to your bookmarks.' : 'Removed from your bookmarks.'}</Text>
+                    </View>
+                </View>
+            </Modal>
             <View style={styles.advisorRow}>
                 <View style={styles.leftContent}>
                     <Image source={advisor.profileImage} style={styles.profileImage} />
@@ -88,12 +110,12 @@ const Consult_AdvisorDetails = ({navigation, route }) => {
                         <Text style={styles.rating}>{advisor.rating}</Text>
                     </View>
                     <View style={styles.actionContainer}>
-                        <View style={styles.actionIcon}>
-                            <Ionicons name="bookmark-outline" size={22} color="black" />
-                        </View>
-                        <View style={styles.actionIcon}>
+                        <TouchableOpacity style={styles.actionIcon} onPress={toggleBookmark}>
+                            <Ionicons name={isBookmarked ? "bookmark" : "bookmark-outline"} size={22} color="black" />
+                        </TouchableOpacity>
+                        <TouchableOpacity style={styles.actionIcon} onPress={() => { navigation.navigate('Consult_Chatscreen', { username: advisor.name }); }}>
                             <Ionicons name="send" size={20} color="black" />
-                        </View>
+                        </TouchableOpacity>
                         <View style={styles.actionIcon}>
                             <Ionicons name="ellipsis-horizontal" size={24} color="black" />
                         </View>
@@ -329,7 +351,21 @@ const styles = StyleSheet.create({
         color: '#91919F',
         textAlign: 'center',
         marginTop: sh(16),
-    }
+    },
+    modalContainer: {
+        position: 'absolute',
+        bottom: 70,
+        width: '100%',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    modalContent: {
+        backgroundColor: '#F6F7FA',
+
+        padding: sw(12),
+        borderRadius: sw(30),
+        alignItems: 'center',
+    },
 });
 
 export default Consult_AdvisorDetails;

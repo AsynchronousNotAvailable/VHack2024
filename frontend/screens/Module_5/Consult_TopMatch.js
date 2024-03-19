@@ -5,7 +5,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { HeaderBackButton } from '@react-navigation/elements';
 
 const Consult_TopMatch = ({ navigation, route }) => {
-    const { advisors, selectedAdvice } = route.params;
+    const { advisors, selectedAdvices } = route.params;
     const [filteredAdvisors, setFilteredAdvisors] = useState([]);
 
     useEffect(() => {
@@ -27,24 +27,26 @@ const Consult_TopMatch = ({ navigation, route }) => {
     useEffect(() => {
         const filtered = advisors.filter(advisor => {
             const designation = advisor.designation.toLowerCase();
-            console.log("Selected advisors:", selectedAdvice);
-            switch (selectedAdvice) {
-                case 'Debt Consolidation':
-                    return designation.includes('debt advisor');
-                case 'Credit Counselling':
-                    return designation.includes('credit counsellor');
-                case 'Financial Planning':
-                    return designation.includes('financial advisor') || designation.includes('certified financial planner');
-                case 'Debt Settlement':
-                    return designation.includes('debt settlement specialist');
-                case 'Investment Strategies':
-                    return designation.includes('investment advisor');
-                default:
-                    return true;
-            }
+            console.log("Selected advices:", selectedAdvices);
+            return selectedAdvices.some(selectedAdvice => {
+                switch (selectedAdvice) {
+                    case 'Debt Consolidation':
+                        return designation.includes('debt advisor') || designation.includes('debt consolidation specialist') || designation.includes('debt relief specialist');
+                    case 'Credit Counselling':
+                        return designation.includes('credit counsellor');
+                    case 'Financial Planning':
+                        return designation.includes('financial advisor') || designation.includes('certified financial planner');
+                    case 'Debt Settlement':
+                        return designation.includes('debt settlement specialist') || designation.includes('Debt Settlement Advisor') || designation.includes('Debt Management Consultant');
+                    case 'Investment Strategies':
+                        return designation.includes('investment advisor') || designation.includes('investment strategist') || designation.includes('investment analyst');
+                    default:
+                        return true;
+                }
+            });
         });
         setFilteredAdvisors(filtered);
-    }, [selectedAdvice, advisors]);
+    }, [selectedAdvices, advisors]);
 
     const renderAdvisorItem = ({ item }) => (
         <TouchableOpacity

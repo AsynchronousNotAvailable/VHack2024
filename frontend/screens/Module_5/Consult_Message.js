@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, FlatList, Image, TouchableOpacity, StyleSheet, TextInput, ScrollView } from 'react-native';
+import { View, Text, FlatList, Image, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
 import placeholderImage from '../../assets/images/avatar.png';
 import { useNavigation } from '@react-navigation/native';
 import { fonts, sh, sw } from "../../styles/GlobalStyles";
@@ -8,7 +8,7 @@ import { Ionicons } from '@expo/vector-icons';
 const users = [
     { id: 1, name: 'AI Chatbot', msg: 'Your personalised 24/7 companion', image: require('../../assets/images/chatbot.png') },
     { id: 2, name: 'Teressa Smith', msg: "Hey, can i ask something?", image: require('../../assets/images/teressa.png') },
-    { id: 3, name: 'Evelyn Thomas', msg: "Thanks for your information.", image: require('../../assets/images/evelyn.png')},
+    { id: 3, name: 'Evelyn Thomas', msg: "Thanks for your information.", image: require('../../assets/images/evelyn.png') },
 ];
 
 const CommunityMessage = () => {
@@ -18,7 +18,7 @@ const CommunityMessage = () => {
 
     const handleChat = (item) => {
         if (item.id === 1) {
-            navigation.navigate('Consult_AI', { username: item.name, item });
+            navigation.navigate('Consult_AIChatbot', { username: item.name, item });
         } else {
             navigation.navigate('Consult_Chatscreen', { username: item.name, item });
         }
@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
         color: "#9D9FA0"
     },
     userItem: {
-        paddingVertical: sh(16),
+        paddingVertical: sh(14),
         marginHorizontal: sw(18),
         borderBottomWidth: 1,
         borderBottomColor: '#EEEEEE',

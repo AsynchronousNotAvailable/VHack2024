@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, TextInput, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
-const ConsultChatscreen = ({route}) => {
-  const {item} = route.params;
-  const [messages, setMessages] = useState([ { text:item.msg, type: 'received' },]);
+const ConsultChatscreen = ({}) => {
+  const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
 
   const sendMessage = () => {
@@ -53,8 +52,8 @@ const styles = StyleSheet.create({
   inputContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor:'#F8F9FE',
-    height:50,
+    backgroundColor: '#F8F9FE',
+    height: 50,
     borderRadius: 20,
   },
   input: {
@@ -66,7 +65,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-end',
     backgroundColor: '#5F84A1',
     padding: 16,
-    borderRadius: 20,
+    borderRadius: 16,
     marginBottom: 5,
     fontSize: 20,
   },
@@ -74,7 +73,7 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     backgroundColor: '#F8F9FE',
     padding: 16,
-    borderRadius: 20,
+    borderRadius: 16,
     marginBottom: 5,
     fontSize: 20,
   },

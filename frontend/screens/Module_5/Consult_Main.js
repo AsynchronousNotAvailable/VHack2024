@@ -32,6 +32,30 @@ function Consult_Main({ navigation, route }) {
       about: 'As a certified financial planner, I am committed to offer comprehensive guidance and strategic planning to help clients achieve their financial goals. With a deep understanding of financial markets and investment strategies, I provide personalized solutions tailored to your unique needs. Let me help you build a secure financial future.'
     },
     {
+      name: 'Jason Thompson',
+      designation: 'Debt Consolidation Specialist',
+      profileImage: require('../../assets/images/jason.png'),
+      rating: 4.9,
+      description: 'Expert in helping clients consolidate and manage their debts for financial stability.',
+      about: 'With extensive experience in debt consolidation, I specialize in helping clients consolidate and manage their debts for financial stability. By negotiating with creditors and creating customized repayment plans, I assist individuals in achieving debt relief and regaining control of their finances.'
+    },
+    {
+      name: 'Emily Rodriguez',
+      designation: 'Debt Settlement Advisor',
+      profileImage: require('../../assets/images/emily.png'),
+      rating: 4.8,
+      description: 'Dedicated to providing effective debt settlement solutions and financial guidance.',
+      about: 'As a debt settlement advisor, I am dedicated to providing effective debt settlement solutions and financial guidance to individuals facing overwhelming debt. With a focus on negotiation and strategic planning, I help clients achieve debt relief and pave the way for a brighter financial future.'
+    },
+    {
+      name: 'Michelle Carter',
+      designation: 'Credit Counsellor',
+      profileImage: require('../../assets/images/michelle.png'),
+      rating: 4.8,
+      description: 'Committed to helping clients improve their credit scores and manage debt effectively.',
+      about: 'As a credit counsellor, I am dedicated to helping clients improve their credit scores and manage debt effectively. With personalized counseling sessions and practical strategies, I empower individuals to take control of their finances and build a brighter financial future.'
+    },
+    {
       name: 'Teressa Smith',
       designation: 'Financial Advisor',
       profileImage: require('../../assets/images/teressa.png'),
@@ -40,10 +64,26 @@ function Consult_Main({ navigation, route }) {
       about: 'With years of experience in debt management and financial planning, I am dedicated to helping clients achieve their financial objectives. Whether it\'s managing debt or planning for the future, I provide expert guidance and personalized strategies to navigate through complex financial situations.'
     },
     {
+      name: 'Alexandra Roberts',
+      designation: 'Investment Advisor',
+      profileImage: require('../../assets/images/alexandra.png'),
+      rating: 4.8,
+      description: 'Experienced in providing advice on investment opportunities and portfolio management.',
+      about: 'As an investment advisor, I specialize in providing expert advice on investment opportunities and portfolio management. With a keen understanding of financial markets and investment strategies, I help clients make informed decisions to maximize their returns and achieve their financial objectives.'
+    },
+    {
+      name: 'Daniel Baker',
+      designation: 'Debt Management Consultant',
+      profileImage: require('../../assets/images/daniel.png'),
+      rating: 4.8,
+      description: 'Experienced in creating personalized debt management plans to achieve financial stability.',
+      about: 'With a focus on creating personalized debt management plans, I help individuals overcome financial challenges and achieve long-term financial stability. By analyzing financial situations and recommending tailored strategies, I empower clients to take control of their debts and build a solid financial foundation.'
+    },
+    {
       name: 'Evelyn Thomas',
       designation: 'Debt Advisor',
       profileImage: require('../../assets/images/evelyn.png'),
-      rating: 4.8,
+      rating: 4.7,
       description: 'Trusted for her approach and deep understanding of debt resolution strategies.',
       about: 'With a compassionate approach and deep understanding of debt resolution strategies, I assist clients in overcoming financial challenges and achieving financial stability. My goal is to provide personalized solutions that empower individuals to regain control of their finances and build a brighter future free from debt.'
     },
@@ -55,6 +95,39 @@ function Consult_Main({ navigation, route }) {
       description: 'Known for his insightful financial advice and personalized solutions.',
       about: 'As a trusted financial advisor, I offer insightful advice and personalized solutions to help clients achieve their financial goals. With a focus on building long-term relationships based on trust and integrity, I provide tailored strategies to address your unique needs and aspirations.'
     },
+    {
+      name: 'Stella Evans',
+      designation: 'Debt Relief Specialist',
+      profileImage: require('../../assets/images/stella.png'),
+      rating: 4.7,
+      description: 'Specializes in providing debt relief solutions to alleviate financial burdens.',
+      about: 'With a commitment to providing compassionate and effective debt relief solutions, I assist individuals in alleviating financial burdens and achieving financial freedom. Whether it\'s debt settlement or consolidation, I provide personalized guidance to help clients navigate through challenging financial situations.'
+    },
+    {
+      name: 'Max Mitchell',
+      designation: 'Debt Negotiation Expert',
+      profileImage: require('../../assets/images/max.png'),
+      rating: 4.6,
+      description: 'Skilled in negotiating with creditors to reduce debt and achieve financial freedom.',
+      about: 'As a debt negotiation expert, I am skilled in negotiating with creditors to reduce debt and help clients achieve financial freedom. With a focus on achieving favorable outcomes for my clients, I provide personalized solutions and strategic guidance to navigate through debt-related challenges.'
+    },
+    {
+      name: 'Olivia Anderson',
+      designation: 'Investment Strategist',
+      profileImage: require('../../assets/images/olivia.png'),
+      rating: 4.6,
+      description: 'Experienced in developing tailored investment strategies to maximize returns.',
+      about: 'As an investment strategist, I specialize in developing tailored investment strategies to help clients maximize returns and achieve their financial goals. With a focus on risk management and market analysis, I provide personalized guidance to navigate through the complexities of the financial markets.'
+    },
+    {
+      name: 'Matthew Carter',
+      designation: 'Investment Analyst',
+      profileImage: require('../../assets/images/matthew.png'),
+      rating: 4.6,
+      description: 'Skilled in analyzing financial data and providing investment recommendations.',
+      about: 'With a keen eye for detail and strong analytical skills, I specialize in analyzing financial data and providing investment recommendations to clients. Whether it\'s evaluating investment opportunities or monitoring market trends, I offer strategic insights to help clients make informed investment decisions.'
+    }
+
   ];
 
   const { selectedDate, selectedTime, advisor } = route.params || {};

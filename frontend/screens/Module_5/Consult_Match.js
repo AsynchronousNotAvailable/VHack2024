@@ -20,7 +20,7 @@ const Consult_Match = ({ navigation, route }) => {
     const [adviceSeeking, setAdviceSeeking] = useState([]);
     const [knowledgeLevel, setKnowledgeLevel] = useState("Intermediate");
     const [debtAmount, setDebtAmount] = useState(0);
-    const [selectedAdvice, setSelectedAdvice] = useState("");
+    const [selectedAdvices, setSelectedAdvices] = useState([]);
     const { advisors } = route.params;
 
     const handleFinancialChallenges = (challenge) => {
@@ -34,10 +34,11 @@ const Consult_Match = ({ navigation, route }) => {
     const handleAdviceSeeking = (advice) => {
         if (adviceSeeking.includes(advice)) {
             setAdviceSeeking(adviceSeeking.filter(item => item !== advice));
+            setSelectedAdvices(selectedAdvices.filter(item => item !== advice));
         } else {
             setAdviceSeeking([...adviceSeeking, advice]);
+            setSelectedAdvices([...selectedAdvices, advice]);
         }
-        setSelectedAdvice(advice);
     };
 
     return (
@@ -89,7 +90,7 @@ const Consult_Match = ({ navigation, route }) => {
                 />
                 <Text style={styles.sliderValue}>RM {debtAmount}</Text>
             </View>
-            <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('Consult_TopMatch', { advisors: advisors, selectedAdvice: selectedAdvice })}>
+            <TouchableOpacity style={styles.iconContainer} onPress={() => navigation.navigate('Consult_TopMatch', { advisors: advisors, selectedAdvices: selectedAdvices })}>
                 <Text style={styles.nextText}>Next</Text>
                 <Ionicons name="chevron-forward-outline" size={22} color="#FFFFFF" />
             </TouchableOpacity>
