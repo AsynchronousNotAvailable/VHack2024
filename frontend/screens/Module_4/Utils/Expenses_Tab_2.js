@@ -4,7 +4,9 @@ import {
     StyleSheet,
     TouchableOpacity,
     TextInput,
+    Platform
 } from "react-native";
+import Svg, { Path } from "react-native-svg";
 import React from "react";
 import { colors, sw, sh, fonts } from "../../../styles/GlobalStyles.js";
 import DateTimePicker from "@react-native-community/datetimepicker";
@@ -13,9 +15,7 @@ import { Keyboard } from "react-native";
 const Expenses_Tab_2 = ({
     openCalendar,
     openDate,
-    setOpenDate,
     date,
-    setDate,
     account,
     setAccount,
     category,
@@ -25,18 +25,48 @@ const Expenses_Tab_2 = ({
     amount,
     setAmount,
     handleDateChange,
+    formatDate,
 }) => {
     return (
         <View style={[styles.columnContainer]}>
-            <TouchableOpacity onPress={openCalendar}>
+            <View
+                style={{
+                    justifyContent: "center",
+                }}
+            >
                 <TextInput
-                    style={styles.input}
+                    style={[styles.input]}
                     placeholder="20/03/2024"
-                    value={date.toDateString()}
+                    value={formatDate(date)}
                     editable={false}
                     placeholderTextColor="#DADADA"
                 />
-            </TouchableOpacity>
+                <TouchableOpacity
+                    onPress={openCalendar}
+                    style={{
+                        position: "absolute",
+                        right: sw(40),
+                        width: sw(24),
+                        height: sh(25),
+                    }}
+                >
+                    <Svg
+                        style={{ position: "absolute" }}
+                        xmlns="http://www.w3.org/2000/svg"
+                        width={24}
+                        height={25}
+                        fill="none"
+                    >
+                        <Path
+                            stroke="#5F84A1"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={3}
+                            d="M15.333 4.222V2m0 2.222v2.222m0-2.222h-5M2 10.89v10c0 1.227.995 2.222 2.222 2.222h15.556A2.222 2.222 0 0 0 22 20.89v-10H2ZM2 10.89V6.444c0-1.228.995-2.223 2.222-2.223h2.222M6.445 2v4.444M22 10.89V6.444a2.222 2.222 0 0 0-2.222-2.223h-.556"
+                        />
+                    </Svg>
+                </TouchableOpacity>
+            </View>
             <TextInput
                 style={styles.input}
                 placeholder="Account"
@@ -64,7 +94,6 @@ const Expenses_Tab_2 = ({
                 value={category}
                 placeholderTextColor="#DADADA"
                 onChangeText={(text) => {
-                    // Handle text input changes here
                     setCategory(text);
                 }}
                 ref={(input) => {
@@ -84,7 +113,6 @@ const Expenses_Tab_2 = ({
                 value={description}
                 placeholderTextColor="#DADADA"
                 onChangeText={(text) => {
-                    // Handle text input changes here
                     setDescription(text);
                 }}
                 ref={(input) => (descriptionInput = input)}
@@ -101,7 +129,6 @@ const Expenses_Tab_2 = ({
                 value={amount.toString()}
                 placeholderTextColor="#DADADA"
                 onChangeText={(text) => {
-                    // Handle text input changes here
                     setAmount(text);
                 }}
                 ref={(input) => {
@@ -116,17 +143,35 @@ const Expenses_Tab_2 = ({
                 style={[styles.button, { alignSelf: "center" }]}
                 // onPress={handleAuth}
             >
-                <Text style={styles.signUpText}>Save</Text>
+                <Text style={styles.btnText}>Save</Text>
             </TouchableOpacity>
 
-            {openDate && (
-                <DateTimePicker
-                    mode="date"
-                    display="spinner"
-                    value={date}
-                    onChange={handleDateChange}
-                />
-            )}
+            {openDate &&
+                (Platform.OS === "ios" ? (
+                    <View
+                        style={{
+                            position: "absolute",
+                            alignSelf: "center",
+                            backgroundColor: "rgba(208, 208, 208, 1)",
+                            borderRadius: 20,
+                            padding: 10,
+                        }}
+                    >
+                        <DateTimePicker
+                            mode="date"
+                            display="inline"
+                            value={date}
+                            onChange={handleDateChange}
+                        />
+                    </View>
+                ) : (
+                    <DateTimePicker
+                        mode="date"
+                        display="inline"
+                        value={date}
+                        onChange={handleDateChange}
+                    />
+                ))}
         </View>
     );
 };
@@ -159,7 +204,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
     },
-    signUpText: {
+    btnText: {
         fontFamily: fonts.interSemiBold,
         fontSize: 20,
         color: colors.white,

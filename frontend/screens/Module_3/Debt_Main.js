@@ -22,13 +22,16 @@ const Debt_Main = () => {
     ];
     const [currentData, setCurrentData] = useState(data);
 
+    const xAxisLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
+
     const handleDataChange = () => {
         setCurrentData(data2);
     };
     return (
         <View>
-            <LineChart
+            {/* <LineChart
                 isAnimated
+                curved
                 thickness={3}
                 width={300}
                 color="#07BAD1"
@@ -52,6 +55,23 @@ const Debt_Main = () => {
                 initialSpacing={10}
                 // yAxisColor="lightgray"
                 // xAxisColor="lightgray"
+            /> */}
+
+            <LineChart
+                areaChart
+                color="#07BAD1"
+                curved
+                data={data}
+                maxValue={50}
+                startFillColor="rgb(46, 217, 255)"
+                startOpacity={0.8}
+                endFillColor="rgb(203, 241, 250)"
+                endOpacity={0.3}
+                xAxisLabelTexts={xAxisLabels}
+                // hideYAxisText
+                noOfSections={5}
+                xAxisThickness={0}
+                yAxisThickness={0}
             />
             <TouchableOpacity onPress={handleDataChange}>
                 <View

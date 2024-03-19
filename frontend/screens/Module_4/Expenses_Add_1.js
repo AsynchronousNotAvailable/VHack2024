@@ -15,6 +15,7 @@ import Expenses_Tab_1 from "./Utils/Expenses_Tab_1";
 import Expenses_Tab_2 from "./Utils/Expenses_Tab_2";
 import Expenses_Tab_3 from "./Utils/Expenses_Tab_3";
 const Expenses_Add_1 = () => {
+    //state of each tab
     const [isPressed1, setIsPressed1] = useState(true);
     const [isPressed2, setIsPressed2] = useState(false);
     const [isPressed3, setIsPressed3] = useState(false);
@@ -24,29 +25,50 @@ const Expenses_Add_1 = () => {
     const [date, setDate] = useState(new Date());
     const [account, setAccount] = useState("");
     const [category, setCategory] = useState("");
-    const [amount, setAmount] = useState(0);
+    const [amount, setAmount] = useState("");
     const [description, setDescription] = useState("");
 
     const openCalendar = () => {
         setOpenDate(true);
     };
 
+    const closeCalendar = () => {
+        setOpenDate(false);
+        setIncomeOpenDate(false);
+        setTransferOpenDate(false);
+    }
+
+    
+
+    const formatDate = (date) => {
+        let formattedDate = new Intl.DateTimeFormat("en-GB", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+        }).format(date);
+
+        return formattedDate;
+    };
+
     const handleDateChange = ({ type }, selectedDate) => {
         if (type === "set") {
             setOpenDate(false);
             setDate(selectedDate);
-            // setBudgetDate(selectedDate.toDateString()); // Convert date to string format and set it to the input
         } else {
             setOpenDate(false);
         }
     };
+
+
+
+
 
     //for Income Component
     const [incomeOpenDate, setIncomeOpenDate] = useState(false);
     const [incomeDate, setIncomeDate] = useState(new Date());
     const [incomeAccount, setIncomeAccount] = useState("");
     const [incomeCategory, setIncomeCategory] = useState("");
-    const [incomeAmount, setIncomeAmount] = useState(100);
+    const [incomeAmount, setIncomeAmount] = useState("");
     const [incomeDescription, setIncomeDescription] = useState("");
 
     const openIncomeCalendar = () => {
@@ -63,12 +85,15 @@ const Expenses_Add_1 = () => {
         }
     };
 
+
+
+
     //for Transfer Component
     const [transferOpenDate, setTransferOpenDate] = useState(false);
     const [transferDate, setTransferDate] = useState(new Date());
     const [transferToInput, setTransferToInput] = useState("");
     const [transferFromInput, setTransferFromInput] = useState("");
-    const [transferAmount, setTransferAmount] = useState(200);
+    const [transferAmount, setTransferAmount] = useState("");
     const [transferDescription, setTransferDescription] = useState("");
 
     const openTransferCalendar = () => {
@@ -105,6 +130,7 @@ const Expenses_Add_1 = () => {
 
     const dismissKeyboard = () => {
         Keyboard.dismiss();
+        closeCalendar();
     };
     return (
         <KeyboardAvoidingView
@@ -300,9 +326,7 @@ const Expenses_Add_1 = () => {
                             <Expenses_Tab_1
                                 openCalendar={openCalendar}
                                 openDate={openDate}
-                                setOpenDate={setOpenDate}
                                 date={date}
-                                setDate={setDate}
                                 account={account}
                                 setAccount={setAccount}
                                 category={category}
@@ -312,6 +336,8 @@ const Expenses_Add_1 = () => {
                                 amount={amount}
                                 setAmount={setAmount}
                                 handleDateChange={handleDateChange}
+                                formatDate={formatDate}
+                                
                             />
                         )}
 
@@ -319,9 +345,7 @@ const Expenses_Add_1 = () => {
                             <Expenses_Tab_2
                                 openCalendar={openIncomeCalendar}
                                 openDate={incomeOpenDate}
-                                setOpenDate={setIncomeOpenDate}
                                 date={incomeDate}
-                                setDate={setIncomeDate}
                                 account={incomeAccount}
                                 setAccount={setIncomeAccount}
                                 category={incomeCategory}
@@ -331,6 +355,7 @@ const Expenses_Add_1 = () => {
                                 amount={incomeAmount}
                                 setAmount={setIncomeAmount}
                                 handleDateChange={handleIncomeDateChange}
+                                formatDate={formatDate}
                             />
                         )}
 
@@ -338,9 +363,7 @@ const Expenses_Add_1 = () => {
                             <Expenses_Tab_3
                                 openCalendar={openTransferCalendar}
                                 openDate={transferOpenDate}
-                                setOpenDate={setTransferOpenDate}
                                 date={transferDate}
-                                setDate={setTransferDate}
                                 fromInput={transferFromInput}
                                 setFromInput={setTransferFromInput}
                                 toInput={transferToInput}
@@ -350,9 +373,9 @@ const Expenses_Add_1 = () => {
                                 amount={transferAmount}
                                 setAmount={setTransferAmount}
                                 handleDateChange={handleTransferDateChange}
+                                formatDate={formatDate}
                             />
                         )}
-                        
                     </View>
                 </View>
             </TouchableWithoutFeedback>
@@ -379,33 +402,6 @@ const styles = StyleSheet.create({
         color: "#5F84A1",
         fontSize: 16,
     },
-    input: {
-        alignSelf: "center",
-        paddingVertical: sh(13),
-        paddingHorizontal: sw(20),
-        borderRadius: 10,
-        borderColor: "#DADADA",
-        borderWidth: 1,
-        fontSize: 18,
-        marginVertical: sh(15),
-        width: "90%",
-        color: "black",
-        fontFamily: fonts.interRegular,
-    },
-    button: {
-        backgroundColor: "#5F84A1",
-        paddingVertical: sh(13),
-        paddingHorizontal: sw(20),
+    
 
-        marginBottom: sh(20),
-        borderRadius: 10,
-        width: "60%",
-        alignItems: "center",
-        justifyContent: "center",
-    },
-    signUpText: {
-        fontFamily: fonts.interSemiBold,
-        fontSize: 20,
-        color: colors.white,
-    },
 });

@@ -14,7 +14,7 @@ import { colors, sw, sh, fonts } from "../../styles/GlobalStyles.js";
 
 const Expenses_Add_Budget = () => {
     const [name, setName] = useState("");
-    const [amount, setAmount] = useState(0);
+    const [amount, setAmount] = useState("");
     const [category, setCategory] = useState("");
     const [description, setDescription] = useState("");
     const [isEnabled1, setIsEnabled1] = useState(false);

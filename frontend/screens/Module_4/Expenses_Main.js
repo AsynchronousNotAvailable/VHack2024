@@ -9,8 +9,9 @@ import {
 } from "react-native";
 import { sw, sh, fonts, colors } from "../../styles/GlobalStyles";
 import { LinearGradient } from "expo-linear-gradient";
+import { LineChart } from "react-native-gifted-charts";
 import { Path, Circle, Svg, Ellipse } from "react-native-svg";
-import { AreaChart, Grid, YAxis, XAxis } from "react-native-svg-charts";
+import { AreaChart, XAxis } from "react-native-svg-charts";
 import * as Progress from "react-native-progress";
 
 import * as shape from "d3-shape";
@@ -26,24 +27,34 @@ function Expenses_Main({ navigation }) {
 
     const toAddBudgetBottom = () => {
         navigation.navigate("Expenses_Budget");
-    
-    }
+    };
 
-    const data = [50, 10, 40, 95, 30, 24, 85, 91, 35, 53, 53, 24];
-    const xLabels = [
-        "Jan",
-        "Feb",
-        "Mar",
-        "Apr",
-        "May",
-        "Jun",
-        // "Jul",
-        // "Aug",
-        // "Sep",
-        // "Oct",
-        // "Nov",
-        // "Dec",
+    // const data = [50, 10, 40, 95, 30, 24, 85, 91, 35, 53, 53, 24];
+    // const xLabels = [
+    //     "Jan",
+    //     "Feb",
+    //     "Mar",
+    //     "Apr",
+    //     "May",
+    //     "Jun",
+    //     // "Jul",
+    //     // "Aug",
+    //     // "Sep",
+    //     // "Oct",
+    //     // "Nov",
+    //     // "Dec",
+    // ];
+    const data = [
+        { value: 35 },
+        { value: 40 },
+        { value: 30 },
+        { value: 15 },
+        { value: 30 },
+        { value: 20 },
     ];
+
+    const xAxisLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
+
     const yLabels = ["Poor", "Fair", "Good", "Very Good", "Excellent"];
 
     const Line = ({ line }) => (
@@ -145,7 +156,7 @@ function Expenses_Main({ navigation }) {
                 </TouchableOpacity>
             </View>
 
-            <View style={styles.chartContainer}>
+            <View style={[styles.chartContainer]}>
                 <View style={styles.rowContainer}>
                     {/* <YAxis
                         svg={{
@@ -159,7 +170,7 @@ function Expenses_Main({ navigation }) {
                         numberOfTicks={yLabels.length}
                         formatLabel={(value) => `${value}`}
                     /> */}
-                    <AreaChart
+                    {/* <AreaChart
                         style={{
                             height: sh(230),
                             marginHorizontal: sw(20),
@@ -172,12 +183,41 @@ function Expenses_Main({ navigation }) {
                         // yAccessor={({ item }) => item.value}
                         // xAccessor={({ item }) => item.month}
                     >
-                        {/* <Grid /> */}
+                        {/* <Grid /> 
 
                         <Line />
-                    </AreaChart>
+                    </AreaChart> */}
+
+                    <LineChart
+                        isAnimated
+                        areaChart
+                        color="#07BAD1"
+                        curved
+                        data={data}
+                        width={sw(400)}
+                        rulesLength={sw(330)}
+                        maxValue={50}
+                        startFillColor="rgb(46, 217, 255)"
+                        startOpacity={0.8}
+                        endFillColor="rgb(203, 241, 250)"
+                        endOpacity={0.3}
+                        xAxisLabelTexts={xAxisLabels}
+                        yAxisTextStyle={[
+                            styles.cardDescription,
+                            { color: "#666666" },
+                        ]}
+                        xAxisLabelTextStyle={[
+                            styles.cardDescription,
+                            { color: "#666666" },
+                        ]}
+                        spacing={60}
+                        // hideYAxisText
+                        noOfSections={5}
+                        xAxisThickness={0}
+                        yAxisThickness={0}
+                    />
                 </View>
-                <XAxis
+                {/* <XAxis
                     data={xLabels}
                     contentInset={{ left: 30, right: 30 }}
                     svg={{
@@ -186,7 +226,7 @@ function Expenses_Main({ navigation }) {
                     }}
                     numberOfTicks={xLabels.length}
                     formatLabel={(value, index) => xLabels[index]}
-                />
+                /> */}
             </View>
 
             {/* details parent frame */}
@@ -196,7 +236,7 @@ function Expenses_Main({ navigation }) {
                     {
                         marginVertical: sh(10),
                         marginHorizontal: sw(20),
-                        gap: 20,
+                        gap: 5,
                         position: "relative",
                     },
                 ]}
@@ -337,6 +377,7 @@ function Expenses_Main({ navigation }) {
                         progress={0.5}
                         color="#B5FFE3"
                         width={sw(370)}
+                        height={sh(10)}
                     />
                 </View>
 
@@ -389,6 +430,7 @@ function Expenses_Main({ navigation }) {
                     <Progress.Bar
                         progress={1}
                         color="#FFD1D3"
+                        height={sh(10)}
                         width={sw(370)}
                     />
                 </View>
@@ -396,6 +438,7 @@ function Expenses_Main({ navigation }) {
                 <TouchableOpacity onPress={toAddBudgetBottom}>
                     <View
                         style={{
+                            marginTop: sh(10),
                             paddingHorizontal: sw(15),
                             paddingVertical: sh(30),
                             backgroundColor: "rgba(128, 128, 128, 0.1)",
@@ -419,39 +462,38 @@ function Expenses_Main({ navigation }) {
                         </Text>
                     </View>
                 </TouchableOpacity>
-
-                <View
-                    style={{
-                        position: "absolute",
-                        bottom: 0,
-                        right: 0,
-                        alignSelf: "flex-end",
-                    }}
-                >
-                    <TouchableOpacity onPress={toAddBudget}>
-                        <Svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width={60}
-                            height={60}
-                            fill="none"
-                            opacity={0.8}
-                        >
-                            <Ellipse
-                                cx={30.526}
-                                cy={29.698}
-                                fill="#5F84A1"
-                                rx={29.474}
-                                ry={29.698}
-                            />
-                            <Path
-                                fill="#000"
-                                stroke="#FCFCFC"
-                                strokeWidth={2.5}
-                                d="M31.085 30.067H29.84v11.864a.071.071 0 0 1-.067.07.07.07 0 0 1-.046-.02.072.072 0 0 1-.02-.05V30.067H17.931a.07.07 0 0 1-.07-.067.071.071 0 0 1 .07-.067h11.774V18.145a.07.07 0 0 1 .115-.029.072.072 0 0 1 .019.029v11.788H41.665l.048-.004c.01 0 .02 0 .029.004l.409-1.185-.41 1.185a.07.07 0 0 1 .042.039l1.139-.502-1.139.502a.07.07 0 0 1 .006.028h1.245-1.245a.072.072 0 0 1-.047.067.07.07 0 0 1-.029.004l-.048-.004h-10.58Z"
-                            />
-                        </Svg>
-                    </TouchableOpacity>
-                </View>
+            </View>
+            <View
+                style={{
+                    position: "absolute",
+                    bottom: 5,
+                    right: 15,
+                    alignSelf: "flex-end",
+                }}
+            >
+                <TouchableOpacity onPress={toAddBudget}>
+                    <Svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width={60}
+                        height={60}
+                        fill="none"
+                        opacity={0.4}
+                    >
+                        <Ellipse
+                            cx={30.526}
+                            cy={29.698}
+                            fill="#5F84A1"
+                            rx={29.474}
+                            ry={29.698}
+                        />
+                        <Path
+                            fill="#000"
+                            stroke="#FCFCFC"
+                            strokeWidth={2.5}
+                            d="M31.085 30.067H29.84v11.864a.071.071 0 0 1-.067.07.07.07 0 0 1-.046-.02.072.072 0 0 1-.02-.05V30.067H17.931a.07.07 0 0 1-.07-.067.071.071 0 0 1 .07-.067h11.774V18.145a.07.07 0 0 1 .115-.029.072.072 0 0 1 .019.029v11.788H41.665l.048-.004c.01 0 .02 0 .029.004l.409-1.185-.41 1.185a.07.07 0 0 1 .042.039l1.139-.502-1.139.502a.07.07 0 0 1 .006.028h1.245-1.245a.072.072 0 0 1-.047.067.07.07 0 0 1-.029.004l-.048-.004h-10.58Z"
+                        />
+                    </Svg>
+                </TouchableOpacity>
             </View>
         </ScrollView>
     );
@@ -499,7 +541,10 @@ const styles = StyleSheet.create({
         color: colors.white,
     },
     chartContainer: {
-        // marginHorizontal: sw(20),
+        // marginHorizontal: sw(10),
+        // borderColor: "black",
+        // borderWidth: 1,
+        padding: sw(20),
         flexDirection: "column",
     },
 });
