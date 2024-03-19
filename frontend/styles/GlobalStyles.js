@@ -39,5 +39,18 @@ export const logo = {
     unifi_logo: require('../assets/images/unifi_logo.png'),
     repayment_plan_summary_logo_1: require('../assets/images/repayment_plan_summary_logo_1.png'),
     repayment_plan_summary_logo_2: require('../assets/images/repayment_plan_summary_logo_2.png'),
-    repayment_plan_summary_logo_3: require('../assets/images/repayment_plan_summary_logo_3.png')
+    repayment_plan_summary_logo_3: require('../assets/images/repayment_plan_summary_logo_3.png'),
+    profile_icon: require('../assets/images/Module_6_Main_Page_Profile_Logo.png'),
+    notification_icon: require('../assets/images/Module_6_Main_Page_Notification_Logo.png'),
+    lock_icon: require('../assets/images/Module_6_Main_Page_Lock_Logo.png'),
+    ctos_icon: require('../assets/images/Module_6_Main_Page_CTOS_Logo.png'),
+    help_icon: require('../assets/images/Module_6_Main_Page_Help_Logo.png'),
+    problem_icon: require('../assets/images/Module_6_Main_Page_Problem_Logo.png'),
+    feedback_icon: require('../assets/images/Module_6_Main_Page_Feedback_Logo.png'),
+    tnc_icon: require('../assets/images/Module_6_Main_Page_TNC_Logo.png'),
+    help_center_notification_logo: require('../assets/images/Module_6_Help_Center_Notification_Logo.png'),
+    help_center_security_logo: require('../assets/images/Module_6_Help_Center_Security_Logo.png'),
+    help_center_debt_logo: require('../assets/images/Module_6_Help_Center_Debt_Logo.png'),
+    plus_icon: require('../assets/images/plus.png'),
+    minus_icon: require('../assets/images/minus.png')
 }
