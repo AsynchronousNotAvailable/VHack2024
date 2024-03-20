@@ -77,7 +77,7 @@ const Transaction_Card = ({ category, name, description, amount, time }) => {
                               ]
                     }
                 >
-                    {category === "Expenses" ? `-$${amount}` : `+${amount}`}
+                    {category === "Expenses" ? `-RM ${amount}` : `+RM ${amount}`}
                 </Text>
                 <Text
                     style={[

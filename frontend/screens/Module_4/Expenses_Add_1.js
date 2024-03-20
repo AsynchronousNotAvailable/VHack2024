@@ -7,14 +7,14 @@ import {
     KeyboardAvoidingView,
     Platform,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { colors, sw, sh, fonts } from "../../styles/GlobalStyles";
 import { Svg, Path } from "react-native-svg";
 import { Keyboard } from "react-native";
 import Expenses_Tab_1 from "./Utils/Expenses_Tab_1";
 import Expenses_Tab_2 from "./Utils/Expenses_Tab_2";
 import Expenses_Tab_3 from "./Utils/Expenses_Tab_3";
-const Expenses_Add_1 = () => {
+const Expenses_Add_1 = ({ navigation, route }) => {
     //state of each tab
     const [isPressed1, setIsPressed1] = useState(true);
     const [isPressed2, setIsPressed2] = useState(false);
@@ -36,9 +36,7 @@ const Expenses_Add_1 = () => {
         setOpenDate(false);
         setIncomeOpenDate(false);
         setTransferOpenDate(false);
-    }
-
-    
+    };
 
     const formatDate = (date) => {
         let formattedDate = new Intl.DateTimeFormat("en-GB", {
@@ -58,10 +56,6 @@ const Expenses_Add_1 = () => {
             setOpenDate(false);
         }
     };
-
-
-
-
 
     //for Income Component
     const [incomeOpenDate, setIncomeOpenDate] = useState(false);
@@ -84,9 +78,6 @@ const Expenses_Add_1 = () => {
             setIncomeOpenDate(false);
         }
     };
-
-
-
 
     //for Transfer Component
     const [transferOpenDate, setTransferOpenDate] = useState(false);
@@ -132,6 +123,25 @@ const Expenses_Add_1 = () => {
         Keyboard.dismiss();
         closeCalendar();
     };
+
+    const scanReceipt = () => {
+        navigation.navigate("Scan_Receipt");
+    };
+
+    useEffect(() => {
+        if (route.params && route.params.transactionDetails) {
+            // console.log(route.params);
+            const transactionDetails  = route.params.transactionDetails;
+            // console.log(transactionDetails);
+            setDate(transactionDetails.date);
+            setAccount(transactionDetails.account);
+            setCategory(transactionDetails.category);
+            setDescription(transactionDetails.description);
+            setAmount(transactionDetails.amount);
+        }
+
+        
+    });
     return (
         <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
@@ -162,7 +172,7 @@ const Expenses_Add_1 = () => {
                                 },
                             ]}
                         >
-                            <TouchableOpacity>
+                            <TouchableOpacity onPress={scanReceipt}>
                                 <Svg
                                     xmlns="http://www.w3.org/2000/svg"
                                     width={25}
@@ -337,7 +347,6 @@ const Expenses_Add_1 = () => {
                                 setAmount={setAmount}
                                 handleDateChange={handleDateChange}
                                 formatDate={formatDate}
-                                
                             />
                         )}
 
@@ -402,6 +411,4 @@ const styles = StyleSheet.create({
         color: "#5F84A1",
         fontSize: 16,
     },
-    
-
 });

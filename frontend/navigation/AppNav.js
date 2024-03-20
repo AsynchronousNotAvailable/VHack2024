@@ -19,6 +19,7 @@ import { useContext } from "react";
 import Expenses_Transaction from "../screens/Module_4/Expenses_Transaction";
 import Expenses_Add_1 from "../screens/Module_4/Expenses_Add_1";
 import Expenses_Add_Budget from "../screens/Module_4/Expenses_Add_Budget";
+import Scan_Receipt from "../screens/Module_4/Scan_Receipt";
 
 function AppNav() {
     const Stack = createStackNavigator();
@@ -137,6 +138,14 @@ function AppNav() {
                         headerTitle: "New Budget",
                         headerTitleAlign: "center",
                         headerBackTitle: "",
+                    }}
+                />
+                <ExpensesStack.Screen
+                    name="Scan_Receipt"
+                    component={Scan_Receipt}
+                    options={{
+                        headerShown: false,
+                        
                     }}
                 />
             </ExpensesStack.Navigator>

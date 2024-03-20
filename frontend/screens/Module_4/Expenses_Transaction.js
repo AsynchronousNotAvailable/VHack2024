@@ -30,14 +30,6 @@ function Expenses_Transaction({ navigation }) {
 
     console.log(card_details_today);
 
-    // const n = 5;
-    // const RADIUS = sw(100);
-    // const STROKE_WIDTH = sw(30);
-    // const OUTER_STROKE_WIDTH = sw(46);
-    // const GAP = 0.04;
-    // const totalValue = useSharedValue(0);
-    // const decimals = useSharedValue<[number]>[];
-    // const colors = ["#E5D8FF", "#FFF0D4", "#FDCED0", "#CAFDEA", "#BCDAFC"];
     return (
         <ScrollView
             style={{
@@ -53,10 +45,12 @@ function Expenses_Transaction({ navigation }) {
                         marginHorizontal: sw(20),
                         marginVertical: sh(10),
                         justifyContent: "space-between",
-                        alignItems: "center",
-                        // borderColor: "black",
-                        // borderWidth: 1,
                         position: "relative",
+
+                        borderColor: "black",
+                        alignItems: "flex-end",
+
+                        height: sh(50),
                     },
                 ]}
             >
@@ -66,89 +60,138 @@ function Expenses_Transaction({ navigation }) {
                         {
                             marginHorizontal: sw(20),
                             gap: 10,
-                            // borderColor: "black",
-                            // borderWidth: 1,
-                            alignSelf: "flex-start",
                         },
                     ]}
                 >
-                    <TouchableOpacity>
-                        <Text
-                            style={[
-                                styles.cardDescription,
-                                {
-                                    color: "#5F84A1",
-                                    fontSize: 20,
-                                    fontWeight: "bold",
-                                },
-                            ]}
+                    <View
+                        style={{
+                            height: sh(40),
+                            width: sw(30),
+
+                            borderColor: "#5F84A1",
+                            borderWidth: 1,
+                            borderRadius: 5,
+                            alignItems: "center",
+                        }}
+                    >
+                        <TouchableOpacity
+                            style={{
+                                borderRadius: 5,
+                                alignItems: "center",
+                                justifyContent: "center",
+
+                                height: sh(40),
+                                width: sw(30),
+                            }}
                         >
-                            &lt;
-                        </Text>
-                    </TouchableOpacity>
+                            <Svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width={24}
+                                height={24}
+                                fill="none"
+                            >
+                                <Path
+                                    stroke="#5F84A1"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="m15 6-6 6 6 6"
+                                />
+                            </Svg>
+                        </TouchableOpacity>
+                    </View>
+
                     <Text
                         style={[
                             styles.cardDescription,
                             {
                                 color: "#5F84A1",
                                 fontSize: 20,
-                                // fontWeight: "bold",
+
+                                alignSelf: "center",
                             },
                         ]}
                     >
                         {/* {currentMonth} */}
                         Mac 2024
                     </Text>
-                    <TouchableOpacity>
-                        <Text
-                            style={[
-                                styles.cardDescription,
-                                {
-                                    color: "#5F84A1",
-                                    fontSize: 20,
-                                    fontWeight: "bold",
-                                },
-                            ]}
-                        >
-                            &gt;
-                        </Text>
-                    </TouchableOpacity>
-                </View>
 
-                <View
-                    style={{
-                        position: "relative",
-                        zIndex: 99,
-                        right: 0,
-                        bottom: 0,
-                    }}
-                >
-                    <SelectList
-                        dropdownStyles={{
-                            position: "relative",
-                            top: 0,
-                            left: 0,
-                            zIndex: 99,
-                            backgroundColor: "white", // Background color of dropdown items
-                            borderColor: "#5F84A1", // Border color of dropdown items
-                            borderWidth: 1, // Border width of dropdown items
-                            borderRadius: 5, // Border radius of dropdown items
-                            paddingHorizontal: sw(10), // Horizontal padding of dropdown items
-                            paddingVertical: sh(10), // Vertical padding of dropdown items
-                        }}
-                        setSelected={(val) => setSelectedCategory(val)}
-                        fontFamily={fonts.interMedium}
-                        data={data}
-                        search={false}
-                        boxStyles={{
-                            borderRadius: 10,
+                    <View
+                        style={{
+                            height: sh(40),
+                            width: sw(30),
+
                             borderColor: "#5F84A1",
-                            paddingHorizontal: sw(10),
-                            paddingVertical: sh(10),
+                            borderWidth: 1,
+                            borderRadius: 5,
+                            alignItems: "center",
                         }}
-                        defaultOption={{ key: "1", value: "Expenses" }}
-                    />
+                    >
+                        <TouchableOpacity
+                            style={{
+                                borderRadius: 5,
+                                alignItems: "center",
+                                justifyContent: "center",
+
+                                height: sh(40),
+                                width: sw(30),
+                            }}
+                        >
+                            <Svg
+                                style={{ position: "absolute" }}
+                                xmlns="http://www.w3.org/2000/svg"
+                                width={24}
+                                height={24}
+                                fill="none"
+                            >
+                                <Path
+                                    stroke="#5F84A1"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
+                                    strokeWidth={2}
+                                    d="m9 18 6-6-6-6"
+                                />
+                            </Svg>
+                        </TouchableOpacity>
+                    </View>
                 </View>
+            </View>
+
+            <View
+                style={{ position: "absolute", right: 0, top: 55, zIndex: 999 }}
+            >
+                <SelectList
+                    dropdownStyles={{
+                        position: "absolute",
+                        right: 20,
+                        top: 0,
+                        zIndex: 100,
+                        width: sw(130),
+                        backgroundColor: "white",
+                        borderColor: "#5F84A1", // Border color of dropdown items
+                        borderWidth: 1, // Border width of dropdown items
+                        borderRadius: 5, // Border radius of dropdown items
+                        paddingVertical: sh(10), // Vertical padding of dropdown items
+                    }}
+                    setSelected={(val) => setSelectedCategory(val)}
+                    fontFamily={fonts.interMedium}
+                    data={data}
+                    search={false}
+                    boxStyles={{
+                        position: "absolute",
+                        right: 20,
+                        bottom: 0,
+                        borderRadius: 10,
+                        width: sw(130),
+                        borderColor: "#5F84A1",
+                        paddingHorizontal: sw(10),
+                        paddingVertical: sh(10),
+                        alignItems: "center",
+                        justifyContent: "space-between",
+                        zIndex: 100,
+                    }}
+                    defaultOption={{ key: "1", value: "Expenses" }}
+                />
             </View>
 
             <DonutChartContainer />

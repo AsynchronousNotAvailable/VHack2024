@@ -105,13 +105,14 @@ const styles = StyleSheet.create({
     },
     monthlyPaymentContainer: {
         flex: 1,
-        backgroundColor: "#FFFFFF",
+        marginTop: sh(10),
+        // backgroundColor: "#FFFFFF",
         alignItems: "flex-start",
         borderRadius: 10,
     },
     container: {
         flex: 1,
-        backgroundColor: "#DFEEF8",
+        // backgroundColor: "#DFEEF8",
     },
     chartAndLabel: {
         flex: 1,
