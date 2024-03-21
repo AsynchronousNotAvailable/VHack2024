@@ -23,7 +23,7 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Consult_Main from '../screens/Module_5/Consult_Main';
 import { GlobalContext } from '../context';
-import Home2 from '../screens/Module_2/Home2';
+// import Home2 from '../screens/Module_2/Home2';
 import Onboarding1 from '../screens/Module_1/Onboarding1';
 import Onboarding2 from '../screens/Module_1/Onboarding2';
 import Onboarding3 from '../screens/Module_1/Onboarding3';
