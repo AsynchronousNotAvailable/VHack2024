@@ -29,6 +29,12 @@ import Onboarding2 from '../screens/Module_1/Onboarding2';
 import Onboarding3 from '../screens/Module_1/Onboarding3';
 import { useContext } from 'react';
 import { StatusBar } from 'react-native';
+import Expenses_Transaction from "../screens/Module_4/Expenses_Transaction";
+import Expenses_Add_1 from "../screens/Module_4/Expenses_Add_1";
+import Expenses_Add_Budget from "../screens/Module_4/Expenses_Add_Budget";
+import Scan_Receipt from "../screens/Module_4/Scan_Receipt";
+import OpenCamera from "../screens/Module_4/Open_Camera";
+import Taken_Photo from "../screens/Module_4/Taken_Photo";
 
 function AppNav() {
     const Stack = createStackNavigator();
@@ -164,6 +170,56 @@ function AppNav() {
                 <ExpensesStack.Screen
                     name="Expenses_Main"
                     component={Expenses_Main}
+                    options={{
+                        title: "Expenses",
+                        headerTitleAlign: "center",
+                        headerBackTitle: "",
+                    }}
+                />
+                <ExpensesStack.Screen
+                    name="Expenses_Transaction"
+                    component={Expenses_Transaction}
+                    options={{
+                        title: "Transaction",
+                        headerTitleAlign: "center",
+                    }}
+                />
+
+                <ExpensesStack.Screen
+                    name="Expenses_Add_1"
+                    component={Expenses_Add_1}
+                    options={{ headerTitle: "", headerBackTitle: "" }}
+                />
+
+                <ExpensesStack.Screen
+                    name="Expenses_Budget"
+                    component={Expenses_Add_Budget}
+                    options={{
+                        headerTitle: "New Budget",
+                        headerTitleAlign: "center",
+                        headerBackTitle: "",
+                    }}
+                />
+                <ExpensesStack.Screen
+                    name="Scan_Receipt"
+                    component={Scan_Receipt}
+                    options={{
+                        headerShown: false,
+                    }}
+                />
+                <ExpensesStack.Screen
+                    name="Open_Camera"
+                    component={OpenCamera}
+                    options={{
+                        headerShown: false,
+                    }}
+                />
+                <ExpensesStack.Screen
+                    name="Taken_Photo"
+                    component={Taken_Photo}
+                    options={{
+                        headerShown: false,
+                    }}
                 />
             </ExpensesStack.Navigator>
         );
@@ -244,7 +300,12 @@ function AppNav() {
                     ></Stack.Screen>
                 </Stack.Navigator>
             ) : (
-                <Tab.Navigator screenOptions={{ headerShown: false }}>
+                <Tab.Navigator
+                    screenOptions={{
+                        headerShown: false,
+                        tabBarHideOnKeyboard: true,
+                    }}
+                >
                     <Tab.Screen
                         name="Home"
                         component={HomeStackScreen}

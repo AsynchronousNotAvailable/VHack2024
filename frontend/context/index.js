@@ -3,16 +3,18 @@ import { createContext, useState } from "react";
 export const GlobalContext = createContext(null);
 
 function GlobalState({ children }) {
-    
     const [currentUsername, setCurrentUsername] = useState("");
     const [firstLaunch, setFirstLaunch] = useState(false); //CHANGE LATER
     const [isAuth, setIsAuth] = useState(true); //CHANGE LATER
     return (
         <GlobalContext.Provider
             value={{
-                currentUsername, setCurrentUsername,
-                firstLaunch, setFirstLaunch,
-                isAuth, setIsAuth
+                currentUsername,
+                setCurrentUsername,
+                firstLaunch,
+                setFirstLaunch,
+                isAuth,
+                setIsAuth,
             }}
         >
             {children}
