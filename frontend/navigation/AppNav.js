@@ -35,6 +35,13 @@ import Expenses_Add_Budget from "../screens/Module_4/Expenses_Add_Budget";
 import Scan_Receipt from "../screens/Module_4/Scan_Receipt";
 import OpenCamera from "../screens/Module_4/Open_Camera";
 import Taken_Photo from "../screens/Module_4/Taken_Photo";
+import Consult_Message from "../screens/Module_5/Consult_Message";
+import Consult_Chatscreen from "../screens/Module_5/Consult_Chatscreen";
+import Consult_Advisors from "../screens/Module_5/Consult_Advisors";
+import Consult_AdvisorDetails from "../screens/Module_5/Consult_AdvisorDetails";
+import Consult_Match from "../screens/Module_5/Consult_Match";
+import Consult_TopMatch from "../screens/Module_5/Consult_TopMatch";
+import Consult_AIChatbot from "../screens/Module_5/Consult_AIChatbot";
 
 function AppNav() {
     const Stack = createStackNavigator();
@@ -229,14 +236,17 @@ function AppNav() {
     function ConsultStackScreen() {
         return (
             <ConsultStack.Navigator>
-                <ConsultStack.Screen
-                    name="Consult_Main"
-                    component={Consult_Main}
-                />
+                <ConsultStack.Screen name="Consult_Main" component={Consult_Main} options={{ headerShown: false }} />
+                <ConsultStack.Screen name="Consult_Message" component={Consult_Message} options={{ title: 'Messages', headerTitleAlign: 'center' }} />
+                <ConsultStack.Screen name="Consult_Chatscreen" component={Consult_Chatscreen} options={({ route }) => ({ title: route.params.username, headerTitleAlign: 'center', })} />
+                <ConsultStack.Screen name="Consult_Advisors" component={Consult_Advisors} options={{ title: 'Advisors', headerTitleAlign: 'center' }} />
+                <ConsultStack.Screen name="Consult_AdvisorDetails" component={Consult_AdvisorDetails} options={{ title: ' ' }} />
+                <ConsultStack.Screen name="Consult_Match" component={Consult_Match} options={{ title: ' ' }} />
+                <ConsultStack.Screen name="Consult_TopMatch" component={Consult_TopMatch} options={{ title: ' ' }} />
+                <ConsultStack.Screen name="Consult_AIChatbot" component={Consult_AIChatbot} options={({ route }) => ({ title: route.params.username, headerTitleAlign: 'center', })} />
             </ConsultStack.Navigator>
         );
     }
-
     const ProfileStack = createNativeStackNavigator();
     function ProfileStackScreen() {
         return (
