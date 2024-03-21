@@ -25,8 +25,11 @@ const styles = StyleSheet.create({
         paddingVertical: sh(10),
         backgroundColor: '#F6F7FA',
         borderRadius: sw(10),
-        shadowOffset: { width: 0, height: 0 },
-        shadowOpacity: 0.2,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
     },
     topContainer: {
         flexDirection: 'row',
@@ -74,20 +77,20 @@ const styles = StyleSheet.create({
     },
 });
 
-export const SmallBottomButton = ({value, navigation}) => {
+export const SmallBottomButton = ({ value, navigation }) => {
     return (
         <View style={styles.footer}>
             <TouchableOpacity
                 style={styles.buttonContainer}
                 onPress={navigation}
             >
-                <TextInput style={styles.buttonText}>{value}</TextInput>
+                <Text style={styles.buttonText}>{value}</Text>
             </TouchableOpacity>
         </View>
     );
 };
 
-const PaymentStrategyContainer = ({navigation, title, content1, content2, content3, content4, content5, index}) => {
+const PaymentStrategyContainer = ({ navigation, title, content1, content2, content3, content4, content5, index }) => {
     const DebtMainPage = () => {
         navigation.navigate('DebtMain');
     };

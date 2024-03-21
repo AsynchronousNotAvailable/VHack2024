@@ -10,7 +10,7 @@ import {
     Image,
     SafeAreaView,
 } from 'react-native';
-import {TextInput as TextInputPaper} from 'react-native-paper';
+import { TextInput as TextInputPaper } from 'react-native-paper';
 import { fonts, sw, sh } from '../../../styles/GlobalStyles';
 import AppBar from '../Utils/AppBar';
 import RenderRepaymentPlanSummaryItem from '../Utils/RenderRepaymentPlanSummaryItem';
@@ -21,12 +21,13 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 const styles = StyleSheet.create({
     container: {
+        backgroundColor: 'white',
         flex: 1,
     },
     titleStyle: {
         fontSize: sw(18),
         fontFamily: fonts.interSemiBold,
-        marginVertical: sh(16),
+        marginVertical: sh(20),
         marginHorizontal: sw(20),
     },
     repaymentPlanContainer: {
@@ -34,9 +35,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'flex-start',
-        width: '100%',
+        width: '90%',
         height: sh(250),
         marginHorizontal: sw(20),
+        marginVertical: sh(10),
         backgroundColor: '#F6F7FA',
         borderRadius: sw(10),
         shadowOffset: { width: 0, height: 0 },
@@ -49,9 +51,9 @@ const styles = StyleSheet.create({
         color: 'black',
         margin: sw(16),
     },
-    inputPaperContainer:{
+    inputPaperContainer: {
         flex: 1,
-        marginHorizontal: sw(20)
+        marginHorizontal: sw(20),
     },
     inputPaper: {
         width: '100%',
@@ -65,7 +67,7 @@ const styles = StyleSheet.create({
     },
 });
 
-function DebtRepaymentPlanSummary({navigation}) {
+function DebtRepaymentPlanSummary({ navigation }) {
     const [extraPayment, setExtraPayment] = useState(0);
 
     const DebtRepaymentPlanChoicePage = () => {
@@ -78,10 +80,10 @@ function DebtRepaymentPlanSummary({navigation}) {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <AppBar
+                {/* <AppBar
                     title="Repayment Plan"
                     navigation={PreviousPage}
-                />
+                /> */}
                 <Text style={styles.titleStyle}>Extra Monthly Payment</Text>
                 <View style={styles.inputPaperContainer}>
                     <TextInputPaper
@@ -97,12 +99,14 @@ function DebtRepaymentPlanSummary({navigation}) {
                         }}
                     />
                 </View>
+               
                 <TouchableOpacity
                     style={{
                         flexDirection: 'row',
                         alignItems: 'center',
                         justifyContent: 'center',
                         marginTop: sh(20),
+                        
                         zIndex: 99,
                     }}
                     onPress={DebtRepaymentPlanChoicePage}
@@ -124,7 +128,7 @@ function DebtRepaymentPlanSummary({navigation}) {
                         />
                     );
                 })}
-                <Text style={styles.titleStyle}>Step-by-Step Repayment Plan</Text>
+                <Text style={[styles.titleStyle, { marginTop: sh(40) }]}>Step-by-Step Repayment Plan</Text>
                 <View style={styles.repaymentPlanContainer}>
                     <Text style={styles.repaymentPlanContainerTitle}>House Loan</Text>
                 </View>

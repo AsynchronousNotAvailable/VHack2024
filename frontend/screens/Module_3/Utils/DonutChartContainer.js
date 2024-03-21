@@ -56,23 +56,22 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'flex-start',
         fontFamily: fonts.interMedium,
-        fontSize: sw(18)
+        fontSize: sw(18),
     },
 });
 
 const DonutChartContainer = () => {
-    
     const RADIUS = sw(100);
     const STROKE_WIDTH = sw(30);
     const OUTER_STROKE_WIDTH = sw(46);
     const GAP = 0.04;
-    const CHART_CONTAINER_WIDTH_HEIGHT = RADIUS * 2 + 10
+    const CHART_CONTAINER_WIDTH_HEIGHT = RADIUS * 2 + 10;
 
     const n = 6;
     const totalValue = useSharedValue(0);
     const decimals = useSharedValue(0);
     const colors = ['#D8FFFC', '#FFF0D4', '#FDCED0', '#CAFDEA', '#BCDAFC', '#E5D8FF'];
-    const debtNumbers = [41.50, 215.75, 252.60, 337.57, 661.43, 2121.35];
+    const debtNumbers = [41.5, 215.75, 252.6, 337.57, 661.43, 2121.35];
     const debtNames = ['Netflix Bill', 'Wifi Bill', 'Electric Bill', 'Car Loan', 'Personal Loan', 'House Loan'];
     const total = debtNumbers.reduce((acc, currentValue) => acc + currentValue, 0);
     const generatePercentages = calculatePercentage(debtNumbers, total);
@@ -98,44 +97,66 @@ const DonutChartContainer = () => {
     }
 
     return (
-        <ScrollView
-            contentContainerStyle={{ alignItems: 'center' }}
-            showsVerticalScrollIndicator={false}
+        <View
+            style={{
+                flexDirection: 'column',
+                backgroundColor: 'white',
+                height: '36%',
+                marginHorizontal: sw(10),
+                borderRadius: 20,
+                shadowColor: '#000',
+                shadowOffset: { width: 0, height: 2 },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+                elevation: 5,
+            }}
         >
-            <Text style={styles.mainTitle}>Debt</Text>
-            <View style={styles.monthlyPaymentContainer}>
-                <View style={styles.titleContainer}>
-                    <Text style={styles.title}>Monthly Payment</Text>
-                </View>
+            <View style={{ alignItems: 'flex-start', margin: 20, marginBottom: 0 }}>
+                <Text style={{ fontFamily: fonts.interMedium, fontSize: 18 }}>Monthly Payment</Text>
+            </View>
 
-                <View style={styles.chartAndLabel}>
-                    <View style={styles.chartContainer}>
-                        <DonutChart
-                            n={n}
-                            gap={GAP}
-                            decimals={decimals}
-                            colors={colors}
-                            totalValue={totalValue}
-                            strokeWidth={STROKE_WIDTH}
-                            outerStrokeWidth={OUTER_STROKE_WIDTH}
-                            radius={RADIUS}
-                            font={font}
-                        />
-                    </View>
-                    <View style={styles.labels}>
-                        {data.slice(0,5).map((item, index) => {
-                            return (
-                                <RenderItem
-                                    item={item}
-                                    key={index}
-                                    index={index}
-                                />
-                            );
-                        })}
-                    </View>
+            <View
+                style={{
+                    // flex: 1,
+                    flexDirection: 'row',
+                    alignItems: 'flex-end',
+                    gap: 6,
+                    marginHorizontal: sw(20),
+                }}
+            >
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        width: sw(RADIUS * 2 + sw(10)),
+                        height: sh(RADIUS * 2 + sh(20)),
+                    }}
+                >
+                    <DonutChart
+                        n={n}
+                        gap={GAP}
+                        decimals={decimals}
+                        colors={colors}
+                        totalValue={totalValue}
+                        strokeWidth={STROKE_WIDTH}
+                        outerStrokeWidth={OUTER_STROKE_WIDTH}
+                        radius={RADIUS}
+                        font={font}
+                    />
+                </View>
+                <View style={{ flex: 1, flexDirection: 'column' }}>
+                    {data.slice(0, 5).map((item, index) => {
+                        return (
+                            <RenderItem
+                                item={item}
+                                key={index}
+                                index={index}
+                            />
+                        );
+                    })}
                 </View>
             </View>
-        </ScrollView>
+        </View>
     );
 };
 

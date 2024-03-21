@@ -20,6 +20,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: "white"
     },
     titleStyle: {
         fontSize: sw(18),
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
     },
 });
 
-function DebtRepaymentPlanChoice({navigation}) {
+function DebtRepaymentPlanChoice({ navigation }) {
     const DebtMainPage = () => {
         navigation.navigate('DebtMain');
     };
@@ -42,10 +43,10 @@ function DebtRepaymentPlanChoice({navigation}) {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <AppBar
+                {/* <AppBar
                     title="Strategy"
                     navigation={PreviousPage}
-                />
+                /> */}
                 <Text style={styles.titleStyle}>Select a payment priority</Text>
                 {mockData4.map(({ title, content1, content2, content3, content4, content5, index }) => {
                     return (

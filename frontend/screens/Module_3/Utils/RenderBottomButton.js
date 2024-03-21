@@ -24,11 +24,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         margin: sw(20),
         position: 'absolute',
-        bottom: sh(10),
+        top: sh(600),
     },
 });
 
-export const BottomButton = ({value, navigation}) => {
+export const BottomButton = ({ value, navigation }) => {
     return (
         <View style={styles.footer}>
             <TouchableOpacity

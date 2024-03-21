@@ -144,10 +144,10 @@ function DebtAddUpcomingBill({navigation, route}) {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <AppBar
+                {/* <AppBar
                     title="Add Upcoming Bills"
                     navigation={PreviousPage}
-                />
+                /> */}
                 <View style={styles.contentContainer}>
                     <TextInputPaper
                         style={styles.inputPaper}
