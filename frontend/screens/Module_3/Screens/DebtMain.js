@@ -141,10 +141,11 @@ const progressBarStyles = (percentage) => {
     });
 };
 
-const monthlyLoansText = 2113.39;
-const overdueAmount = 541.73;
-const principlePaid= 250000;
-const balance= 400000;
+const monthlyLoansText = 3120.35;
+const overdueAmount = 661.43;
+const totalDebt = 570000;
+const principlePaid= 170701;
+const balance= 399299;
 const progressBarNumber= (principlePaid / (principlePaid + balance)) * 100;
 const progressBarPercentage = progressBarStyles(progressBarNumber);
 const greenPrinciplePaidText = principlePaidAndBalanceTextColour('#82B5B2', 15);
@@ -189,7 +190,7 @@ function DebtMain({navigation}) {
                             <Text style={{ alignItems: 'center', justifyContent: 'center' }}>See All</Text>
                         </TouchableOpacity>
                     </View>
-                    <Text style={styles.totalDebtAmount}>RM 650,000</Text>
+                    <Text style={styles.totalDebtAmount}>RM {totalDebt}</Text>
                     <View style={styles.balanceProgressBar}>
                         <Animated.View style={progressBarPercentage.principleProgressBar} />
                     </View>

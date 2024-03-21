@@ -9,8 +9,8 @@ import {
     TouchableOpacity,
     Image,
     SafeAreaView,
-    ImageSourcePropType,
 } from 'react-native';
+import {TextInput as TextInputPaper} from 'react-native-paper';
 import { fonts, sw, sh } from '../../../styles/GlobalStyles';
 import AppBar from '../Utils/AppBar';
 import RenderRepaymentPlanSummaryItem from '../Utils/RenderRepaymentPlanSummaryItem';
@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
     titleStyle: {
         fontSize: sw(18),
         fontFamily: fonts.interSemiBold,
-        marginVertical: sh(20),
+        marginVertical: sh(16),
         marginHorizontal: sw(20),
     },
     repaymentPlanContainer: {
@@ -49,9 +49,25 @@ const styles = StyleSheet.create({
         color: 'black',
         margin: sw(16),
     },
+    inputPaperContainer:{
+        flex: 1,
+        marginHorizontal: sw(20)
+    },
+    inputPaper: {
+        width: '100%',
+        backgroundColor: 'rgba(110, 113, 124, 0.05)',
+        fontFamily: fonts.interRegular,
+        borderRadius: 10,
+        paddingVertical: sh(4),
+        marginBottom: sh(4),
+        shadowOffset: { width: 0, height: 0 },
+        shadowOpacity: 0.2,
+    },
 });
 
 function DebtRepaymentPlanSummary({navigation}) {
+    const [extraPayment, setExtraPayment] = useState(0);
+
     const DebtRepaymentPlanChoicePage = () => {
         navigation.navigate('DebtRepaymentPlanChoice');
     };
@@ -66,6 +82,21 @@ function DebtRepaymentPlanSummary({navigation}) {
                     title="Repayment Plan"
                     navigation={PreviousPage}
                 />
+                <Text style={styles.titleStyle}>Extra Monthly Payment</Text>
+                <View style={styles.inputPaperContainer}>
+                    <TextInputPaper
+                        style={styles.inputPaper}
+                        placeholder="RM"
+                        label="Extra Payment"
+                        mode="outlined"
+                        keyboardType="default"
+                        returnKeyType="next"
+                        autoCapitalize="none"
+                        onChangeText={(extraPayment) => {
+                            setExtraPayment(extraPayment);
+                        }}
+                    />
+                </View>
                 <TouchableOpacity
                     style={{
                         flexDirection: 'row',

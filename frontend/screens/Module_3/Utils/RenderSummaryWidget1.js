@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, ImageSourcePropType } from 'react-native';
+import { View, Text, Image, StyleSheet} from 'react-native';
 import Animated, { FadeInDown, FadeOutDown } from 'react-native-reanimated';
 import { sw, sh } from '../../../styles/GlobalStyles';
 

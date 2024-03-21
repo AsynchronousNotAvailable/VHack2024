@@ -35,8 +35,11 @@ export const fonts = {
 export const logo = {
     car_logo: require('../assets/images/car_logo.png'),
     home_logo: require('../assets/images/home_logo.png'),
+    personal_loan_logo: require('../assets/images/personal_loan_logo.png'),
+    school_logo: require('../assets/images/school_logo.png'),
     tnb_logo: require('../assets/images/tnb_logo.png'),
     unifi_logo: require('../assets/images/unifi_logo.png'),
+    netflix_logo: require('../assets/images/netflix_logo.png'),
     repayment_plan_summary_logo_1: require('../assets/images/repayment_plan_summary_logo_1.png'),
     repayment_plan_summary_logo_2: require('../assets/images/repayment_plan_summary_logo_2.png'),
     repayment_plan_summary_logo_3: require('../assets/images/repayment_plan_summary_logo_3.png'),

@@ -9,7 +9,6 @@ import {
     TouchableOpacity,
     Image,
     SafeAreaView,
-    ImageSourcePropType,
 } from 'react-native';
 import { fonts, sw, sh } from '../../../styles/GlobalStyles';
 import AppBar from '../Utils/AppBar';
@@ -43,7 +42,7 @@ const styles = StyleSheet.create({
     },
 });
 
-function DebtAddExistingLoan({navigation}) {
+function DebtAddExistingLoan({navigation, route}) {
     const [loanName, setLoanName] = useState('');
     const [loanAmount, setLoanAmount] = useState('');
     const [tenureYears, setTenureYears] = useState('');
@@ -58,8 +57,17 @@ function DebtAddExistingLoan({navigation}) {
     const [error, setError] = useState(undefined);
 
     const DebtAddExistingLoan2Page = () => {
-        navigation.navigate('DebtAddExistingLoan2');
+        navigation.navigate('DebtAddExistingLoan2', {
+            loanName: loanName,
+            loanAmount: loanAmount,
+            tenureYears: tenureYears,
+            interestRate: interestRate,
+            startingYear: startingYear,
+            mockData1: route.params.mockData1,
+            setMockData1: route.params.setMockData1
+        });
     };
+
     const PreviousPage = () => {
         navigation.goBack();
     };

@@ -9,9 +9,8 @@ import {
     TouchableOpacity,
     Image,
     SafeAreaView,
-    ImageSourcePropType,
 } from 'react-native';
-import { fonts, sw, sh } from '../../../styles/GlobalStyles';
+import { fonts, sw, sh, logo } from '../../../styles/GlobalStyles';
 import AppBar from '../Utils/AppBar';
 import { BottomButton } from '../Utils/RenderBottomButton';
 import { TextInput as TextInputPaper } from 'react-native-paper';
@@ -76,7 +75,8 @@ const styles = StyleSheet.create({
     },
 });
 
-function DebtAddUpcomingBill({navigation}) {
+function DebtAddUpcomingBill({navigation, route}) {
+    const {mockData2, setMockData2} = route.params
     const [upcomingBillName, setUpcomingBillName] = useState('');
     const [upcomingBillAmount, setUpcomingBillAmount] = useState('');
     const [showDropDown, setShowDropDown] = useState(false);
@@ -84,21 +84,58 @@ function DebtAddUpcomingBill({navigation}) {
     const upcomingBillAmountRef = useRef(null);
 
     const [value, setValue] = useState(null);
+    const [paymentDate, setPaymentDate] = useState(null);
     const [isFocus, setIsFocus] = useState(false);
 
     const data = [
-        { label: 'Item 1', value: '1' },
-        { label: 'Item 2', value: '2' },
-        { label: 'Item 3', value: '3' },
-        { label: 'Item 4', value: '4' },
-        { label: 'Item 5', value: '5' },
-        { label: 'Item 6', value: '6' },
-        { label: 'Item 7', value: '7' },
-        { label: 'Item 8', value: '8' },
+        { label: 'Every Day', value: '1' },
+        { label: 'Every Week', value: '2' },
+        { label: 'Every Month', value: '3' },
+        { label: 'Every Year', value: '4' },
     ];
 
+    const addDays = (date, days) => {
+        const result = new Date(date);
+        result.setDate(result.getDate() + 1);
+        return formatDate(result);
+    };
+
+    const addWeeks = (date, weeks) => {
+        const result = new Date(date);
+        result.setDate(result.getDate() + 7);
+        return formatDate(result);
+    };
+
+    const addMonths = (date, months) => {
+        const result = new Date(date);
+        result.setMonth(result.getMonth() + 1);
+        return formatDate(result);
+    };
+
+    const addYears = (date, years) => {
+        const result = new Date(date);
+        result.setFullYear(result.getFullYear() + 1);
+        return formatDate(result);
+    };
+
+    const formatDate = (date) => {
+        const day = date.getDate().toString().padStart(2, '0'); 
+        const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
+        const year = (date.getFullYear()).toString(); 
+        return `${day}/${month}/${year}`;
+    };
+
     const DebtMainPage = () => {
-        navigation.navigate('DebtMain');
+        const newData = {
+            image: logo.school_logo,
+            backgroundColor: '#CFFAEA',
+            itemName: upcomingBillName,
+            paymentDate: paymentDate,
+            upcomingBills: upcomingBillAmount,
+            index: mockData2.length+2,
+        }
+        setMockData2([...mockData2, newData]);
+        navigation.navigate('DebtSummary');
     };
     const PreviousPage = () => {
         navigation.goBack();
@@ -139,9 +176,6 @@ function DebtAddUpcomingBill({navigation}) {
                         onChangeText={(upcomingBillAmount) => {
                             setUpcomingBillAmount(upcomingBillAmount);
                         }}
-                        // onSubmitEditing={() => {
-                        //     loanAmountRef.current?.focus();
-                        // }}
                     />
                     <Dropdown
                         style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
@@ -161,6 +195,25 @@ function DebtAddUpcomingBill({navigation}) {
                         onChange={(item) => {
                             setValue(item.value);
                             setIsFocus(false);
+                            const now = new Date();
+                            switch (item.label) {
+                                case 'Every Day':
+                                    newDate = addDays(now, parseInt(item.value));
+                                    break;
+                                case 'Every Week':
+                                    newDate = addWeeks(now, parseInt(item.value));
+                                    break;
+                                case 'Every Month':
+                                    newDate = addMonths(now, parseInt(item.value));
+                                    break;
+                                case 'Every Year':
+                                    newDate = addYears(now, parseInt(item.value));
+                                    break;
+                                default:
+                                    newDate = now;
+                                    break;
+                            }
+                            setPaymentDate(newDate)
                         }}
                     />
                 </View>

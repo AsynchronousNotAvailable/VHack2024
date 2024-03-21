@@ -9,7 +9,6 @@ import {
     TouchableOpacity,
     Image,
     SafeAreaView,
-    ImageSourcePropType,
 } from 'react-native';
 import { fonts, sw, sh } from '../../../styles/GlobalStyles';
 import AppBar from '../Utils/AppBar';
