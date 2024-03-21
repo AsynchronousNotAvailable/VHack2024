@@ -35,11 +35,56 @@ import Expenses_Add_Budget from "../screens/Module_4/Expenses_Add_Budget";
 import Scan_Receipt from "../screens/Module_4/Scan_Receipt";
 import OpenCamera from "../screens/Module_4/Open_Camera";
 import Taken_Photo from "../screens/Module_4/Taken_Photo";
+import NotificationsPage from "../screens/Module_2/Notification/NotificationsPage";
+import LoanCalculatorScreen from "../screens/Module_2/LoanCalculator/LoanCalculatorScreen";
+import LoanResultsScreen from "../screens/Module_2/LoanCalculator/LoanResultsScreen";
+import DMP1 from "../screens/Module_2/DMP/DMP1";
+import DMP2 from "../screens/Module_2/DMP/DMP2";
+import DMP3 from "../screens/Module_2/DMP/DMP3";
+import DNPDashboard from "../screens/Module_2/DebtNegotiationPlatform/DNPDashboard";
+import DNP1 from "../screens/Module_2/DebtNegotiationPlatform/DNP1";
+import DNP2 from "../screens/Module_2/DebtNegotiationPlatform/DNP2";
+import DNP3 from "../screens/Module_2/DebtNegotiationPlatform/DNP3";
+import DNP4 from "../screens/Module_2/DebtNegotiationPlatform/DNP4";
+import DNPChat from "../screens/Module_2/DebtNegotiationPlatform/DNPChat";
+import DNPResult from "../screens/Module_2/DebtNegotiationPlatform/DNPResult";
+
+import { Image } from "react-native";
+import HomeIcon from '../assets/TabIcon/HomeIcon.png';
+import DebtIcon from '../assets/TabIcon/DebtIcon.png';
+import ExpensesIcon from '../assets/TabIcon/ExpenseIcon.png';
+import ConsultIcon from '../assets/TabIcon/ConsultIcon.png';
+import ProfileIcon from '../assets/TabIcon/ProfileIcon.png';
 
 function AppNav() {
     const Stack = createStackNavigator();
     const LandingStack = createNativeStackNavigator();
-    const { isAuth, setIsAuth, firstLaunch, setFirstLaunch } = useContext(GlobalContext);
+    const { isAuth, setIsAuth, firstLaunch, setFirstLaunch } =
+        useContext(GlobalContext);
+
+    const screenOptions = ({ route }) => ({
+        headerShown: false,
+        tabBarIcon: ({ focused, color, size }) => {
+            let iconName;
+            if (route.name === 'Home') {
+                iconName = HomeIcon;
+            } else if (route.name === 'Debt') {
+                iconName = DebtIcon;
+            } else if (route.name === 'Expenses') {
+                iconName = ExpensesIcon;
+            } else if (route.name === 'Consult') {
+                iconName = ConsultIcon;
+            } else if (route.name === 'Profile') {
+                iconName = ProfileIcon;
+            }
+
+            return <Image source={iconName} style={{ width: size, height: size, tintColor: color }} />;
+        },
+        tabBarActiveTintColor: '#5F84A1',
+        tabBarInactiveTintColor: '#000',
+    });
+
+
     function LandingStackScreen() {
         return (
             <LandingStack.Navigator screenOptions={{ headerShown: false }}>
@@ -105,17 +150,22 @@ function AppNav() {
     const HomeStack = createNativeStackNavigator();
     function HomeStackScreen() {
         return (
-            <HomeStack.Navigator screenOptions={{ headerShown: false }}>
-                <HomeStack.Screen
-                    name="Home_Main"
-                    component={Home_Main}
-                />
-                <HomeStack.Screen
-                    name="Home_2"
-                    component={Home2}
-                />
-                {/* screen2 */}
-                {/* screen3 */}
+            <HomeStack.Navigator>
+                <HomeStack.Screen name="Home_Main" component={Home_Main} />
+                <HomeStack.Screen name="Notifications" component={NotificationsPage} />
+                <HomeStack.Screen name="Debt Management Programme" component={DMP1} />
+                <HomeStack.Screen name="Debt Management Programme2" component={DMP2} />
+                <HomeStack.Screen name="Debt Management Programme3" component={DMP3} />
+                <HomeStack.Screen name="Debt Negotiation Platform" component={DNPDashboard} />
+                <HomeStack.Screen name="Debt Negotiation Platform1" component={DNP1} />
+                <HomeStack.Screen name="Debt Negotiation Platform2" component={DNP2} />
+                <HomeStack.Screen name="Debt Negotiation Platform3" component={DNP3} />
+                <HomeStack.Screen name="Debt Negotiation Platform4" component={DNP4} />
+                <HomeStack.Screen name="Negotiation Results" component={DNPResult} />
+                <HomeStack.Screen name="Chat with Creditor" component={DNPChat} />
+                <HomeStack.Screen name="LoanCalculator" component={LoanCalculatorScreen} />
+                <HomeStack.Screen name="LoanResults" component={LoanResultsScreen} />
+
             </HomeStack.Navigator>
         );
     }
@@ -300,32 +350,12 @@ function AppNav() {
                     ></Stack.Screen>
                 </Stack.Navigator>
             ) : (
-                <Tab.Navigator
-                    screenOptions={{
-                        headerShown: false,
-                        tabBarHideOnKeyboard: true,
-                    }}
-                >
-                    <Tab.Screen
-                        name="Home"
-                        component={HomeStackScreen}
-                    />
-                    <Tab.Screen
-                        name="Debt"
-                        component={DebtStackScreen}
-                    />
-                    <Tab.Screen
-                        name="Expenses"
-                        component={ExpensesStackScreen}
-                    />
-                    <Tab.Screen
-                        name="Consult"
-                        component={ConsultStackScreen}
-                    />
-                    <Tab.Screen
-                        name="Profile"
-                        component={ProfileStackScreen}
-                    />
+                <Tab.Navigator screenOptions={screenOptions}>
+                    <Tab.Screen name="Home" component={HomeStackScreen} />
+                    <Tab.Screen name="Debt" component={DebtStackScreen} />
+                    <Tab.Screen name="Expenses" component={ExpensesStackScreen} />
+                    <Tab.Screen name="Consult" component={ConsultStackScreen} />
+                    <Tab.Screen name="Profile" component={ProfileStackScreen} />
                 </Tab.Navigator>
             )}
         </NavigationContainer>
