@@ -45,7 +45,7 @@ function NegotiationsPage({ navigation }) {
                 email={selectedTab === 0 ? 'loan@hlbb.hongleong.com.my' : 'jason30102000@gmail.com'}
                 amount="3000"
                 total="5000"
-                expiration="1/3/2025"
+                expiration="22/4/2026"
                 proposal="Proposed: Extend the loan term from 24 months to 48 months"
                 isCreditor={selectedTab === 1}
             />

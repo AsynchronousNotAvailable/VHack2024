@@ -13,7 +13,7 @@ function LoanCalculatorScreen({ navigation }) {
     const [downPayment, setDownPayment] = useState('');
     const [monthlyPayment, setMonthlyPayment] = useState(null);
 
-    const monthlyIncome = 5000;
+    const monthlyIncome = 6000;
 
     const calculateLoan = () => {
         const principal = parseFloat(loanAmount) - parseFloat(downPayment || '0');

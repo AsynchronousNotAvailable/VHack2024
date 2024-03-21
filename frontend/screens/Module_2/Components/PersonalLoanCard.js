@@ -13,11 +13,11 @@ function PersonalLoanCard() {
             </View>
             <View style={styles.infoContainer}>
                 <Text style={styles.mainText}>Personal Loan</Text>
-                <Text style={styles.secondaryText}>Expires 1/3/2025</Text>
+                <Text style={styles.secondaryText}>Expires 22/4/2026</Text>
             </View>
             <View style={styles.amountContainer}>
-                <Text style={styles.mainText}>RM 12000</Text>
-                <Text style={styles.secondaryText}>Total RM15000</Text>
+                <Text style={styles.mainText}>RM 10008</Text>
+                <Text style={styles.secondaryText}>Total RM25000</Text>
             </View>
         </View>
     );

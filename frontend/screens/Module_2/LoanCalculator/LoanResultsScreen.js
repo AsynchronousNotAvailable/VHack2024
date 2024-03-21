@@ -5,7 +5,7 @@ import { colors, fonts, sh, sw } from "../../../styles/GlobalStyles";
 
 function LoanResultsScreen({ route }) {
     const { monthlyIncome, loanAmount, interestRate, tenure, monthlyPayment } = route.params;
-    const monthlyBills = 2579.95;
+    const monthlyBills = 3630.20;
     const netIncome = monthlyIncome - monthlyBills - monthlyPayment;
 
     const getPurchaseAdvice = (stressLevel) => {

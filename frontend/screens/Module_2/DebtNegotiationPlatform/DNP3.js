@@ -31,7 +31,7 @@ function DNP3({ navigation }) {
 
                     <View style={styles.row}>
                         <Text style={[styles.label, { right: 30 }]}>Interest</Text>
-                        <Text style={[styles.value, { left: 30 }]}>9%</Text>
+                        <Text style={[styles.value, { left: 30 }]}>5.5%</Text>
                     </View>
                     <View style={styles.row}>
                         <Text style={[styles.label, { right: 30 }]}>Monthly Payment    </Text>
@@ -54,7 +54,7 @@ function DNP3({ navigation }) {
                         underlayColor={colors.aliceBlue}
                         onPress={handleSelection}
                         style={styles.selectContainer}>
-                        <Text style={styles.optionText}>Negotiate a reduced interest rate from 9% to 7%</Text>
+                        <Text style={styles.optionText}>Negotiate a reduced interest rate from 5.5% to 4%</Text>
                     </TouchableHighlight>
 
                     <TouchableHighlight

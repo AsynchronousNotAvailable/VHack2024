@@ -3,9 +3,11 @@ import { View, Text, StyleSheet } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { colors, fonts, sh, sw } from "../../../styles/GlobalStyles";
 
-function monthlyBills() {
-    const monthlyBills = "2579.95";
-    const monthlyLoans = "2113.39";
+
+function monthlyBills({ navigation }) {
+    const monthlyBills = "3630.20";
+    const monthlyLoans = "3120.35";
+
 
     return (
         <View style={styles.card}>
@@ -28,6 +30,8 @@ function monthlyBills() {
             </View>
         </View>
     );
+
+
 }
 
 const styles = StyleSheet.create({

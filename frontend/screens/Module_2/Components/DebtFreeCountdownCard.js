@@ -4,7 +4,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { colors, fonts, sh, sw } from "../../../styles/GlobalStyles";
 
 function DebtFreeCountdownCard() {
-    const targetDate = new Date('2042-01-01');
+    const targetDate = new Date('2044-03-01');
     const currentDate = new Date();
     const diffInMilliSeconds = Math.abs(targetDate - currentDate);
     let years = diffInMilliSeconds / (1000 * 60 * 60 * 24 * 365);

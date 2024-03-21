@@ -1,9 +1,10 @@
 import React from 'react';
-import { Text, View, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, ScrollView, TouchableOpacity, TouchableHighlight } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import DebtFreeCountdownCard from './Components/DebtFreeCountdownCard';
 import MonthlyPayment from './Components/MonthlyPayment';
 import ServicesList from './Components/ServicesList';
+import { colors, fonts, sh, sw } from "../../styles/GlobalStyles";
 
 
 
@@ -12,6 +13,10 @@ function Home_Main({ navigation }) {
 
   const handleNotificationPress = () => {
     navigation.navigate('Notifications');
+  };
+
+  const goDebtPage = () => {
+    navigation.navigate("Debt");
   };
 
   return (
@@ -23,7 +28,13 @@ function Home_Main({ navigation }) {
         </TouchableOpacity>
       </View>
       <DebtFreeCountdownCard />
-      <MonthlyPayment />
+      <TouchableHighlight
+        underlayColor={colors.aliceBlue}
+        style={styles.selectContainer}
+        onPress={goDebtPage}>
+        <MonthlyPayment />
+      </TouchableHighlight>
+
       <ServicesList navigation={navigation} />
     </ScrollView>
   );
@@ -45,6 +56,12 @@ const styles = StyleSheet.create({
     fontSize: 22,
     fontWeight: 'bold',
     paddingLeft: 10
+
+  },
+  selectContainer: {
+    paddingHorizontal: sw(20),
+    alignItems: 'center',
+
 
   },
 });

@@ -16,8 +16,8 @@ function HouseLoanCard() {
                 <Text style={styles.secondaryText}>Expires 20/3/2044</Text>
             </View>
             <View style={styles.amountContainer}>
-                <Text style={styles.mainText}>RM 250000</Text>
-                <Text style={styles.secondaryText}>Total RM350000</Text>
+                <Text style={styles.mainText}>RM 150000</Text>
+                <Text style={styles.secondaryText}>Total RM500000</Text>
             </View>
         </View>
     );
