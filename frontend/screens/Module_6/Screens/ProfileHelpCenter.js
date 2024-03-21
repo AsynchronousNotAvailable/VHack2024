@@ -47,7 +47,6 @@ function ProfileHelpCenter({navigation}) {
 
     const [searchQuery, setSearchQuery] = React.useState('');
     const [collapsedSettings, setCollapsedSettings] = useState(true);
-    const [updatedTopQuestions, setUpdatedTopQuestions] = useState([]);
 
     const handleSeeAll = () => {
         setCollapsedSettings(!collapsedSettings)

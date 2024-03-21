@@ -9,9 +9,8 @@ import {
     TouchableOpacity,
     Image,
     SafeAreaView,
-    ImageSourcePropType,
 } from 'react-native';
-import { fonts, sw, sh } from '../../../styles/GlobalStyles';
+import { fonts, sw, sh, logo } from '../../../styles/GlobalStyles';
 import AppBar from '../Utils/AppBar';
 import { BottomButton } from '../Utils/RenderBottomButton';
 import { useNavigation } from '@react-navigation/native';
@@ -66,9 +65,33 @@ const styles = StyleSheet.create({
     },
 });
 
-function DebtAddExistingLoan2({navigation}) {
-    const DebtMainPage = () => {
-        navigation.navigate('DebtMain');
+function DebtAddExistingLoan2({navigation, route}) {
+    const { loanName, loanAmount, tenureYears, interestRate, startingYear, mockData1, setMockData1 } = route.params;
+
+    var now = new Date();
+    if (now.getMonth() == 11) {
+        var nextMonth = new Date(now.getFullYear() + 1, 0, now.getDate());
+    } else {
+        var nextMonth = new Date(now.getFullYear(), now.getMonth() + 2, now.getDate());
+    }
+
+    const interestAmount = (loanAmount*(interestRate/100)).toFixed(2)
+    const endYear = (nextMonth.getFullYear()+Number(tenureYears))
+    const monthlyPayment = (Number(loanAmount) + Number(interestAmount)) / (12*tenureYears)
+    const expiryDate = now.getDate()+'/'+nextMonth.getMonth()+'/'+(Number(nextMonth.getFullYear())+Number(tenureYears))
+
+    const DebtSummary = () => {
+        const newData = {
+                image: logo.school_logo,
+                backgroundColor: '#CFFAEA',
+                itemName: loanName,
+                expiryDate: expiryDate,
+                currentLoan: 0,
+                totalLoan: loanAmount,
+                index: mockData1.length+2,
+        }
+        setMockData1([...mockData1, newData]);
+        navigation.navigate('DebtSummary');
     };
     const PreviousPage = () => {
         navigation.goBack();
@@ -83,35 +106,39 @@ function DebtAddExistingLoan2({navigation}) {
                 />
                 <Text style={styles.titleStyle}>Loan Breakdown</Text>
                 <View style={styles.loanBreakdownContainer}>
+                <View style={styles.loanBreakdownContentContainer}>
+                        <Text style={styles.smallTitleStyle}>Loan Name</Text>
+                        <Text style={{ fontFamily: fonts.interSemiBold }}>{loanName}</Text>
+                    </View>
                     <View style={styles.loanBreakdownContentContainer}>
                         <Text style={styles.smallTitleStyle}>Loan Amount</Text>
-                        <Text style={{ fontFamily: fonts.interSemiBold }}>RM340,000.00</Text>
+                        <Text style={{ fontFamily: fonts.interSemiBold }}>RM{loanAmount}</Text>
                     </View>
                     <View style={styles.loanBreakdownContentContainer}>
                         <Text style={styles.smallTitleStyle}>Interest</Text>
-                        <Text style={{ fontFamily: fonts.interSemiBold }}>RM209,630.70</Text>
+                        <Text style={{ fontFamily: fonts.interSemiBold }}>RM{interestAmount}</Text>
                     </View>
                     <View style={styles.loanBreakdownContentContainer}>
                         <Text style={styles.smallTitleStyle}>End Date</Text>
-                        <Text style={{ fontFamily: fonts.interSemiBold }}>15/4/2054</Text>
+                        <Text style={{ fontFamily: fonts.interSemiBold }}>{nextMonth.getMonth()}/{endYear}</Text>
                     </View>
                 </View>
                 <Text style={styles.titleStyle}>Payment Breakdown</Text>
                 <View style={styles.paymentBreakdownContainer}>
                     <View style={styles.paymentBreakdownContentContainer}>
                         <Text style={styles.smallTitleStyle}>Upcoming Payment</Text>
-                        <Text style={{ fontFamily: fonts.interSemiBold }}>15/4</Text>
+                        <Text style={{ fontFamily: fonts.interSemiBold }}>{nextMonth.getMonth()}/{startingYear}</Text>
                     </View>
                     <View style={styles.paymentBreakdownContentContainer}>
                         <Text style={styles.smallTitleStyle}>Monthly Payment</Text>
-                        <Text style={{ fontFamily: fonts.interSemiBold }}>RM1,526.75</Text>
+                        <Text style={{ fontFamily: fonts.interSemiBold }}>{monthlyPayment.toFixed(2)}</Text>
                     </View>
                 </View>
                 <Text style={styles.smallTextStyle}>Auto added to your upcoming bills after confirmation</Text>
             </ScrollView>
             <BottomButton
                 value="Add"
-                navigation={DebtMainPage}
+                navigation={DebtSummary}
             />
         </SafeAreaView>
     );

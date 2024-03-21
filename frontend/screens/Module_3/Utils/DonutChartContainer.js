@@ -7,7 +7,7 @@ import { SharedValue, useDerivedValue, useSharedValue, withTiming } from 'react-
 import { calculatePercentage } from './calculatePercentage';
 import RenderItem from './RenderItem';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { sw, sh } from '../../../styles/GlobalStyles';
+import { sw, sh, fonts } from '../../../styles/GlobalStyles';
 
 const styles = StyleSheet.create({
     mainTitle: {
@@ -55,6 +55,8 @@ const styles = StyleSheet.create({
     title: {
         flex: 1,
         justifyContent: 'flex-start',
+        fontFamily: fonts.interMedium,
+        fontSize: sw(18)
     },
 });
 
@@ -66,12 +68,12 @@ const DonutChartContainer = () => {
     const GAP = 0.04;
     const CHART_CONTAINER_WIDTH_HEIGHT = RADIUS * 2 + 10
 
-    const n = 5;
+    const n = 6;
     const totalValue = useSharedValue(0);
     const decimals = useSharedValue(0);
-    const colors = ['#E5D8FF', '#FFF0D4', '#FDCED0', '#CAFDEA', '#BCDAFC'];
-    const debtNumbers = [206.4, 361.19, 412.79, 644.99, 1212.58];
-    const debtNames = ['Netflix', 'Unifi', 'Electric', 'Car', 'House'];
+    const colors = ['#D8FFFC', '#FFF0D4', '#FDCED0', '#CAFDEA', '#BCDAFC', '#E5D8FF'];
+    const debtNumbers = [41.50, 215.75, 252.60, 337.57, 661.43, 2121.35];
+    const debtNames = ['Netflix Bill', 'Wifi Bill', 'Electric Bill', 'Car Loan', 'Personal Loan', 'House Loan'];
     const total = debtNumbers.reduce((acc, currentValue) => acc + currentValue, 0);
     const generatePercentages = calculatePercentage(debtNumbers, total);
     const generateDecimals = generatePercentages.map((number) => Number(number.toFixed(0)) / 100);
@@ -84,6 +86,8 @@ const DonutChartContainer = () => {
         percentage: generatePercentages[index],
         color: colors[index],
     }));
+
+    arrayOfObjects.sort((a, b) => b.value - a.value);
 
     const data = arrayOfObjects;
 
@@ -119,7 +123,7 @@ const DonutChartContainer = () => {
                         />
                     </View>
                     <View style={styles.labels}>
-                        {data.map((item, index) => {
+                        {data.slice(0,5).map((item, index) => {
                             return (
                                 <RenderItem
                                     item={item}

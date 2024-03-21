@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet, ImageSourcePropType } from 'react-native';
+import { View, Text, Image, StyleSheet} from 'react-native';
 import Animated, { FadeInDown, FadeOutDown } from 'react-native-reanimated';
 import { sw, sh } from '../../../styles/GlobalStyles';
 
@@ -65,7 +65,7 @@ const RenderWidget2 = ({image, backgroundColor, itemName, paymentDate, upcomingB
                 <Text style={styles.smallText}>Next payment: {paymentDate}</Text>
             </View>
             <View style={[styles.contentContainer, { alignItems: 'flex-end', marginEnd: sw(10) }]}>
-                <Text style={styles.titleText}>RM {upcomingBills}</Text>
+                <Text style={styles.titleText}>RM {Number(upcomingBills).toFixed(2)}</Text>
             </View>
         </Animated.View>
     );

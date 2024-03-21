@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
     ScrollView,
     StyleSheet,
@@ -7,7 +7,6 @@ import {
     TouchableOpacity,
     Image,
     SafeAreaView,
-    ImageSourcePropType,
 } from 'react-native';
 import { sw, sh } from '../../../styles/GlobalStyles';
 import AppBar from '../Utils/AppBar';
@@ -58,12 +57,44 @@ const styles = StyleSheet.create({
     },
 });
 
+const mockData_1 = mockData1
+const mockData_2 = mockData2
+
 function DebtSummary({navigation}) {
+    const [mockData1, setMockData1] = useState(mockData_1);
+    const [mockData2, setMockData2] = useState(mockData_2);
+
+    const updateMockData1 = (newData) => {
+        setMockData1(newData);
+    };
+
+    const updateMockData2 = (newData) => {
+        setMockData2(newData);
+    };
+
+    const sortedMockData1 = [...mockData1].sort((a, b) => {
+        const dateA = new Date(a.expiryDate.split('/').reverse().join('-'));
+        const dateB = new Date(b.expiryDate.split('/').reverse().join('-'));   
+        return dateA - dateB;
+    });
+
+    const sortedMockData2 = [...mockData2].sort((a, b) => {
+        const dateA = new Date(a.paymentDate.split('/').reverse().join('-'));
+        const dateB = new Date(b.paymentDate.split('/').reverse().join('-'));   
+        return dateA - dateB;
+    });
+
     const DebtAddExistingLoanPage = () => {
-        navigation.navigate('DebtAddExistingLoan');
+        navigation.navigate('DebtAddExistingLoan', {
+            mockData1: mockData1,
+            setMockData1: updateMockData1
+        });
     };
     const DebtAddUpcomingBillPage = () => {
-        navigation.navigate('DebtAddUpcomingBill');
+        navigation.navigate('DebtAddUpcomingBill', {
+            mockData2: mockData2,
+            setMockData2: updateMockData2
+        });
     };
     const PreviousPage = () => {
         navigation.goBack();
@@ -80,7 +111,7 @@ function DebtSummary({navigation}) {
                     <Text style={styles.text}>Current Loans</Text>
                     <PlusButton navigation={DebtAddExistingLoanPage} />
                 </View>
-                {mockData1.map(({ image, backgroundColor, itemName, expiryDate, currentLoan, totalLoan, index }) => {
+                {sortedMockData1.map(({ image, backgroundColor, itemName, expiryDate, currentLoan, totalLoan, index }) => {
                     return (
                         <RenderWidget1
                             image={image}
@@ -98,7 +129,7 @@ function DebtSummary({navigation}) {
                     <Text style={styles.text}>Upcoming Bills</Text>
                     <PlusButton navigation={DebtAddUpcomingBillPage} />
                 </View>
-                {mockData2.map(({ image, backgroundColor, itemName, paymentDate, upcomingBills, index }) => {
+                {sortedMockData2.map(({ image, backgroundColor, itemName, paymentDate, upcomingBills, index }) => {
                     return (
                         <RenderWidget2
                             image={image}

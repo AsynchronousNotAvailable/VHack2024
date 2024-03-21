@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, TextInput, TouchableOpacity, GestureResponderEvent } from 'react-native';
+import { StyleSheet, View, TextInput, Text, TouchableOpacity, GestureResponderEvent } from 'react-native';
 import { fonts, sw, sh } from '../../../styles/GlobalStyles';
 
 // import { InputOutline, InputStandard } from 'react-native-input-outline';
@@ -35,7 +35,7 @@ export const BottomButton = ({value, navigation}) => {
                 style={styles.buttonContainer}
                 onPress={navigation}
             >
-                <TextInput style={styles.buttonText}>{value}</TextInput>
+                <Text style={styles.buttonText}>{value}</Text>
             </TouchableOpacity>
         </View>
     );

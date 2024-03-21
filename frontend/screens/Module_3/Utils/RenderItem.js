@@ -7,14 +7,14 @@ import { sw, sh } from '../../../styles/GlobalStyles';
 const RenderItem = ({item, index}) => {
     return (
         <Animated.View
-            style={[styles.container, { width: sw(150) }]}
+            style={styles.container}
             entering={FadeInDown.delay(index * 200)}
             exiting={FadeOutDown}
         >
             <View style={styles.contentContainer}>
-                <View style={[styles.color, { backgroundColor: item.color }]} />
-                <Text style={styles.text}>{item.name}</Text>
-                <Text style={styles.text}>{item.percentage}%</Text>
+                <View style={[styles.color, { backgroundColor: item.color, flex: 0.2 }]} />
+                <Text style={[styles.labelText, {flex: 0.5}]}>{item.name}</Text>
+                <Text style={[styles.percentageText, {flex: 0.3}]}>{item.percentage}%</Text>
             </View>
         </Animated.View>
     );
@@ -30,19 +30,30 @@ const styles = StyleSheet.create({
         borderRadius: sw(20),
     },
     contentContainer: {
+        flex: 1,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginHorizontal: sw(20),
+        marginHorizontal: sw(10),
     },
     color: {
-        width: sw(20),
-        height: sh(20),
+        width: sw(16),
+        aspectRatio: 1,
         borderRadius: sw(10),
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        marginRight: sw(4)
     },
-    text: {
+    labelText: {
         fontSize: sw(10),
         fontWeight: 'bold',
         color: 'black',
+        marginHorizontal: sw(4)
+    },
+    percentageText: {
+        fontSize: sw(10),
+        fontWeight: 'bold',
+        color: 'black',
+        marginLeft: sw(4)
     },
 });
