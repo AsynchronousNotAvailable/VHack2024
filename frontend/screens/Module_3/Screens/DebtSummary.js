@@ -1,13 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import {
-    ScrollView,
-    StyleSheet,
-    View,
-    Text,
-    TouchableOpacity,
-    Image,
-    SafeAreaView,
-} from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { ScrollView, StyleSheet, View, Text, TouchableOpacity, Image, SafeAreaView } from 'react-native';
 import { sw, sh } from '../../../styles/GlobalStyles';
 import AppBar from '../Utils/AppBar';
 import PlusButton from '../Utils/RenderSummaryPlusButton';
@@ -19,7 +11,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        backgroundColor: 'white',
     },
     topContainer: {
         flex: 1,
@@ -37,6 +29,8 @@ const styles = StyleSheet.create({
         marginBottom: sh(8),
         justifyContent: 'space-between',
         alignItems: 'center',
+        borderColor: 'black',
+        // borderWidth: 1,
     },
     color: {
         width: sw(20),
@@ -57,10 +51,10 @@ const styles = StyleSheet.create({
     },
 });
 
-const mockData_1 = mockData1
-const mockData_2 = mockData2
+const mockData_1 = mockData1;
+const mockData_2 = mockData2;
 
-function DebtSummary({navigation}) {
+function DebtSummary({ navigation }) {
     const [mockData1, setMockData1] = useState(mockData_1);
     const [mockData2, setMockData2] = useState(mockData_2);
 
@@ -74,26 +68,26 @@ function DebtSummary({navigation}) {
 
     const sortedMockData1 = [...mockData1].sort((a, b) => {
         const dateA = new Date(a.expiryDate.split('/').reverse().join('-'));
-        const dateB = new Date(b.expiryDate.split('/').reverse().join('-'));   
+        const dateB = new Date(b.expiryDate.split('/').reverse().join('-'));
         return dateA - dateB;
     });
 
     const sortedMockData2 = [...mockData2].sort((a, b) => {
         const dateA = new Date(a.paymentDate.split('/').reverse().join('-'));
-        const dateB = new Date(b.paymentDate.split('/').reverse().join('-'));   
+        const dateB = new Date(b.paymentDate.split('/').reverse().join('-'));
         return dateA - dateB;
     });
 
     const DebtAddExistingLoanPage = () => {
         navigation.navigate('DebtAddExistingLoan', {
             mockData1: mockData1,
-            setMockData1: updateMockData1
+            setMockData1: updateMockData1,
         });
     };
     const DebtAddUpcomingBillPage = () => {
         navigation.navigate('DebtAddUpcomingBill', {
             mockData2: mockData2,
-            setMockData2: updateMockData2
+            setMockData2: updateMockData2,
         });
     };
     const PreviousPage = () => {
@@ -102,29 +96,34 @@ function DebtSummary({navigation}) {
 
     return (
         <SafeAreaView style={styles.container}>
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <AppBar
+            <ScrollView
+                showsVerticalScrollIndicator={false}
+                style={{ marginHorizontal: sw(10) }}
+            >
+                {/* <AppBar
                     title="Debt Summary"
                     navigation={PreviousPage}
-                />
+                /> */}
                 <View style={styles.subtitleContainer}>
                     <Text style={styles.text}>Current Loans</Text>
                     <PlusButton navigation={DebtAddExistingLoanPage} />
                 </View>
-                {sortedMockData1.map(({ image, backgroundColor, itemName, expiryDate, currentLoan, totalLoan, index }) => {
-                    return (
-                        <RenderWidget1
-                            image={image}
-                            backgroundColor={backgroundColor}
-                            itemName={itemName}
-                            expiryDate={expiryDate}
-                            currentLoan={currentLoan}
-                            totalLoan={totalLoan}
-                            index={index}
-                            key={index}
-                        />
-                    );
-                })}
+                {sortedMockData1.map(
+                    ({ image, backgroundColor, itemName, expiryDate, currentLoan, totalLoan, index }) => {
+                        return (
+                            <RenderWidget1
+                                image={image}
+                                backgroundColor={backgroundColor}
+                                itemName={itemName}
+                                expiryDate={expiryDate}
+                                currentLoan={currentLoan}
+                                totalLoan={totalLoan}
+                                index={index}
+                                key={index}
+                            />
+                        );
+                    },
+                )}
                 <View style={styles.subtitleContainer}>
                     <Text style={styles.text}>Upcoming Bills</Text>
                     <PlusButton navigation={DebtAddUpcomingBillPage} />

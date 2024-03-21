@@ -1,21 +1,20 @@
 import * as React from 'react';
 import Svg, { SvgProps, G, Rect, Path, Defs, LinearGradient, Stop, Pattern, Use, Image } from 'react-native-svg';
 /* SVGR has dropped some elements not supported by react-native-svg: filter */
-const DebtMainBottomImage = (props) => (
+const DebtMainBottomImage = () => (
     <Svg
-        width={390}
+        width={420}
         height={160}
         fill="none"
-        {...props}
     >
         <G filter="url(#a)">
             <Rect
-                width={350}
+                width={380}
                 height={120}
                 x={20}
                 y={12}
                 fill="url(#b)"
-                rx={16}
+                rx={20}
             />
             <Path
                 fill="#fff"

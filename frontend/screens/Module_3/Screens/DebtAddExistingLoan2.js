@@ -19,6 +19,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: 'white',
     },
     titleStyle: {
         fontSize: sw(18),
@@ -31,10 +32,17 @@ const styles = StyleSheet.create({
         marginHorizontal: sw(20),
         backgroundColor: '#F6F8FA',
         borderRadius: sw(6),
+        marginBottom: sh(40),
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
     },
     loanBreakdownContentContainer: {
         flex: 1,
         flexDirection: 'row',
+        backgroundColor: '#F6F8FA',
         justifyContent: 'space-between',
         margin: sw(15),
     },
@@ -42,6 +50,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column',
         marginHorizontal: sw(20),
+        backgroundColor: '#F6F8FA',
         shadowOffset: { width: 0, height: 5 },
         shadowOpacity: 0.1,
     },
@@ -49,23 +58,27 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        borderRadius: sw(6),
+        // borderRadius: sw(6),
         paddingHorizontal: sw(15),
         paddingVertical: sh(20),
-        marginVertical: sh(10),
-        backgroundColor: 'white',
+        backgroundColor: '#F6F8FA',
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
     },
     smallTitleStyle: {
         color: '#A4A9AE',
     },
     smallTextStyle: {
-        marginTop: sh(50),
+        marginTop: sh(70),
         color: '#A4A9AE',
         textAlign: 'center',
     },
 });
 
-function DebtAddExistingLoan2({navigation, route}) {
+function DebtAddExistingLoan2({ navigation, route }) {
     const { loanName, loanAmount, tenureYears, interestRate, startingYear, mockData1, setMockData1 } = route.params;
 
     var now = new Date();
@@ -75,21 +88,22 @@ function DebtAddExistingLoan2({navigation, route}) {
         var nextMonth = new Date(now.getFullYear(), now.getMonth() + 2, now.getDate());
     }
 
-    const interestAmount = (loanAmount*(interestRate/100)).toFixed(2)
-    const endYear = (nextMonth.getFullYear()+Number(tenureYears))
-    const monthlyPayment = (Number(loanAmount) + Number(interestAmount)) / (12*tenureYears)
-    const expiryDate = now.getDate()+'/'+nextMonth.getMonth()+'/'+(Number(nextMonth.getFullYear())+Number(tenureYears))
+    const interestAmount = (loanAmount * (interestRate / 100)).toFixed(2);
+    const endYear = nextMonth.getFullYear() + Number(tenureYears);
+    const monthlyPayment = (Number(loanAmount) + Number(interestAmount)) / (12 * tenureYears);
+    const expiryDate =
+        now.getDate() + '/' + nextMonth.getMonth() + '/' + (Number(nextMonth.getFullYear()) + Number(tenureYears));
 
     const DebtSummary = () => {
         const newData = {
-                image: logo.school_logo,
-                backgroundColor: '#CFFAEA',
-                itemName: loanName,
-                expiryDate: expiryDate,
-                currentLoan: 0,
-                totalLoan: loanAmount,
-                index: mockData1.length+2,
-        }
+            image: logo.school_logo,
+            backgroundColor: '#CFFAEA',
+            itemName: loanName,
+            expiryDate: expiryDate,
+            currentLoan: 0,
+            totalLoan: loanAmount,
+            index: mockData1.length + 2,
+        };
         setMockData1([...mockData1, newData]);
         navigation.navigate('DebtSummary');
     };
@@ -100,13 +114,13 @@ function DebtAddExistingLoan2({navigation, route}) {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <AppBar
+                {/* <AppBar
                     title="Add Loan"
                     navigation={PreviousPage}
-                />
+                /> */}
                 <Text style={styles.titleStyle}>Loan Breakdown</Text>
                 <View style={styles.loanBreakdownContainer}>
-                <View style={styles.loanBreakdownContentContainer}>
+                    <View style={styles.loanBreakdownContentContainer}>
                         <Text style={styles.smallTitleStyle}>Loan Name</Text>
                         <Text style={{ fontFamily: fonts.interSemiBold }}>{loanName}</Text>
                     </View>
@@ -120,14 +134,18 @@ function DebtAddExistingLoan2({navigation, route}) {
                     </View>
                     <View style={styles.loanBreakdownContentContainer}>
                         <Text style={styles.smallTitleStyle}>End Date</Text>
-                        <Text style={{ fontFamily: fonts.interSemiBold }}>{nextMonth.getMonth()}/{endYear}</Text>
+                        <Text style={{ fontFamily: fonts.interSemiBold }}>
+                            {nextMonth.getMonth()}/{endYear}
+                        </Text>
                     </View>
                 </View>
                 <Text style={styles.titleStyle}>Payment Breakdown</Text>
                 <View style={styles.paymentBreakdownContainer}>
                     <View style={styles.paymentBreakdownContentContainer}>
                         <Text style={styles.smallTitleStyle}>Upcoming Payment</Text>
-                        <Text style={{ fontFamily: fonts.interSemiBold }}>{nextMonth.getMonth()}/{startingYear}</Text>
+                        <Text style={{ fontFamily: fonts.interSemiBold }}>
+                            {nextMonth.getMonth()}/{startingYear}
+                        </Text>
                     </View>
                     <View style={styles.paymentBreakdownContentContainer}>
                         <Text style={styles.smallTitleStyle}>Monthly Payment</Text>

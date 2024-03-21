@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Image, StyleSheet,} from 'react-native';
+import { View, Text, Image, StyleSheet } from 'react-native';
 import Animated, { FadeInDown, FadeOutDown } from 'react-native-reanimated';
 import { sw, sh, fonts } from '../../../styles/GlobalStyles';
 
@@ -10,35 +10,40 @@ const styles = StyleSheet.create({
         width: '90%',
         marginHorizontal: sw(20),
         paddingVertical: sh(15),
+        height: sh(100),
         backgroundColor: '#F6F7FA',
-        borderRadius: sw(10),
+        // borderRadius: sw(10),
         alignItems: 'center',
         justifyContent: 'center',
         shadowOffset: { width: 0, height: 0 },
-        shadowOpacity: 0.05,
+        shadowColor: '#000',
+        shadowOffset: { width: 0, height: 2 },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 5,
     },
     contentContainer: {
         flex: 0.3,
         flexDirection: 'column',
-        marginHorizontal: sw(4),
+        // marginHorizontal: sw(4)
     },
     bigTitleText: {
-        flex: 0.24,
+        flex: 0.2,
         fontSize: sw(14),
-        fontFamily: fonts.interMedium,
-        fontWeight: 'bold',
+        fontFamily: fonts.interSemiBold,
+        // fontWeight: 'bold',
         color: 'black',
-        marginHorizontal: sw(10),
+        marginHorizontal: sw(13),
     },
     smallTitleText: {
         color: '#828AA1',
-        fontFamily: fonts.interMedium,
-        fontSize: sw(10),
+        fontFamily: fonts.interRegular,
+        fontSize: 12,
     },
     smallText: {
-        fontSize: sw(12),
+        fontSize: 14,
         color: '#828AA1',
-        fontFamily: fonts.interMedium,
+        fontFamily: fonts.interSemiBold,
     },
     imageContainer: {
         flex: 0.11,
@@ -54,15 +59,15 @@ const styles = StyleSheet.create({
     },
 });
 
-const RenderRepaymentPlanSummaryItem = (
-    {image,
+const RenderRepaymentPlanSummaryItem = ({
+    image,
     itemName,
     firstTitle,
     firstContent,
     secondTitle,
     secondContent,
-    index,}
-) => {
+    index,
+}) => {
     return (
         <Animated.View
             style={styles.widgetContainer}

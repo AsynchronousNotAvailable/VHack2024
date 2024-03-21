@@ -22,12 +22,13 @@ import { StackNavigationProp } from '@react-navigation/stack';
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        height: '100%',
     },
     contentContainer: {
         flex: 1,
     },
     inputContainer: {
-        flex: 1,
+        // flex: 1,
         margin: sw(20),
     },
     inputPaper: {
@@ -35,14 +36,15 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(110, 113, 124, 0.05)',
         fontFamily: fonts.interRegular,
         borderRadius: 10,
-        paddingVertical: sh(4),
+        paddingTop: sh(8),
+        paddingBottom: sh(5),
         marginVertical: sh(6),
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.2,
     },
 });
 
-function DebtAddExistingLoan({navigation, route}) {
+function DebtAddExistingLoan({ navigation, route }) {
     const [loanName, setLoanName] = useState('');
     const [loanAmount, setLoanAmount] = useState('');
     const [tenureYears, setTenureYears] = useState('');
@@ -64,7 +66,7 @@ function DebtAddExistingLoan({navigation, route}) {
             interestRate: interestRate,
             startingYear: startingYear,
             mockData1: route.params.mockData1,
-            setMockData1: route.params.setMockData1
+            setMockData1: route.params.setMockData1,
         });
     };
 
@@ -75,10 +77,10 @@ function DebtAddExistingLoan({navigation, route}) {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <AppBar
+                {/* <AppBar
                     title="Add Loan"
                     navigation={PreviousPage}
-                />
+                /> */}
                 <View style={styles.contentContainer}>
                     <View style={styles.inputContainer}>
                         <TextInputPaper

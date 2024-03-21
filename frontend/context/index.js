@@ -5,8 +5,8 @@ export const GlobalContext = createContext(null);
 function GlobalState({ children }) {
     
     const [currentUsername, setCurrentUsername] = useState("");
-    const [firstLaunch, setFirstLaunch] = useState(true);
-    const [isAuth, setIsAuth] = useState(false);
+    const [firstLaunch, setFirstLaunch] = useState(false); //CHANGE LATER
+    const [isAuth, setIsAuth] = useState(true); //CHANGE LATER
     return (
         <GlobalContext.Provider
             value={{
