@@ -125,7 +125,7 @@ const Expenses_Add_1 = ({ navigation, route }) => {
     };
 
     const scanReceipt = () => {
-        navigation.navigate("Scan_Receipt");
+        navigation.navigate("Open_Camera");
     };
 
     useEffect(() => {

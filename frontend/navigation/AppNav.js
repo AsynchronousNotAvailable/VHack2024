@@ -20,6 +20,8 @@ import Expenses_Transaction from "../screens/Module_4/Expenses_Transaction";
 import Expenses_Add_1 from "../screens/Module_4/Expenses_Add_1";
 import Expenses_Add_Budget from "../screens/Module_4/Expenses_Add_Budget";
 import Scan_Receipt from "../screens/Module_4/Scan_Receipt";
+import OpenCamera from "../screens/Module_4/Open_Camera";
+import Taken_Photo from "../screens/Module_4/Taken_Photo";
 
 function AppNav() {
     const Stack = createStackNavigator();
@@ -145,7 +147,20 @@ function AppNav() {
                     component={Scan_Receipt}
                     options={{
                         headerShown: false,
-                        
+                    }}
+                />
+                <ExpensesStack.Screen
+                    name="Open_Camera"
+                    component={OpenCamera}
+                    options={{
+                        headerShown: false,
+                    }}
+                />
+                <ExpensesStack.Screen
+                    name="Taken_Photo"
+                    component={Taken_Photo}
+                    options={{
+                        headerShown: false,
                     }}
                 />
             </ExpensesStack.Navigator>
