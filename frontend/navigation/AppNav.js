@@ -156,27 +156,141 @@ function AppNav() {
     }
 
     const HomeStack = createNativeStackNavigator();
+
     function HomeStackScreen() {
         return (
             <HomeStack.Navigator>
-                <HomeStack.Screen name="Home_Main" component={Home_Main} />
-                <HomeStack.Screen name="Notifications" component={NotificationsPage} />
-                <HomeStack.Screen name="Debt Management Programme" component={DMP1} />
-                <HomeStack.Screen name="Debt Management Programme2" component={DMP2} />
-                <HomeStack.Screen name="Debt Management Programme3" component={DMP3} />
-                <HomeStack.Screen name="Debt Negotiation Platform" component={DNPDashboard} />
-                <HomeStack.Screen name="Debt Negotiation Platform1" component={DNP1} />
-                <HomeStack.Screen name="Debt Negotiation Platform2" component={DNP2} />
-                <HomeStack.Screen name="Debt Negotiation Platform3" component={DNP3} />
-                <HomeStack.Screen name="Debt Negotiation Platform4" component={DNP4} />
-                <HomeStack.Screen name="Negotiation Results" component={DNPResult} />
-                <HomeStack.Screen name="Chat with Creditor" component={DNPChat} />
-                <HomeStack.Screen name="LoanCalculator" component={LoanCalculatorScreen} />
-                <HomeStack.Screen name="LoanResults" component={LoanResultsScreen} />
-
+                <HomeStack.Screen
+                    name="Home_Main"
+                    component={Home_Main}
+                    options={{
+                        title: "Home",
+                        headerTitleAlign: "center",
+                        headerBackTitle: "",
+                        
+                    }}
+                />
+                <HomeStack.Screen
+                    name="Notifications"
+                    component={NotificationsPage}
+                    options={{
+                        title: "Notifications",
+                        headerTitleAlign: "center",
+                        headerBackTitle: "",
+                    }}
+                />
+                <HomeStack.Screen
+                    name="Debt Management Programme"
+                    component={DMP1}
+                    options={{
+                        title: "Debt Management Programme",
+                        headerTitleAlign: "center",
+                        headerBackTitle: "",
+                    }}
+                />
+                <HomeStack.Screen
+                    name="Debt Management Programme2"
+                    component={DMP2}
+                    options={{
+                        title: "Debt Management Programme",
+                        headerTitleAlign: "center",
+                        headerBackTitle: "",
+                    }}
+                />
+                <HomeStack.Screen
+                    name="Debt Management Programme3"
+                    component={DMP3}
+                    options={{
+                        title: "Debt Management Programme",
+                        headerTitleAlign: "center",
+                        headerBackTitle: "",
+                    }}
+                />
+                <HomeStack.Screen
+                    name="Debt Negotiation Platform"
+                    component={DNPDashboard}
+                    options={{
+                        title: "Debt Negotiation Platform",
+                        headerTitleAlign: "center",
+                        headerBackTitle: "",
+                    }}
+                />
+                <HomeStack.Screen
+                    name="Debt Negotiation Platform1"
+                    component={DNP1}
+                    options={{
+                        title: "Debt Negotiation Platform",
+                        headerTitleAlign: "center",
+                        headerBackTitle: "",
+                    }}
+                />
+                <HomeStack.Screen
+                    name="Debt Negotiation Platform2"
+                    component={DNP2}
+                    options={{
+                        title: "Debt Negotiation Platform",
+                        headerTitleAlign: "center",
+                        headerBackTitle: "",
+                    }}
+                />
+                <HomeStack.Screen
+                    name="Debt Negotiation Platform3"
+                    component={DNP3}
+                    options={{
+                        title: "Debt Negotiation Platform",
+                        headerTitleAlign: "center",
+                        headerBackTitle: "",
+                    }}
+                />
+                <HomeStack.Screen
+                    name="Debt Negotiation Platform4"
+                    component={DNP4}
+                    options={{
+                        title: "Debt Negotiation Platform",
+                        headerTitleAlign: "center",
+                        headerBackTitle: "",
+                    }}
+                />
+                <HomeStack.Screen
+                    name="Negotiation Results"
+                    component={DNPResult}
+                    options={{
+                        title: "Negotiation Results",
+                        headerTitleAlign: "center",
+                        headerBackTitle: "",
+                    }}
+                />
+                <HomeStack.Screen
+                    name="Chat with Creditor"
+                    component={DNPChat}
+                    options={{
+                        title: "Chat with Creditor",
+                        headerTitleAlign: "center",
+                        headerBackTitle: "",
+                    }}
+                />
+                <HomeStack.Screen
+                    name="LoanCalculator"
+                    component={LoanCalculatorScreen}
+                    options={{
+                        title: "Loan Calculator",
+                        headerTitleAlign: "center",
+                        headerBackTitle: "",
+                    }}
+                />
+                <HomeStack.Screen
+                    name="LoanResults"
+                    component={LoanResultsScreen}
+                    options={{
+                        title: "Loan Results",
+                        headerTitleAlign: "center",
+                        headerBackTitle: "",
+                    }}
+                />
             </HomeStack.Navigator>
         );
     }
+    
 
     const DebtStack = createNativeStackNavigator();
     function DebtStackScreen() {

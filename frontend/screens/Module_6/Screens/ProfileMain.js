@@ -78,7 +78,7 @@ function ProfileMain({navigation, route}) {
     }
 
     if (currentUsername == ''){
-        setCurrentUsername('User')
+        setCurrentUsername('Jason')
     }
 
     const ProfileEditPage = () => {
