@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
-// import { OPENAI_API_KEY } from "@env"
+import { OPENAI_API_KEY } from "@env"
 
 const ConsultChatscreen = ({ }) => {
     const [messages, setMessages] = useState([]);
