@@ -423,42 +423,46 @@ function AppNav() {
     const ProfileStack = createNativeStackNavigator();
     function ProfileStackScreen() {
         return (
-            <ProfileStack.Navigator screenOptions={{ headerShown: false, headerBackTitleVisible: false }}>
+            <ProfileStack.Navigator screenOptions={{ headerShown: true, headerBackTitleVisible: false }}>
                 <ProfileStack.Screen
                     name="ProfileMain"
                     component={ProfileMain}
                     initialParams={{ setIsAuth: setIsAuth }}
-                    screenOptions={{ statusBarHidden: false }}
+                    options={{ headerShown: false }}
                 />
                 <ProfileStack.Screen
                     name="ProfileEditPage"
                     component={ProfileEditPage}
-                    options={{ tabBarVisible: false }}
+                    options={{ headerShown: true, headerTitleAlign: 'left', headerTitle: 'Edit Profile' }}
                 />
                 <ProfileStack.Screen
                     name="ProfileNotificationPage"
                     component={ProfileNotificationPage}
-                    options={{ tabBarVisible: false }}
+                    options={{ headerShown: true, headerTitleAlign: 'left', headerTitle: 'Notifications' }}
                 />
                 <ProfileStack.Screen
                     name="ProfileCurrencyPage"
                     component={ProfileCurrencyPage}
-                    options={{ tabBarVisible: false }}
+                    options={{
+                        headerShown: true,
+                        headerTitleAlign: 'left',
+                        headerTitle: 'CTOS Score Checker',
+                    }}
                 />
                 <ProfileStack.Screen
                     name="ProfileHelpCenter"
                     component={ProfileHelpCenter}
-                    options={{ tabBarVisible: false }}
+                    options={{ headerShown: true, headerTitleAlign: 'left', headerTitle: 'Help Centre' }}
                 />
                 <ProfileStack.Screen
                     name="ProfileReport"
                     component={ProfileReport}
-                    options={{ tabBarVisible: false }}
+                    options={{ headerShown: true, headerTitleAlign: 'left', headerTitle: 'Report Issue' }}
                 />
                 <ProfileStack.Screen
                     name="ProfileFeedbackPage"
                     component={ProfileFeedbackPage}
-                    options={{ tabBarVisible: false }}
+                    options={{ headerShown: true, headerTitleAlign: 'left', headerTitle: 'Feedback' }}
                 />
             </ProfileStack.Navigator>
         );

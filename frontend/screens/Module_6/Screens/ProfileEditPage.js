@@ -59,10 +59,10 @@ function ProfileEditPage({navigation}) {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <AppBar
+                {/* <AppBar
                     title="Add Loan"
                     navigation={PreviousPage}
-                />
+                /> */}
                 <View style={styles.contentContainer}>
                     <View style={styles.inputContainer}>
                         <TextInputPaper

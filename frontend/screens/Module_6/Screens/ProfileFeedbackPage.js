@@ -62,10 +62,10 @@ function ProfileFeedbackPage({navigation}) {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <AppBar
+                {/* <AppBar
                     title="Send feedback"
                     navigation={PreviousPage}
-                />
+                /> */}
                 <View style={styles.contentContainer}>
                     <Text style={styles.textStyle}>How do you rate our app?</Text>
                     <Rating size={40} rating={rating} variant='emoji' onChange={handleChange} style={styles.emojiContainer}/>

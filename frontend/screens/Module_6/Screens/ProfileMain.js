@@ -182,7 +182,7 @@ function ProfileMain({navigation, route}) {
                         style={styles.buttonContainer}
                         onPress={handleLogout}
                     >
-                        <TextInput style={styles.buttonText}>Log Out</TextInput>
+                        <Text style={styles.buttonText}>Log Out</Text>
                     </TouchableOpacity>
                 </View>
             </ScrollView>

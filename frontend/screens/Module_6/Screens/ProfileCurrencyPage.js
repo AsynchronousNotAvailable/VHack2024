@@ -81,10 +81,10 @@ function ProfileCurrencyPage({navigation}) {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <AppBar
+                {/* <AppBar
                     title="Currency"
                     navigation={PreviousPage}
-                />
+                /> */}
                 <View style={styles.contentContainer}>
                     <Dropdown
                         style={[styles.dropdown, isFocus && { borderColor: 'blue' }]}
