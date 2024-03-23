@@ -63,6 +63,8 @@ import ExpensesIcon from '../assets/TabIcon/ExpenseIcon.png';
 import HomeIcon from '../assets/TabIcon/HomeIcon.png';
 import ProfileIcon from '../assets/TabIcon/ProfileIcon.png';
 import ProfileCTOSPage from '../screens/Module_6/Screens/ProfileCTOSPage';
+import { fonts } from '../styles/GlobalStyles';
+
 
 function AppNav() {
     const Stack = createStackNavigator();
