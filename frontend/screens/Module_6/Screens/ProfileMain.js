@@ -1,13 +1,9 @@
 import React, { useContext } from 'react';
-import { ScrollView, StyleSheet, View, Text, TextInput, TouchableOpacity, Image, StatusBar } from 'react-native';
-import { GlobalContext } from '../../../context';
+import { Image, ScrollView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { LinearGradient } from 'expo-linear-gradient';
-import { sw, sh, colors, fonts, logo } from '../../../styles/GlobalStyles';
-import Animated from 'react-native-reanimated';
+import { GlobalContext } from '../../../context';
+import { fonts, logo, sh, sw } from '../../../styles/GlobalStyles';
 import RenderProfileMainItem from '../Utils/RenderProfileMainItem';
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 
 const styles = StyleSheet.create({
     container: {
@@ -82,7 +78,7 @@ function ProfileMain({navigation, route}) {
     }
 
     if (currentUsername == ''){
-        setCurrentUsername('User')
+        setCurrentUsername('Jason')
     }
 
     const ProfileEditPage = () => {
@@ -94,8 +90,8 @@ function ProfileMain({navigation, route}) {
     const ProfileHelpCenterPage = () => {
         navigation.navigate('ProfileHelpCenter');
     };
-    const ProfileCurrencyPage = () => {
-        navigation.navigate('ProfileCurrencyPage');
+    const ProfileCTOSPage = () => {
+        navigation.navigate('ProfileCTOSPage');
     };
     const ProfileFeedbackPage = () => {
         navigation.navigate('ProfileFeedbackPage');
@@ -126,7 +122,7 @@ function ProfileMain({navigation, route}) {
         {
             icon: logo.ctos_icon,
             title: 'CTOS Check',
-            navigation: ProfileCurrencyPage,
+            navigation: ProfileCTOSPage,
             index: 4,
         },
         {

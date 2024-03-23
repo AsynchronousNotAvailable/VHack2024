@@ -1,6 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView } from 'react-native';
-import { colors, fonts, sh, sw } from "../../../styles/GlobalStyles";
+import { ScrollView, StyleSheet, Text, View } from 'react-native';
 
 
 function LoanResultsScreen({ route }) {
@@ -14,15 +13,22 @@ function LoanResultsScreen({ route }) {
             advice = "Your monthly loan payment consumes about " + stressLevel.toFixed(2) + "% of your net income, nearing the affordability limit. This commitment might limit funds for other needs and savings, risking financial stress.";
         } else if (stressLevel >= 35) {
             advice = "Your monthly loan payment accounts for approximately " + stressLevel.toFixed(2) + "% of your monthly net income. While this is manageable, it's advisable to maintain a cautious budget to accommodate other living expenses and savings.";
-        } else {
+        } else if  (stressLevel >= 35){
             advice = "Your monthly loan payment represents about " + stressLevel.toFixed(2) + "% of your monthly net income. This is within a comfortable range, allowing for savings and other expenses without straining your finances.";
+        
         }
         return advice;
     };
 
-    const stressLevel = monthlyPayment ? (monthlyPayment / netIncome) * 100 : 0;
-    const stressLevelText = stressLevel >= 50 ? 'Stressful Purchase' : stressLevel >= 35 ? 'Manageable Purchase' : 'Comfortable Purchase';
-    const purchaseAdvice = getPurchaseAdvice(stressLevel);
+    const canAfford = netIncome > 0;
+    const stressLevel = canAfford ? (monthlyPayment / netIncome) * 100 : 100; 
+    const stressLevelText = !canAfford ? 'Unaffordable' :
+                            stressLevel >= 50 ? 'Stressful Purchase' :
+                            stressLevel >= 35 ? 'Manageable Purchase' : 'Comfortable Purchase';
+    
+    const purchaseAdvice = !canAfford ?
+        "Based on your net income, this loan is unaffordable. It's crucial to consider loans that align with your financial capabilities to avoid debt stress." :
+        getPurchaseAdvice(stressLevel);
 
     const totalPayments = monthlyPayment * tenure * 12;
     const totalInterest = totalPayments - loanAmount;
@@ -48,10 +54,10 @@ function LoanResultsScreen({ route }) {
         <ScrollView style={styles.container}>
 
             <Text style={styles.header}>Stress Test Results</Text>
-            <StressGauge level={stressLevel} />
-            <Text style={[styles.stressLevelText, { color: stressLevel >= 50 ? 'red' : stressLevel >= 35 ? 'orange' : 'green' }]}>
-                Stress Level: {stressLevelText} ({stressLevel.toFixed(2)}% of net income)
-            </Text>
+            <StressGauge level={canAfford ? stressLevel : 100} />
+<Text style={[styles.stressLevelText, { color: canAfford ? (stressLevel >= 50 ? 'red' : stressLevel >= 35 ? 'orange' : 'green') : 'red' }]}>
+    Stress Level: {stressLevelText} {canAfford ? `(${stressLevel.toFixed(2)}% of net income)` : ""}
+</Text>
             <Text style={styles.adviceDescription}>{purchaseAdvice}</Text>
             <Text style={styles.adviceDescription}>
                 Net Income (Income - Monthly Bills - New Loan): RM{monthlyIncome.toFixed(2)} - RM{monthlyBills} -RM{monthlyPayment} = RM{netIncome.toFixed(2)}

@@ -1,70 +1,70 @@
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createStackNavigator } from '@react-navigation/stack';
+import { GlobalContext } from '../context';
 import Landing_Page_1 from '../screens/Module_1/Landing_Page_1';
-import SignUp from '../screens/Module_1/SignUp';
 import Login from '../screens/Module_1/Login';
+import SignUp from '../screens/Module_1/SignUp';
 import Home_Main from '../screens/Module_2/Home_Main';
-import DebtMain from '../screens/Module_3/Screens/DebtMain';
-import DebtSummary from '../screens/Module_3/Screens/DebtSummary';
 import DebtAddExistingLoan from '../screens/Module_3/Screens/DebtAddExistingLoan';
 import DebtAddExistingLoan2 from '../screens/Module_3/Screens/DebtAddExistingLoan2';
 import DebtAddUpcomingBill from '../screens/Module_3/Screens/DebtAddUpcomingBill';
-import DebtRepaymentPlanSummary from '../screens/Module_3/Screens/DebtRepaymentPlanSummary';
+import DebtMain from '../screens/Module_3/Screens/DebtMain';
 import DebtRepaymentPlanChoice from '../screens/Module_3/Screens/DebtRepaymentPlanChoice';
+import DebtRepaymentPlanSummary from '../screens/Module_3/Screens/DebtRepaymentPlanSummary';
+import DebtSummary from '../screens/Module_3/Screens/DebtSummary';
 import Expenses_Main from '../screens/Module_4/Expenses_Main';
-import ProfileMain from '../screens/Module_6/Screens/ProfileMain';
+import Consult_Main from '../screens/Module_5/Consult_Main';
 import ProfileCurrencyPage from '../screens/Module_6/Screens/ProfileCurrencyPage';
 import ProfileEditPage from '../screens/Module_6/Screens/ProfileEditPage';
 import ProfileFeedbackPage from '../screens/Module_6/Screens/ProfileFeedbackPage';
 import ProfileHelpCenter from '../screens/Module_6/Screens/ProfileHelpCenter';
+import ProfileMain from '../screens/Module_6/Screens/ProfileMain';
 import ProfileNotificationPage from '../screens/Module_6/Screens/ProfileNotificationPage';
 import ProfileReport from '../screens/Module_6/Screens/ProfileReport';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Consult_Main from '../screens/Module_5/Consult_Main';
-import { GlobalContext } from '../context';
 // import Home2 from '../screens/Module_2/Home2';
+import { useContext } from 'react';
 import Onboarding1 from '../screens/Module_1/Onboarding1';
 import Onboarding2 from '../screens/Module_1/Onboarding2';
 import Onboarding3 from '../screens/Module_1/Onboarding3';
-import { useContext } from 'react';
-import { StatusBar } from 'react-native';
-import Expenses_Transaction from "../screens/Module_4/Expenses_Transaction";
-import Expenses_Add_1 from "../screens/Module_4/Expenses_Add_1";
-import Expenses_Add_Budget from "../screens/Module_4/Expenses_Add_Budget";
-import Scan_Receipt from "../screens/Module_4/Scan_Receipt";
-import OpenCamera from "../screens/Module_4/Open_Camera";
-import Taken_Photo from "../screens/Module_4/Taken_Photo";
-import NotificationsPage from "../screens/Module_2/Notification/NotificationsPage";
-import LoanCalculatorScreen from "../screens/Module_2/LoanCalculator/LoanCalculatorScreen";
-import LoanResultsScreen from "../screens/Module_2/LoanCalculator/LoanResultsScreen";
 import DMP1 from "../screens/Module_2/DMP/DMP1";
 import DMP2 from "../screens/Module_2/DMP/DMP2";
 import DMP3 from "../screens/Module_2/DMP/DMP3";
-import DNPDashboard from "../screens/Module_2/DebtNegotiationPlatform/DNPDashboard";
 import DNP1 from "../screens/Module_2/DebtNegotiationPlatform/DNP1";
 import DNP2 from "../screens/Module_2/DebtNegotiationPlatform/DNP2";
 import DNP3 from "../screens/Module_2/DebtNegotiationPlatform/DNP3";
 import DNP4 from "../screens/Module_2/DebtNegotiationPlatform/DNP4";
 import DNPChat from "../screens/Module_2/DebtNegotiationPlatform/DNPChat";
+import DNPDashboard from "../screens/Module_2/DebtNegotiationPlatform/DNPDashboard";
 import DNPResult from "../screens/Module_2/DebtNegotiationPlatform/DNPResult";
+import LoanCalculatorScreen from "../screens/Module_2/LoanCalculator/LoanCalculatorScreen";
+import LoanResultsScreen from "../screens/Module_2/LoanCalculator/LoanResultsScreen";
+import NotificationsPage from "../screens/Module_2/Notification/NotificationsPage";
+import Expenses_Add_1 from "../screens/Module_4/Expenses_Add_1";
+import Expenses_Add_Budget from "../screens/Module_4/Expenses_Add_Budget";
+import Expenses_Transaction from "../screens/Module_4/Expenses_Transaction";
+import OpenCamera from "../screens/Module_4/Open_Camera";
+import Scan_Receipt from "../screens/Module_4/Scan_Receipt";
+import Taken_Photo from "../screens/Module_4/Taken_Photo";
 
-import Consult_Message from "../screens/Module_5/Consult_Message";
-import Consult_Chatscreen from "../screens/Module_5/Consult_Chatscreen";
-import Consult_Advisors from "../screens/Module_5/Consult_Advisors";
-import Consult_AdvisorDetails from "../screens/Module_5/Consult_AdvisorDetails";
-import Consult_Match from "../screens/Module_5/Consult_Match";
-import Consult_TopMatch from "../screens/Module_5/Consult_TopMatch";
 import Consult_AIChatbot from "../screens/Module_5/Consult_AIChatbot";
+import Consult_AdvisorDetails from "../screens/Module_5/Consult_AdvisorDetails";
+import Consult_Advisors from "../screens/Module_5/Consult_Advisors";
+import Consult_Chatscreen from "../screens/Module_5/Consult_Chatscreen";
+import Consult_Match from "../screens/Module_5/Consult_Match";
+import Consult_Message from "../screens/Module_5/Consult_Message";
+import Consult_TopMatch from "../screens/Module_5/Consult_TopMatch";
 
 import { Image } from "react-native";
-import HomeIcon from '../assets/TabIcon/HomeIcon.png';
+import ConsultIcon from '../assets/TabIcon/ConsultIcon.png';
 import DebtIcon from '../assets/TabIcon/DebtIcon.png';
 import ExpensesIcon from '../assets/TabIcon/ExpenseIcon.png';
-import ConsultIcon from '../assets/TabIcon/ConsultIcon.png';
+import HomeIcon from '../assets/TabIcon/HomeIcon.png';
 import ProfileIcon from '../assets/TabIcon/ProfileIcon.png';
-import { fonts, sh, sw } from '../styles/GlobalStyles';
-import { Platform } from 'react-native';
+import ProfileCTOSPage from '../screens/Module_6/Screens/ProfileCTOSPage';
+import { fonts } from '../styles/GlobalStyles';
+
 
 function AppNav() {
     const Stack = createStackNavigator();
@@ -178,6 +178,7 @@ function AppNav() {
     }
 
     const HomeStack = createNativeStackNavigator();
+
     function HomeStackScreen() {
         return (
             <HomeStack.Navigator
@@ -198,7 +199,7 @@ function AppNav() {
                     name="Debt Management Programme"
                     component={DMP1}
                     options={{
-                        headerTitleAlign: 'left',
+                        headerTitleAlign: 'center',
                         headerTitle: 'Debt Management Programme',
                         headerTitleStyle: { fontFamily: fonts.interMedium },
                     }}
@@ -208,7 +209,7 @@ function AppNav() {
                     component={DMP2}
                     options={{
                         headerTitle: 'Debt Management Programme',
-                        headerTitleAlign: 'left',
+                        headerTitleAlign: 'center',
                     }}
                 />
                 <HomeStack.Screen
@@ -216,7 +217,7 @@ function AppNav() {
                     component={DMP3}
                     options={{
                         headerTitle: 'Debt Management Programme',
-                        headerTitleAlign: 'left',
+                        headerTitleAlign: 'center',
                     }}
                 />
                 <HomeStack.Screen
@@ -228,43 +229,48 @@ function AppNav() {
                     component={DNP1}
                     options={{
                         headerTitle: 'Debt Negotiation Platform',
-                        headerTitleAlign: 'left',
+                        headerTitleAlign: 'center',
                     }}
                 />
                 <HomeStack.Screen
                     name="Debt Negotiation Platform2"
                     component={DNP2}
-                    options={{ headerTitle: 'Debt Negotiation Platform', headerTitleAlign: 'left' }}
+                    options={{ headerTitle: 'Debt Negotiation Platform', headerTitleAlign: 'center' }}
                 />
                 <HomeStack.Screen
                     name="Debt Negotiation Platform3"
                     component={DNP3}
-                    options={{ headerTitle: 'Debt Negotiation Platform', headerTitleAlign: 'left' }}
+                    options={{ headerTitle: 'Debt Negotiation Platform', headerTitleAlign: 'center' }}
                 />
                 <HomeStack.Screen
                     name="Debt Negotiation Platform4"
                     component={DNP4}
-                    options={{ headerTitle: 'Debt Negotiation Platform', headerTitleAlign: 'left' }}
+                    options={{ headerTitle: 'Debt Negotiation Platform', headerTitleAlign: 'center' }}
                 />
                 <HomeStack.Screen
                     name="Negotiation Results"
                     component={DNPResult}
+                    options={{ headerTitleAlign: 'center' }}
                 />
                 <HomeStack.Screen
                     name="Chat with Creditor"
                     component={DNPChat}
+                    options={{ headerTitleAlign: 'center' }}
                 />
                 <HomeStack.Screen
                     name="LoanCalculator"
                     component={LoanCalculatorScreen}
+                    options={{ headerTitleAlign: 'center' }}
                 />
                 <HomeStack.Screen
                     name="LoanResults"
                     component={LoanResultsScreen}
+                    options={{ headerTitleAlign: 'center' }}
                 />
             </HomeStack.Navigator>
         );
     }
+    
 
     const DebtStack = createNativeStackNavigator();
     function DebtStackScreen() {
@@ -463,6 +469,11 @@ function AppNav() {
                     name="ProfileFeedbackPage"
                     component={ProfileFeedbackPage}
                     options={{ headerShown: true, headerTitleAlign: 'left', headerTitle: 'Feedback' }}
+                />
+                <ProfileStack.Screen
+                    name="ProfileCTOSPage"
+                    component={ProfileCTOSPage}
+                    options={{ tabBarVisible: false }}
                 />
             </ProfileStack.Navigator>
         );
