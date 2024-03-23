@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createStackNavigator } from '@react-navigation/stack';
 import { GlobalContext } from '../context';
+import { useContext } from 'react';
 import Landing_Page_1 from '../screens/Module_1/Landing_Page_1';
 import Login from '../screens/Module_1/Login';
 import SignUp from '../screens/Module_1/SignUp';
@@ -16,15 +17,12 @@ import DebtRepaymentPlanSummary from '../screens/Module_3/Screens/DebtRepaymentP
 import DebtSummary from '../screens/Module_3/Screens/DebtSummary';
 import Expenses_Main from '../screens/Module_4/Expenses_Main';
 import Consult_Main from '../screens/Module_5/Consult_Main';
-import ProfileCurrencyPage from '../screens/Module_6/Screens/ProfileCurrencyPage';
 import ProfileEditPage from '../screens/Module_6/Screens/ProfileEditPage';
 import ProfileFeedbackPage from '../screens/Module_6/Screens/ProfileFeedbackPage';
 import ProfileHelpCenter from '../screens/Module_6/Screens/ProfileHelpCenter';
 import ProfileMain from '../screens/Module_6/Screens/ProfileMain';
 import ProfileNotificationPage from '../screens/Module_6/Screens/ProfileNotificationPage';
 import ProfileReport from '../screens/Module_6/Screens/ProfileReport';
-// import Home2 from '../screens/Module_2/Home2';
-import { useContext } from 'react';
 import Onboarding1 from '../screens/Module_1/Onboarding1';
 import Onboarding2 from '../screens/Module_1/Onboarding2';
 import Onboarding3 from '../screens/Module_1/Onboarding3';
@@ -47,7 +45,6 @@ import Expenses_Transaction from "../screens/Module_4/Expenses_Transaction";
 import OpenCamera from "../screens/Module_4/Open_Camera";
 import Scan_Receipt from "../screens/Module_4/Scan_Receipt";
 import Taken_Photo from "../screens/Module_4/Taken_Photo";
-
 import Consult_AIChatbot from "../screens/Module_5/Consult_AIChatbot";
 import Consult_AdvisorDetails from "../screens/Module_5/Consult_AdvisorDetails";
 import Consult_Advisors from "../screens/Module_5/Consult_Advisors";
@@ -55,14 +52,13 @@ import Consult_Chatscreen from "../screens/Module_5/Consult_Chatscreen";
 import Consult_Match from "../screens/Module_5/Consult_Match";
 import Consult_Message from "../screens/Module_5/Consult_Message";
 import Consult_TopMatch from "../screens/Module_5/Consult_TopMatch";
-
-import { Image } from "react-native";
 import ConsultIcon from '../assets/TabIcon/ConsultIcon.png';
 import DebtIcon from '../assets/TabIcon/DebtIcon.png';
 import ExpensesIcon from '../assets/TabIcon/ExpenseIcon.png';
 import HomeIcon from '../assets/TabIcon/HomeIcon.png';
 import ProfileIcon from '../assets/TabIcon/ProfileIcon.png';
 import ProfileCTOSPage from '../screens/Module_6/Screens/ProfileCTOSPage';
+import { Image } from 'react-native';
 import { fonts } from '../styles/GlobalStyles';
 
 
@@ -446,15 +442,7 @@ function AppNav() {
                     component={ProfileNotificationPage}
                     options={{ headerShown: true, headerTitleAlign: 'left', headerTitle: 'Notifications' }}
                 />
-                <ProfileStack.Screen
-                    name="ProfileCurrencyPage"
-                    component={ProfileCurrencyPage}
-                    options={{
-                        headerShown: true,
-                        headerTitleAlign: 'left',
-                        headerTitle: 'CTOS Score Checker',
-                    }}
-                />
+    
                 <ProfileStack.Screen
                     name="ProfileHelpCenter"
                     component={ProfileHelpCenter}
@@ -473,7 +461,7 @@ function AppNav() {
                 <ProfileStack.Screen
                     name="ProfileCTOSPage"
                     component={ProfileCTOSPage}
-                    options={{ tabBarVisible: false }}
+                    options={{ headerShown: true, headerTitleAlign: 'left', headerTitle: 'CTOS Score Checker' }}
                 />
             </ProfileStack.Navigator>
         );
