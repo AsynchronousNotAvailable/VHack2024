@@ -26,7 +26,7 @@ function ProfileNotificationPage({navigation}) {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <AppBar title='Notifications' navigation={PreviousPage}/>
+                {/* <AppBar title='Notifications' navigation={PreviousPage}/> */}
                 <View style={{height: sh(16)}}></View>
                 {ProfileNotificationMockData.map(({title, content}) => {
                     return (

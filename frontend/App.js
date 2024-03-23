@@ -1,7 +1,6 @@
 import GlobalState from "./context";
 
 import { useFonts } from "expo-font";
-
 import AppNav from "./navigation/AppNav";
 
 export default function App() {
@@ -20,9 +19,12 @@ export default function App() {
         return null;
     }
 
+
     return (
         <GlobalState>
             <AppNav />
         </GlobalState>
     );
 }
+
+

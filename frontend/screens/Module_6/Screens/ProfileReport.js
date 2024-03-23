@@ -53,10 +53,10 @@ function ProfileReport({navigation}) {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <AppBar
+                {/* <AppBar
                     title="Report a Problem"
                     navigation={PreviousPage}
-                />
+                /> */}
                 <View style={styles.contentContainer}>
                     <View style={styles.inputContainer}>
                         <TextInputPaper

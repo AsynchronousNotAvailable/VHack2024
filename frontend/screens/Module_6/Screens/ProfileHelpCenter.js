@@ -55,7 +55,7 @@ function ProfileHelpCenter({navigation}) {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <AppBar title='Help Center' navigation={PreviousPage}/>
+                {/* <AppBar title='Help Center' navigation={PreviousPage}/> */}
                 <View style={styles.searchBarContainer}>
                     <SearchBar 
                         placeholder='Search' 
