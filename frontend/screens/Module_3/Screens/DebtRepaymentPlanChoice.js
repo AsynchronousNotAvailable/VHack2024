@@ -1,21 +1,13 @@
-import React, { useRef, useState } from 'react';
+import React from 'react';
 import {
-    Keyboard,
+    SafeAreaView,
     ScrollView,
     StyleSheet,
-    View,
-    Text,
-    TextInput,
-    TouchableOpacity,
-    Image,
-    SafeAreaView,
+    Text
 } from 'react-native';
-import { fonts, sw, sh } from '../../../styles/GlobalStyles';
-import AppBar from '../Utils/AppBar';
+import { fonts, sh, sw } from '../../../styles/GlobalStyles';
 import { mockData4 } from '../MockData/mockData';
 import PaymentStrategyContainer from '../Utils/RenderStrategyContainer';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
 
 const styles = StyleSheet.create({
     container: {
@@ -32,7 +24,8 @@ const styles = StyleSheet.create({
     },
 });
 
-function DebtRepaymentPlanChoice({ navigation }) {
+function DebtRepaymentPlanChoice({ navigation, route  }) {
+    const { snowballYears, avalancheYears } = route.params;
     const DebtMainPage = () => {
         navigation.navigate('DebtMain');
     };
@@ -49,14 +42,17 @@ function DebtRepaymentPlanChoice({ navigation }) {
                 /> */}
                 <Text style={styles.titleStyle}>Select a payment priority</Text>
                 {mockData4.map(({ title, content1, content2, content3, content4, content5, index }) => {
+                    let dynamicContent3 = title === "Debt Snowball" ? `PayOff Years:${snowballYears-1.5} years` : content3;
+                    let dynamicContent4 = title === "Debt Avalanche" ? `PayOff Years:${avalancheYears} years` : content3;
+
                     return (
                         <PaymentStrategyContainer
                             navigation={navigation}
                             title={title}
                             content1={content1}
                             content2={content2}
-                            content3={content3}
-                            content4={content4}
+                            content3={dynamicContent3}
+                            content4={dynamicContent4}
                             content5={content5}
                             index={index}
                             key={index}

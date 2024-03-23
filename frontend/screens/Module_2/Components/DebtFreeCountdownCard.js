@@ -1,10 +1,9 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { colors, fonts, sh, sw } from "../../../styles/GlobalStyles";
+import React from 'react';
+import { Image, StyleSheet, Text, View } from 'react-native';
 
 function DebtFreeCountdownCard() {
-    const targetDate = new Date('2044-03-01');
+    const targetDate = new Date('2034-03-01');
     const currentDate = new Date();
     const diffInMilliSeconds = Math.abs(targetDate - currentDate);
     let years = diffInMilliSeconds / (1000 * 60 * 60 * 24 * 365);

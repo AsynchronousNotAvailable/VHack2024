@@ -1,23 +1,23 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
-    Keyboard,
+    SafeAreaView,
     ScrollView,
     StyleSheet,
-    View,
     Text,
-    TextInput,
     TouchableOpacity,
-    Image,
-    SafeAreaView,
+    View
 } from 'react-native';
-import { TextInput as TextInputPaper } from 'react-native-paper';
-import { fonts, sw, sh } from '../../../styles/GlobalStyles';
-import AppBar from '../Utils/AppBar';
-import RenderRepaymentPlanSummaryItem from '../Utils/RenderRepaymentPlanSummaryItem';
-import DebtRepaymentPlanSummaryImage from '../Utils/DebtRepaymentPlanSummaryImage';
+import { fonts, sh, sw } from '../../../styles/GlobalStyles';
 import { mockData3 } from '../MockData/mockData';
-import { useNavigation } from '@react-navigation/native';
-import { StackNavigationProp } from '@react-navigation/stack';
+import DebtRepaymentPlanSummaryImage from '../Utils/DebtRepaymentPlanSummaryImage';
+import RenderRepaymentPlanSummaryItem from '../Utils/RenderRepaymentPlanSummaryItem';
+import SliderComponent from '../Utils/SliderComponent';
+import { calculateDebtAvalanche, calculateDebtSnowball } from '../Utils/repaymentStrategies';
+
+
+
+
+
 
 const styles = StyleSheet.create({
     container: {
@@ -65,14 +65,40 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.2,
     },
+    resultText: {
+        fontSize: sw(16),
+        marginHorizontal: sw(20),
+        marginBottom: sh(10),
+    },
 });
 
 function DebtRepaymentPlanSummary({ navigation }) {
     const [extraPayment, setExtraPayment] = useState(0);
+    const [snowballResults, setSnowballResults] = useState({ timeToPayOff: '', totalInterestPaid: '' });
+    const [avalancheResults, setAvalancheResults] = useState({ timeToPayOff: '', totalInterestPaid: '' });
+
+    const loans = [
+        { currentLoan: 250000, totalLoan: 500000, interestRate: 4.0 }, // House Loan
+        { currentLoan: 10700, totalLoan: 45000, interestRate: 3.4 }, // Car Loan
+        { currentLoan: 10008, totalLoan: 25000, interestRate: 5.5 }, // Personal Loan
+    ];
+
+
+    useEffect(() => {
+        const snowball = calculateDebtSnowball(loans, extraPayment);
+        const avalanche = calculateDebtAvalanche(loans, extraPayment);
+        setSnowballResults(snowball);
+        setAvalancheResults(avalanche);
+    }, [extraPayment]);
+
 
     const DebtRepaymentPlanChoicePage = () => {
-        navigation.navigate('DebtRepaymentPlanChoice');
+        navigation.navigate('DebtRepaymentPlanChoice', {
+            snowballYears: snowballResults.timeToPayOff,
+            avalancheYears: avalancheResults.timeToPayOff,
+        });
     };
+    
     const PreviousPage = () => {
         navigation.goBack();
     };
@@ -80,25 +106,30 @@ function DebtRepaymentPlanSummary({ navigation }) {
     return (
         <SafeAreaView style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                {/* <AppBar
-                    title="Repayment Plan"
-                    navigation={PreviousPage}
-                /> */}
                 <Text style={styles.titleStyle}>Extra Monthly Payment</Text>
-                <View style={styles.inputPaperContainer}>
-                    <TextInputPaper
-                        style={styles.inputPaper}
-                        placeholder="RM"
-                        label="Extra Payment"
-                        mode="outlined"
-                        keyboardType="default"
-                        returnKeyType="next"
-                        autoCapitalize="none"
-                        onChangeText={(extraPayment) => {
-                            setExtraPayment(extraPayment);
-                        }}
+                <SliderComponent extraPayment={extraPayment} setExtraPayment={setExtraPayment} />
+
+
+                <Text style={styles.resultText}>
+                    Snowball Method: {snowballResults.timeToPayOff-1.5} years
+                </Text>
+                <Text style={styles.resultText}>
+                    Avalanche Method: {avalancheResults.timeToPayOff} years
+                </Text>
+                
+                <Text style={styles.titleStyle}>Plan summary</Text>
+                {mockData3.map(({ image, itemName, firstTitle, firstContent, secondTitle, secondContent, index }) => (
+                    <RenderRepaymentPlanSummaryItem
+                        key={index}
+                        image={image}
+                        itemName={itemName}
+                        firstTitle={firstTitle}
+                        firstContent={firstContent}
+                        secondTitle={secondTitle}
+                        secondContent={secondContent}
+                        index={index}
                     />
-                </View>
+                ))}
                
                 <TouchableOpacity
                     style={{
@@ -113,21 +144,7 @@ function DebtRepaymentPlanSummary({ navigation }) {
                 >
                     <DebtRepaymentPlanSummaryImage />
                 </TouchableOpacity>
-                <Text style={styles.titleStyle}>Plan summary</Text>
-                {mockData3.map(({ image, itemName, firstTitle, firstContent, secondTitle, secondContent, index }) => {
-                    return (
-                        <RenderRepaymentPlanSummaryItem
-                            image={image}
-                            itemName={itemName}
-                            firstTitle={firstTitle}
-                            firstContent={firstContent}
-                            secondTitle={secondTitle}
-                            secondContent={secondContent}
-                            index={index}
-                            key={index}
-                        />
-                    );
-                })}
+
                 <Text style={[styles.titleStyle, { marginTop: sh(40) }]}>Step-by-Step Repayment Plan</Text>
                 <View style={styles.repaymentPlanContainer}>
                     <Text style={styles.repaymentPlanContainerTitle}>House Loan</Text>
