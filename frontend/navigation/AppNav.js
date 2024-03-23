@@ -199,7 +199,7 @@ function AppNav() {
                     name="Debt Management Programme"
                     component={DMP1}
                     options={{
-                        headerTitleAlign: 'left',
+                        headerTitleAlign: 'center',
                         headerTitle: 'Debt Management Programme',
                         headerTitleStyle: { fontFamily: fonts.interMedium },
                     }}
@@ -209,7 +209,7 @@ function AppNav() {
                     component={DMP2}
                     options={{
                         headerTitle: 'Debt Management Programme',
-                        headerTitleAlign: 'left',
+                        headerTitleAlign: 'center',
                     }}
                 />
                 <HomeStack.Screen
@@ -217,7 +217,7 @@ function AppNav() {
                     component={DMP3}
                     options={{
                         headerTitle: 'Debt Management Programme',
-                        headerTitleAlign: 'left',
+                        headerTitleAlign: 'center',
                     }}
                 />
                 <HomeStack.Screen
@@ -229,39 +229,43 @@ function AppNav() {
                     component={DNP1}
                     options={{
                         headerTitle: 'Debt Negotiation Platform',
-                        headerTitleAlign: 'left',
+                        headerTitleAlign: 'center',
                     }}
                 />
                 <HomeStack.Screen
                     name="Debt Negotiation Platform2"
                     component={DNP2}
-                    options={{ headerTitle: 'Debt Negotiation Platform', headerTitleAlign: 'left' }}
+                    options={{ headerTitle: 'Debt Negotiation Platform', headerTitleAlign: 'center' }}
                 />
                 <HomeStack.Screen
                     name="Debt Negotiation Platform3"
                     component={DNP3}
-                    options={{ headerTitle: 'Debt Negotiation Platform', headerTitleAlign: 'left' }}
+                    options={{ headerTitle: 'Debt Negotiation Platform', headerTitleAlign: 'center' }}
                 />
                 <HomeStack.Screen
                     name="Debt Negotiation Platform4"
                     component={DNP4}
-                    options={{ headerTitle: 'Debt Negotiation Platform', headerTitleAlign: 'left' }}
+                    options={{ headerTitle: 'Debt Negotiation Platform', headerTitleAlign: 'center' }}
                 />
                 <HomeStack.Screen
                     name="Negotiation Results"
                     component={DNPResult}
+                    options={{ headerTitleAlign: 'center' }}
                 />
                 <HomeStack.Screen
                     name="Chat with Creditor"
                     component={DNPChat}
+                    options={{ headerTitleAlign: 'center' }}
                 />
                 <HomeStack.Screen
                     name="LoanCalculator"
                     component={LoanCalculatorScreen}
+                    options={{ headerTitleAlign: 'center' }}
                 />
                 <HomeStack.Screen
                     name="LoanResults"
                     component={LoanResultsScreen}
+                    options={{ headerTitleAlign: 'center' }}
                 />
             </HomeStack.Navigator>
         );
