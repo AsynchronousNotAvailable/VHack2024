@@ -58,7 +58,7 @@ const styles = StyleSheet.create({
         padding: 20,
         paddingBottom: 15,
         position: 'relative',
-        backgroundColor: '#f0f0f0',
+        backgroundColor: 'white',
     },
     partialBackground: {
         position: 'absolute',

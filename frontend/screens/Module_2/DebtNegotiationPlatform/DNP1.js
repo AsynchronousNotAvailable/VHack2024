@@ -31,8 +31,8 @@ function DNP1({ navigation }) {
                         styles.title,
                         {
                             fontFamily: fonts.interSemiBold,
-                            fontSize: 22,
-                            marginTop: sh(10),
+                            fontSize: 24,
+                            marginTop: sh(30),
                         },
                     ]}
                 >
@@ -46,7 +46,7 @@ function DNP1({ navigation }) {
                     Choose the loan you want to negotiate
                 </Text>
 
-                <View style={{ width: "75%" }}>
+                <View style={{ width: "85%" }}>
                     <TouchableOpacity onPress={handleSelection}>
                         <PersonalLoanCard />
                     </TouchableOpacity>
@@ -100,8 +100,8 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     imageStyle: {
-        width: sw(200),
-        height: sh(200),
+        width: sw(250),
+        height: sh(250),
         resizeMode: 'contain',
     },
 });

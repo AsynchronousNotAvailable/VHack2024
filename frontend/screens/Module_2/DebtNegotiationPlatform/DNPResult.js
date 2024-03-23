@@ -19,25 +19,24 @@ function DNPResult({ navigation }) {
                         {
                             fontFamily: fonts.interSemiBold,
                             fontSize: 22,
-                            marginTop: sh(10),
+                            marginTop: sh(30),
                         },
                     ]}
                 >
                     Agreement and Confirmation
                 </Text>
 
-                <Text style={[styles.label, { paddingTop: 10 }]}>Accepted Solution:</Text>
+                <View style={{ alignSelf: 'flex-start' }}>
+                    <Text style={[styles.label, { marginTop: sh(20), marginLeft: sw(35) }]}>Accepted Solution:</Text>
+                </View>
 
-
-                <View style={{ width: "75%" }}>
-                    <View style={[styles.selectContainer, { borderColor: "#EFF1F5" }]}>
+                <View style={{ width: '85%' }}>
+                    <View style={[styles.selectContainer, { borderColor: '#EFF1F5' }]}>
                         <Text style={styles.optionText}>Payment pause for 2 months</Text>
                     </View>
                 </View>
 
-
-
-                <View style={{ width: "75%" }}>
+                <View style={{ width: '85%' }}>
                     <View style={styles.doccard}>
                         <Image
                             source={require('../../../assets/Module_2/docicon.png')}
@@ -45,22 +44,22 @@ function DNPResult({ navigation }) {
                         />
                         <Text style={styles.text}>MBBMYJason15Agreement.docx</Text>
                     </View>
-
                 </View>
 
-                <Text style={[styles.text, { paddingTop: 30 }]}>Valid by</Text>
+                <View style={{ alignSelf: 'flex-start' }}>
+                    <Text style={[styles.label, { marginTop: sh(20), marginLeft: sw(35) }]}>Validated By:</Text>
+                </View>
                 <AKPKNameCard />
 
-                <Text style={[styles.description, { paddingTop: 40 }]}>
-                    Confirm
-                </Text>
                 <TouchableOpacity onPress={handleSelection}>
-                    <Image
-                        source={require("../../../assets/images/landing_progress_complete.png")}
-                    ></Image>
+                    <View style={{ paddingVertical: sh(15), paddingHorizontal: sw(30), backgroundColor: '#5F84A1', borderRadius: 15, alignItems: "center", justifyContent: 'center', marginTop:sh(50) }}>
+                        <Text style={{fontFamily:fonts.interMedium, color: "white", fontSize: 18}}>Confirm</Text>
+                    </View>
+
+                    {/* <Image source={require('../../../assets/images/landing_progress_complete.png')}></Image> */}
                 </TouchableOpacity>
             </View>
-        </ScrollView >
+        </ScrollView>
     );
 }
 
@@ -75,6 +74,7 @@ const styles = StyleSheet.create({
     mainContainer: {
         backgroundColor: colors.white,
         alignItems: "center",
+        
     },
     title: {
         fontFamily: fonts.interSemiBold,
@@ -127,6 +127,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
     },
     label: {
+        fontFamily: fonts.interRegular,
         fontSize: 16,
         color: '#333',
     },
@@ -154,6 +155,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontWeight: '400',
         color: '#000',
+        
     },
     container: {
         padding: 20,

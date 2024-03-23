@@ -67,87 +67,60 @@ function Expenses_Main({ navigation }) {
     );
 
     return (
-        <ScrollView style={{ backgroundColor: colors.white, height: "100%" }}>
-            <LinearGradient
-                style={styles.cardContainer}
-                colors={["#7499B6", "#5F84A1", "#314452"]}
-                start={{ x: 0.4, y: -0.9 }}
-                end={{ x: 0, y: 0 }}
-                locations={[0, 0.3, 1]}
-            >
-                <View style={styles.balanceContainer}>
-                    <Text style={[styles.cardTitle, { fontSize: 18 }]}>
-                        Total Balance
-                    </Text>
-                    <Text style={[styles.cardDescription, { fontSize: 30 }]}>
-                        RM 2548.00
-                    </Text>
-                </View>
+        <ScrollView style={{ backgroundColor: colors.white, height: '100%' }}>
+            <View style={{ height: sh(230), backgroundColor: '#DFEEF8', paddingTop: sh(60), marginBottom: sh(70) }}>
+                <Text style={{ fontFamily: fonts.interSemiBold, fontSize: 22, alignSelf: 'center' }}>Expenses</Text>
+                <LinearGradient
+                    style={styles.cardContainer}
+                    colors={['#7499B6', '#5F84A1', '#314452']}
+                    start={{ x: 0.4, y: -0.9 }}
+                    end={{ x: 0, y: 0 }}
+                    locations={[0, 0.3, 1]}
+                >
+                    <View style={styles.balanceContainer}>
+                        <Text style={[styles.cardTitle, { fontSize: 18 }]}>Total Balance</Text>
+                        <Text style={[styles.cardDescription, { fontSize: 30 }]}>RM 2548.00</Text>
+                    </View>
 
-                <View style={styles.rowContainer}>
-                    <View style={[styles.columnContainer, { flex: 1 }]}>
-                        <View style={styles.subTitleContainer}>
-                            <Image
-                                source={require("../../assets/images/expenses_arrow_up.png")}
-                            />
-                            <Text
-                                style={[
-                                    styles.subTitleText,
-                                    { fontSize: 16, color: "#D0DAE5" },
-                                ]}
-                            >
-                                Income
-                            </Text>
+                    <View style={styles.rowContainer}>
+                        <View style={[styles.columnContainer, { flex: 1 }]}>
+                            <View style={styles.subTitleContainer}>
+                                <Image source={require('../../assets/images/expenses_arrow_up.png')} />
+                                <Text style={[styles.subTitleText, { fontSize: 16, color: '#D0DAE5' }]}>Income</Text>
+                            </View>
+                            <Text style={[styles.subTitleText, { fontSize: 20 }]}>RM 1840.00</Text>
                         </View>
-                        <Text style={[styles.subTitleText, { fontSize: 20 }]}>
-                            RM 1840.00
-                        </Text>
-                    </View>
-                    <View style={styles.columnContainer}>
-                        <View style={styles.subTitleContainer}>
-                            <Image
-                                source={require("../../assets/images/expenses_arrow_down.png")}
-                            />
-                            <Text
-                                style={[
-                                    styles.subTitleText,
-                                    { fontSize: 16, color: "#D0DAE5" },
-                                ]}
-                            >
-                                Expenses
-                            </Text>
+                        <View style={styles.columnContainer}>
+                            <View style={styles.subTitleContainer}>
+                                <Image source={require('../../assets/images/expenses_arrow_down.png')} />
+                                <Text style={[styles.subTitleText, { fontSize: 16, color: '#D0DAE5' }]}>Expenses</Text>
+                            </View>
+                            <Text style={[styles.subTitleText, { fontSize: 20 }]}>RM 544.00</Text>
                         </View>
-                        <Text style={[styles.subTitleText, { fontSize: 20 }]}>
-                            RM 544.00
-                        </Text>
                     </View>
-                </View>
-            </LinearGradient>
+                </LinearGradient>
+            </View>
+
             <View
                 style={[
                     styles.rowContainer,
                     {
                         marginHorizontal: sw(20),
-                        justifyContent: "space-between",
-                        alignItems: "flex-end",
+                        justifyContent: 'space-between',
+                        alignItems: 'flex-end',
                     },
                 ]}
             >
-                <Text
-                    style={[
-                        styles.cardTitle,
-                        { color: colors.black, fontSize: 18, flex: 1 },
-                    ]}
-                >
+                <Text style={[styles.cardTitle, { color: colors.black, fontSize: 18, flex: 1 }]}>
                     Transactions History
                 </Text>
                 <TouchableOpacity onPress={toTransactionPage}>
                     <Text
                         style={[
                             {
-                                fontFamily: fonts.interRegular,
-                                color: colors.black,
-                                fontSize: 16,
+                                fontFamily: fonts.interMedium,
+                                color: '#5F84A1',
+                                fontSize: 18,
                             },
                         ]}
                     >
@@ -202,14 +175,8 @@ function Expenses_Main({ navigation }) {
                         endFillColor="rgb(203, 241, 250)"
                         endOpacity={0.3}
                         xAxisLabelTexts={xAxisLabels}
-                        yAxisTextStyle={[
-                            styles.cardDescription,
-                            { color: "#666666" },
-                        ]}
-                        xAxisLabelTextStyle={[
-                            styles.cardDescription,
-                            { color: "#666666" },
-                        ]}
+                        yAxisTextStyle={[styles.cardDescription, { color: '#666666' }]}
+                        xAxisLabelTextStyle={[styles.cardDescription, { color: '#666666' }]}
                         spacing={60}
                         // hideYAxisText
                         noOfSections={5}
@@ -234,41 +201,38 @@ function Expenses_Main({ navigation }) {
                 style={[
                     styles.columnContainer,
                     {
-                        marginVertical: sh(10),
-                        marginHorizontal: sw(20),
+                        paddingVertical: sh(10),
+                        paddingHorizontal: sw(20),
                         gap: 5,
-                        position: "relative",
+                        position: 'relative',
+                        borderTopLeftRadius: 25,
+                        borderTopRightRadius: 25,
+                        backgroundColor: '#fafafa',
+                        shadowColor: '#000',
+                        shadowOffset: {
+                            width: 0,
+                            height: 2,
+                        },
+                        shadowOpacity: 0.25,
+                        shadowRadius: 3.84,
+                        elevation: 5,
                     },
                 ]}
             >
                 {/* details header frame */}
-                <View style={styles.columnContainer}>
-                    <Text
-                        style={[
-                            styles.cardTitle,
-                            { color: colors.black, fontSize: 18 },
-                        ]}
-                    >
-                        Budgets
-                    </Text>
+                <View style={[styles.columnContainer]}>
+                    <Text style={[styles.cardTitle, { color: colors.black, fontSize: 18 }]}>Budgets</Text>
                     <View
                         style={[
                             styles.rowContainer,
                             {
-                                justifyContent: "space-between",
+                                justifyContent: 'space-between',
 
-                                alignItems: "center",
+                                alignItems: 'center',
                             },
                         ]}
                     >
-                        <Text
-                            style={[
-                                styles.subTitleText,
-                                { color: "#91919F", flex: 1 },
-                            ]}
-                        >
-                            This month
-                        </Text>
+                        <Text style={[styles.subTitleText, { color: '#91919F', flex: 1 }]}>This month</Text>
                         <View
                             style={[
                                 styles.rowContainer,
@@ -277,13 +241,11 @@ function Expenses_Main({ navigation }) {
                                 },
                             ]}
                         >
-                            <View
-                                style={[
-                                    styles.rowContainer,
-                                    { gap: 1, alignItems: "center" },
-                                ]}
-                            >
-                                <Svg height="24" width="24">
+                            <View style={[styles.rowContainer, { gap: 1, alignItems: 'center' }]}>
+                                <Svg
+                                    height="24"
+                                    width="24"
+                                >
                                     <Circle
                                         cx="11"
                                         cy="11"
@@ -291,22 +253,13 @@ function Expenses_Main({ navigation }) {
                                         fill="#B5FFE3"
                                     />
                                 </Svg>
-                                <Text
-                                    style={[
-                                        styles.subTitleText,
-                                        { color: "#91919F" },
-                                    ]}
-                                >
-                                    In limit
-                                </Text>
+                                <Text style={[styles.subTitleText, { color: '#91919F' }]}>In limit</Text>
                             </View>
-                            <View
-                                style={[
-                                    styles.rowContainer,
-                                    { gap: 1, alignItems: "center" },
-                                ]}
-                            >
-                                <Svg height="24" width="24">
+                            <View style={[styles.rowContainer, { gap: 1, alignItems: 'center' }]}>
+                                <Svg
+                                    height="24"
+                                    width="24"
+                                >
                                     <Circle
                                         cx="11"
                                         cy="11"
@@ -314,14 +267,7 @@ function Expenses_Main({ navigation }) {
                                         fill="#FFD1D3"
                                     />
                                 </Svg>
-                                <Text
-                                    style={[
-                                        styles.subTitleText,
-                                        { color: "#91919F" },
-                                    ]}
-                                >
-                                    Overspend
-                                </Text>
+                                <Text style={[styles.subTitleText, { color: '#91919F' }]}>Overspend</Text>
                             </View>
                         </View>
                     </View>
@@ -330,21 +276,14 @@ function Expenses_Main({ navigation }) {
                 {/* details frame */}
                 <View style={[styles.columnContainer, { gap: 10 }]}>
                     <View style={[styles.columnContainer]}>
-                        <Text
-                            style={[
-                                styles.cardTitle,
-                                { color: colors.black, fontSize: 18 },
-                            ]}
-                        >
-                            Food
-                        </Text>
+                        <Text style={[styles.cardTitle, { color: colors.black, fontSize: 18 }]}>Food</Text>
 
                         <View
                             style={[
                                 styles.rowContainer,
                                 {
-                                    justifyContent: "space-between",
-                                    alignItems: "center",
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
                                 },
                             ]}
                         >
@@ -384,21 +323,14 @@ function Expenses_Main({ navigation }) {
                 {/* details frame */}
                 <View style={[styles.columnContainer, { gap: 10 }]}>
                     <View style={[styles.columnContainer]}>
-                        <Text
-                            style={[
-                                styles.cardTitle,
-                                { color: colors.black, fontSize: 18 },
-                            ]}
-                        >
-                            Clothing
-                        </Text>
+                        <Text style={[styles.cardTitle, { color: colors.black, fontSize: 18 }]}>Clothing</Text>
 
                         <View
                             style={[
                                 styles.rowContainer,
                                 {
-                                    justifyContent: "space-between",
-                                    alignItems: "center",
+                                    justifyContent: 'space-between',
+                                    alignItems: 'center',
                                 },
                             ]}
                         >
@@ -441,20 +373,20 @@ function Expenses_Main({ navigation }) {
                             marginTop: sh(10),
                             paddingHorizontal: sw(15),
                             paddingVertical: sh(30),
-                            backgroundColor: "rgba(128, 128, 128, 0.1)",
-                            width: "40%",
+                            backgroundColor: 'rgba(128, 128, 128, 0.1)',
+                            width: '40%',
                             borderRadius: 10,
-                            justifyContent: "center",
+                            justifyContent: 'center',
                         }}
                     >
                         <Text
                             style={[
                                 styles.cardTitle,
                                 {
-                                    color: "#5F84A1",
+                                    color: '#5F84A1',
                                     fontSize: 16,
-                                    position: "absolute",
-                                    alignSelf: "center",
+                                    position: 'absolute',
+                                    alignSelf: 'center',
                                 },
                             ]}
                         >
@@ -465,10 +397,10 @@ function Expenses_Main({ navigation }) {
             </View>
             <View
                 style={{
-                    position: "absolute",
+                    position: 'absolute',
                     bottom: 5,
                     right: 15,
-                    alignSelf: "flex-end",
+                    alignSelf: 'flex-end',
                 }}
             >
                 <TouchableOpacity onPress={toAddBudget}>

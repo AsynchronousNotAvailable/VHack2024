@@ -72,6 +72,7 @@ function AppNav() {
 
     const screenOptions = ({ route }) => ({
         headerShown: false,
+        
         tabBarIcon: ({ focused, color, size }) => {
             let iconName;
             if (route.name === 'Home') {
@@ -86,12 +87,31 @@ function AppNav() {
                 iconName = ProfileIcon;
             }
 
-            return <Image source={iconName} style={{ width: size, height: size, tintColor: color }} />;
+            return (
+                <Image
+                    source={iconName}
+                    style={{ width: size, height: size, tintColor: color }}
+                />
+            );
         },
         tabBarActiveTintColor: '#5F84A1',
         tabBarInactiveTintColor: '#000',
+        tabBarStyle: tabBarOptions.style,
+        tabBarHideOnKeyboard: { tabBarHideOnKeyboard: true },
     });
 
+
+    const tabBarOptions = {
+        activeTintColor: '#5F84A1', // Active tab icon color
+        inactiveTintColor: '#000', // Inactive tab icon color
+        style: {
+            backgroundColor: 'white', // Background color of the bottom navigation bar
+            borderTopWidth: 1, // Border top width
+            borderTopColor: 'lightgray', // Border top color
+            height: 60, // Height of the bottom navigation bar
+            paddingBottom: 10, // Additional padding at the bottom
+        },
+    };
 
     function LandingStackScreen() {
         return (
@@ -159,133 +179,87 @@ function AppNav() {
 
     function HomeStackScreen() {
         return (
-            <HomeStack.Navigator>
+            <HomeStack.Navigator
+                screenOptions={{
+                    headerBackTitleVisible: false,
+                }}
+            >
                 <HomeStack.Screen
                     name="Home_Main"
                     component={Home_Main}
-                    options={{
-                        title: "Home",
-                        headerTitleAlign: "center",
-                        headerBackTitle: "",
-                        
-                    }}
+                    options={{ headerShown: false }}
                 />
                 <HomeStack.Screen
                     name="Notifications"
                     component={NotificationsPage}
-                    options={{
-                        title: "Notifications",
-                        headerTitleAlign: "center",
-                        headerBackTitle: "",
-                    }}
                 />
                 <HomeStack.Screen
                     name="Debt Management Programme"
                     component={DMP1}
                     options={{
-                        title: "Debt Management Programme",
-                        headerTitleAlign: "center",
-                        headerBackTitle: "",
+                        headerTitleAlign: 'left',
+                        headerTitle: 'Debt Management Programme',
+                        headerTitleStyle: { fontFamily: fonts.interMedium },
                     }}
                 />
                 <HomeStack.Screen
                     name="Debt Management Programme2"
                     component={DMP2}
                     options={{
-                        title: "Debt Management Programme",
-                        headerTitleAlign: "center",
-                        headerBackTitle: "",
+                        headerTitle: 'Debt Management Programme',
+                        headerTitleAlign: 'left',
                     }}
                 />
                 <HomeStack.Screen
                     name="Debt Management Programme3"
                     component={DMP3}
                     options={{
-                        title: "Debt Management Programme",
-                        headerTitleAlign: "center",
-                        headerBackTitle: "",
+                        headerTitle: 'Debt Management Programme',
+                        headerTitleAlign: 'left',
                     }}
                 />
                 <HomeStack.Screen
                     name="Debt Negotiation Platform"
                     component={DNPDashboard}
-                    options={{
-                        title: "Debt Negotiation Platform",
-                        headerTitleAlign: "center",
-                        headerBackTitle: "",
-                    }}
                 />
                 <HomeStack.Screen
                     name="Debt Negotiation Platform1"
                     component={DNP1}
                     options={{
-                        title: "Debt Negotiation Platform",
-                        headerTitleAlign: "center",
-                        headerBackTitle: "",
+                        headerTitle: 'Debt Negotiation Platform',
+                        headerTitleAlign: 'left',
                     }}
                 />
                 <HomeStack.Screen
                     name="Debt Negotiation Platform2"
                     component={DNP2}
-                    options={{
-                        title: "Debt Negotiation Platform",
-                        headerTitleAlign: "center",
-                        headerBackTitle: "",
-                    }}
+                    options={{ headerTitle: 'Debt Negotiation Platform', headerTitleAlign: 'left' }}
                 />
                 <HomeStack.Screen
                     name="Debt Negotiation Platform3"
                     component={DNP3}
-                    options={{
-                        title: "Debt Negotiation Platform",
-                        headerTitleAlign: "center",
-                        headerBackTitle: "",
-                    }}
+                    options={{ headerTitle: 'Debt Negotiation Platform', headerTitleAlign: 'left' }}
                 />
                 <HomeStack.Screen
                     name="Debt Negotiation Platform4"
                     component={DNP4}
-                    options={{
-                        title: "Debt Negotiation Platform",
-                        headerTitleAlign: "center",
-                        headerBackTitle: "",
-                    }}
+                    options={{ headerTitle: 'Debt Negotiation Platform', headerTitleAlign: 'left' }}
                 />
                 <HomeStack.Screen
                     name="Negotiation Results"
                     component={DNPResult}
-                    options={{
-                        title: "Negotiation Results",
-                        headerTitleAlign: "center",
-                        headerBackTitle: "",
-                    }}
                 />
                 <HomeStack.Screen
                     name="Chat with Creditor"
                     component={DNPChat}
-                    options={{
-                        title: "Chat with Creditor",
-                        headerTitleAlign: "center",
-                        headerBackTitle: "",
-                    }}
                 />
                 <HomeStack.Screen
                     name="LoanCalculator"
                     component={LoanCalculatorScreen}
-                    options={{
-                        title: "Loan Calculator",
-                        headerTitleAlign: "center",
-                        headerBackTitle: "",
-                    }}
                 />
                 <HomeStack.Screen
                     name="LoanResults"
                     component={LoanResultsScreen}
-                    options={{
-                        title: "Loan Results",
-                        headerTitleAlign: "center",
-                        headerBackTitle: "",
-                    }}
                 />
             </HomeStack.Navigator>
         );
@@ -295,7 +269,7 @@ function AppNav() {
     const DebtStack = createNativeStackNavigator();
     function DebtStackScreen() {
         return (
-            <DebtStack.Navigator>
+            <DebtStack.Navigator screenOptions={{ headerBackTitleVisible: false }}>
                 <DebtStack.Screen
                     name="DebtMain"
                     component={DebtMain}
@@ -338,38 +312,39 @@ function AppNav() {
     const ExpensesStack = createNativeStackNavigator();
     function ExpensesStackScreen() {
         return (
-            <ExpensesStack.Navigator>
+            <ExpensesStack.Navigator screenOptions={{ headerBackTitleVisible: false }}>
                 <ExpensesStack.Screen
                     name="Expenses_Main"
                     component={Expenses_Main}
                     options={{
-                        title: "Expenses",
-                        headerTitleAlign: "center",
-                        headerBackTitle: "",
+                        title: 'Expenses',
+                        headerTitleAlign: 'center',
+                        headerBackTitle: '',
+                        headerShown: false
                     }}
                 />
                 <ExpensesStack.Screen
                     name="Expenses_Transaction"
                     component={Expenses_Transaction}
                     options={{
-                        title: "Transaction",
-                        headerTitleAlign: "center",
+                        title: 'Transaction',
+                        headerTitleAlign: 'center',
                     }}
                 />
 
                 <ExpensesStack.Screen
                     name="Expenses_Add_1"
                     component={Expenses_Add_1}
-                    options={{ headerTitle: "", headerBackTitle: "" }}
+                    options={{ headerTitle: '', headerBackTitle: '' }}
                 />
 
                 <ExpensesStack.Screen
                     name="Expenses_Budget"
                     component={Expenses_Add_Budget}
                     options={{
-                        headerTitle: "New Budget",
-                        headerTitleAlign: "center",
-                        headerBackTitle: "",
+                        headerTitle: 'New Budget',
+                        headerTitleAlign: 'center',
+                        headerBackTitle: '',
                     }}
                 />
                 <ExpensesStack.Screen
@@ -400,15 +375,47 @@ function AppNav() {
     const ConsultStack = createNativeStackNavigator();
     function ConsultStackScreen() {
         return (
-            <ConsultStack.Navigator>
-                <ConsultStack.Screen name="Consult_Main" component={Consult_Main} options={{ headerShown: false }} />
-                <ConsultStack.Screen name="Consult_Message" component={Consult_Message} options={{ title: 'Messages', headerTitleAlign: 'center' }} />
-                <ConsultStack.Screen name="Consult_Chatscreen" component={Consult_Chatscreen} options={({ route }) => ({ title: route.params.username, headerTitleAlign: 'center', })} />
-                <ConsultStack.Screen name="Consult_Advisors" component={Consult_Advisors} options={{ title: 'Advisors', headerTitleAlign: 'center' }} />
-                <ConsultStack.Screen name="Consult_AdvisorDetails" component={Consult_AdvisorDetails} options={{ title: ' ' }} />
-                <ConsultStack.Screen name="Consult_Match" component={Consult_Match} options={{ title: ' ' }} />
-                <ConsultStack.Screen name="Consult_TopMatch" component={Consult_TopMatch} options={{ title: ' ' }} />
-                <ConsultStack.Screen name="Consult_AIChatbot" component={Consult_AIChatbot} options={({ route }) => ({ title: route.params.username, headerTitleAlign: 'center', })} />
+            <ConsultStack.Navigator screenOptions={{ headerBackTitleVisible: false }}>
+                <ConsultStack.Screen
+                    name="Consult_Main"
+                    component={Consult_Main}
+                    options={{ headerShown: false }}
+                />
+                <ConsultStack.Screen
+                    name="Consult_Message"
+                    component={Consult_Message}
+                    options={{ title: 'Messages', headerTitleAlign: 'center' }}
+                />
+                <ConsultStack.Screen
+                    name="Consult_Chatscreen"
+                    component={Consult_Chatscreen}
+                    options={({ route }) => ({ title: route.params.username, headerTitleAlign: 'center' })}
+                />
+                <ConsultStack.Screen
+                    name="Consult_Advisors"
+                    component={Consult_Advisors}
+                    options={{ title: 'Advisors', headerTitleAlign: 'center' }}
+                />
+                <ConsultStack.Screen
+                    name="Consult_AdvisorDetails"
+                    component={Consult_AdvisorDetails}
+                    options={{ title: ' ' }}
+                />
+                <ConsultStack.Screen
+                    name="Consult_Match"
+                    component={Consult_Match}
+                    options={{ title: ' ' }}
+                />
+                <ConsultStack.Screen
+                    name="Consult_TopMatch"
+                    component={Consult_TopMatch}
+                    options={{ title: ' ' }}
+                />
+                <ConsultStack.Screen
+                    name="Consult_AIChatbot"
+                    component={Consult_AIChatbot}
+                    options={({ route }) => ({ title: route.params.username, headerTitleAlign: 'center' })}
+                />
             </ConsultStack.Navigator>
         );
     }
@@ -416,7 +423,7 @@ function AppNav() {
     const ProfileStack = createNativeStackNavigator();
     function ProfileStackScreen() {
         return (
-            <ProfileStack.Navigator screenOptions={{ headerShown: false }}>
+            <ProfileStack.Navigator screenOptions={{ headerShown: false, headerBackTitleVisible: false }}>
                 <ProfileStack.Screen
                     name="ProfileMain"
                     component={ProfileMain}

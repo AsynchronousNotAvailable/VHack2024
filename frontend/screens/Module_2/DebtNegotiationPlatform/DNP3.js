@@ -16,17 +16,17 @@ function DNP3({ navigation }) {
                         {
                             fontFamily: fonts.interSemiBold,
                             fontSize: 22,
-                            marginTop: sh(10),
+                            marginTop: sh(30),
                         },
                     ]}
                 >
                     Tailored Suggestions for You
                 </Text>
-                <View style={{ width: "75%" }}>
+                <View style={{ width: "85%" }}>
                     <PersonalLoanCard />
                 </View>
 
-                <Text style={[styles.label, { paddingTop: 10 }]}>Loan Breakdown</Text>
+                <Text style={[styles.label, {marginVertical: sh(15), fontSize: 18 }]}>Loan Breakdown</Text>
                 <View style={styles.infocard}>
 
                     <View style={styles.row}>
@@ -42,12 +42,12 @@ function DNP3({ navigation }) {
                 <Text style={[styles.description, { paddingTop: 10 }]}>
                     Based on the information provided, here are our AI-driven strategies for your negotiation.
                 </Text>
-                <View style={{ width: "75%" }}>
+                <View style={{ width: "80%" }}>
                     <TouchableHighlight
                         underlayColor={colors.aliceBlue}
                         onPress={handleSelection}
                         style={styles.selectContainer}>
-                        <Text style={styles.optionText}>Request a payment pause for 3 months</Text>
+                        <Text style={styles.optionText}>Request a payment pause for {"\n"}3 months</Text>
                     </TouchableHighlight>
 
                     <TouchableHighlight
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
     infocard: {
         backgroundColor: '#fff',
         padding: 20,
-        paddingHorizontal: 30,
+        paddingHorizontal: sw(40),
         borderRadius: 8,
         backgroundColor: "#F6F8FA",
         marginVertical: 8,
@@ -140,6 +140,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
     },
     label: {
+        fontFamily: fonts.interSemiBold,
         fontSize: 16,
         color: '#333',
     },

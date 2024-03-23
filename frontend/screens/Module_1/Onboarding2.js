@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity, Image, StyleSheet } from "react-native";
 import { useState } from "react";
 import { colors, fonts, sh, sw } from "../../styles/GlobalStyles";
+import Svg, { Circle, Path } from 'react-native-svg';
 function Onboarding2({ navigation }) {
     const [isPressed1, setIsPressed1] = useState(false);
     const [isPressed2, setIsPressed2] = useState(false);
@@ -21,9 +22,7 @@ function Onboarding2({ navigation }) {
     return (
         <View style={styles.mainContainer}>
             <Text style={styles.title}>Debt Free</Text>
-            <Image
-                source={require("../../assets/images/landing_finance.png")}
-            ></Image>
+            <Image source={require('../../assets/images/landing_finance.png')}></Image>
             <Text
                 style={[
                     styles.title,
@@ -37,22 +36,16 @@ function Onboarding2({ navigation }) {
                 Define Your Financial Goals
             </Text>
             <Text style={styles.description}>
-                Everyone's financial journey is unique.{"\n"}What's your main
-                goal with DebtFree?
+                Everyone's financial journey is unique.{'\n'}What's your main goal with DebtFree?
             </Text>
 
             <View
                 style={{
-                    width: "75%",
+                    width: '75%',
                 }}
             >
                 <TouchableOpacity onPress={selectContainer1}>
-                    <View
-                        style={[
-                            styles.selectContainer,
-                            { borderColor: isPressed1 ? "purple" : "#EFF1F5" },
-                        ]}
-                    >
+                    <View style={[styles.selectContainer, { borderColor: isPressed1 ? 'purple' : '#EFF1F5' }]}>
                         <Text
                             style={{
                                 fontFamily: fonts.interMedium,
@@ -64,12 +57,7 @@ function Onboarding2({ navigation }) {
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={selectContainer2}>
-                    <View
-                        style={[
-                            styles.selectContainer,
-                            { borderColor: isPressed2 ? "purple" : "#EFF1F5" },
-                        ]}
-                    >
+                    <View style={[styles.selectContainer, { borderColor: isPressed2 ? 'purple' : '#EFF1F5' }]}>
                         <Text
                             style={{
                                 fontFamily: fonts.interMedium,
@@ -81,12 +69,7 @@ function Onboarding2({ navigation }) {
                     </View>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={selectContainer3}>
-                    <View
-                        style={[
-                            styles.selectContainer,
-                            { borderColor: isPressed3 ? "purple" : "#EFF1F5" },
-                        ]}
-                    >
+                    <View style={[styles.selectContainer, { borderColor: isPressed3 ? 'purple' : '#EFF1F5' }]}>
                         <Text
                             style={{
                                 fontFamily: fonts.interMedium,
@@ -103,13 +86,40 @@ function Onboarding2({ navigation }) {
                 style={{
                     marginTop: sh(20),
                     marginEnd: sw(30),
-                    alignSelf: "flex-end",
+                    alignSelf: 'flex-end',
                 }}
             >
                 <TouchableOpacity onPress={nextPage}>
-                    <Image
-                        source={require("../../assets/images/landing_progress_complete.png")}
-                    ></Image>
+                    <Svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width={68}
+                        height={68}
+                        fill="none"
+                    >
+                        <Circle
+                            cx={34}
+                            cy={34}
+                            r={33}
+                            stroke="#5F84A1"
+                            strokeWidth={2}
+                            opacity={0.15}
+                        />
+                        <Path
+                            stroke="#5F84A1"
+                            strokeWidth={2}
+                            d="M34 1a33 33 0 0 1 0 66"
+                        />
+                        <Circle
+                            cx={34}
+                            cy={34}
+                            r={26}
+                            fill="#5F84A1"
+                        />
+                        <Path
+                            fill="#fff"
+                            d="M29.375 43.6a1.214 1.214 0 0 1-.375-.888c0-.341.125-.637.375-.887L36.7 34.5l-7.35-7.35a1.187 1.187 0 0 1-.35-.875c0-.35.125-.65.375-.9s.546-.375.888-.375c.341 0 .637.125.887.375l8.4 8.425c.1.1.171.208.213.325.041.117.062.242.062.375s-.02.258-.062.375a.883.883 0 0 1-.213.325l-8.425 8.425c-.233.233-.52.35-.862.35-.342 0-.638-.125-.888-.375Z"
+                        />
+                    </Svg>
                 </TouchableOpacity>
             </View>
         </View>

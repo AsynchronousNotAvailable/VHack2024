@@ -1,11 +1,11 @@
-import { View, Text, TouchableHighlight, Image, StyleSheet, ScrollView } from "react-native";
-import { colors, fonts, sh, sw } from "../../../styles/GlobalStyles";
-import PersonalLoanCard from "../Components/PersonalLoanCard";
-import HouseLoanCard from "../Components/HouseLoanCard";
+import { View, Text, TouchableHighlight, Image, StyleSheet, ScrollView, TouchableOpacity } from 'react-native';
+import { colors, fonts, sh, sw } from '../../../styles/GlobalStyles';
+import PersonalLoanCard from '../Components/PersonalLoanCard';
+import HouseLoanCard from '../Components/HouseLoanCard';
 
 function DMP2({ navigation }) {
     const handleSelection = () => {
-        navigation.navigate("Debt Management Programme3");
+        navigation.navigate('Debt Management Programme3');
     };
 
     //
@@ -13,9 +13,6 @@ function DMP2({ navigation }) {
     // NEED GET THE LOANS CARD FROM DEBT MODULE
     //
     //
-
-
-
 
     return (
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
@@ -26,36 +23,33 @@ function DMP2({ navigation }) {
                         {
                             fontFamily: fonts.interSemiBold,
                             fontSize: 22,
-                            marginTop: sh(10),
+                            marginTop: sh(40),
                         },
                     ]}
                 >
                     Choose related loans
                 </Text>
                 <Image
-                    source={require("../../../assets/Module_2/dmp2.png")}
+                    source={require('../../../assets/Module_2/dmp2.png')}
                     style={styles.imageStyle}
                 />
-                <Text style={styles.description}>
-                    Select the loan that related, you may multiselect
-                </Text>
-                <View style={{ width: "75%" }}>
-                    <TouchableHighlight underlayColor="#DFEEF8" onPress={handleSelection}>
+                <Text style={styles.description}>Select the loan that related, you may multiselect</Text>
+                <View style={{ width: '85%', marginVertical: sh(5), marginTop: sh(15) }}>
+                    <TouchableOpacity onPress={handleSelection}>
                         <View>
                             <HouseLoanCard />
                         </View>
-                    </TouchableHighlight>
+                    </TouchableOpacity>
                 </View>
-                <View style={{ width: "75%" }}>
-                    <TouchableHighlight underlayColor="#DFEEF8" onPress={handleSelection}>
+                <View style={{ width: '85%' }}>
+                    <TouchableOpacity onPress={handleSelection}>
                         <View>
                             <PersonalLoanCard />
                         </View>
-                    </TouchableHighlight>
+                    </TouchableOpacity>
                 </View>
 
-                <View style={{ marginTop: sh(20), marginEnd: sw(30), alignSelf: "flex-end" }}>
-                </View>
+                <View style={{ marginTop: sh(20), marginEnd: sw(30), alignSelf: 'flex-end' }}></View>
             </View>
         </ScrollView>
     );
@@ -66,17 +60,17 @@ export default DMP2;
 const styles = StyleSheet.create({
     scrollViewContainer: {
         flexGrow: 1,
-        justifyContent: "top",
+        justifyContent: 'top',
         backgroundColor: colors.white,
     },
     mainContainer: {
         backgroundColor: colors.white,
-        alignItems: "center",
+        alignItems: 'center',
     },
     title: {
         fontFamily: fonts.interSemiBold,
         fontSize: 32,
-        color: "#0F4D66",
+        color: '#0F4D66',
         marginBottom: sh(0),
         marginTop: sh(0),
     },
@@ -84,7 +78,7 @@ const styles = StyleSheet.create({
         fontFamily: fonts.interRegular,
         fontSize: 16,
         marginHorizontal: sw(30),
-        textAlign: "center",
+        textAlign: 'center',
         marginBottom: sh(10),
     },
     selectContainer: {
@@ -107,8 +101,8 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     imageStyle: {
-        width: sw(200),
-        height: sh(200),
+        width: sw(250),
+        height: sh(230),
         resizeMode: 'contain',
     },
 });

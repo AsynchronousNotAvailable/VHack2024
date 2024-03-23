@@ -44,7 +44,7 @@ function NotificationsPage() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f0f0f0',
+        backgroundColor: 'white',
     },
     notificationCard: {
         padding: 20,
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
 
 const getBackgroundColor = (dueInDays) => {
     if (dueInDays <= 2) return '#ffcccc';
-    return '#fff';
+    return '#fafafa';
 };
 
 export default NotificationsPage;

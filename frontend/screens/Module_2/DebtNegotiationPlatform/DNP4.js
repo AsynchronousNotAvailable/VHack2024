@@ -40,29 +40,28 @@ function DNP4({ navigation }) {
                         {
                             fontFamily: fonts.interSemiBold,
                             fontSize: 22,
-                            marginTop: sh(10),
+                            marginTop: sh(30),
                         },
                     ]}
                 >
                     Connect with Creditors
                 </Text>
 
-                <Text style={[styles.label, { paddingTop: 30 }]}>Selected Solution:</Text>
+                <View style={{ alignSelf: 'flex-start' }}>
+                    <Text style={[styles.label, { marginTop: sh(20), marginLeft: sw(50) }]}>Selected Solution:</Text>
+                </View>
 
-
-                <View style={{ width: "75%" }}>
-                    <View style={[styles.selectContainer, { borderColor: "#EFF1F5" }]}>
+                <View style={{ width: '75%' }}>
+                    <View style={[styles.selectContainer, { borderColor: '#EFF1F5' }]}>
                         <Text style={styles.optionText}>Request a payment pause for 3 months</Text>
                     </View>
                 </View>
                 <InputForm />
 
-
-
                 <Text style={[styles.description, { paddingTop: 1 }]}>
                     Enter creditor’s email, if creditor is not in our platform, an automated invite will be send
                 </Text>
-                <View style={{ width: "75%" }}>
+                <View style={{ width: '75%' }}>
                     <View style={styles.doccard}>
                         <Image
                             source={require('../../../assets/Module_2/docicon.png')}
@@ -70,25 +69,34 @@ function DNP4({ navigation }) {
                         />
                         <Text style={styles.text}>PaymentPauseRequestSD2.docx</Text>
                     </View>
-
                 </View>
                 <Text style={[styles.description, { paddingTop: 10 }]}>
                     You may use this auto generated template if you could not connect Creditors through DebtFree
                 </Text>
 
-                <Text style={[styles.description, { paddingTop: 40 }]}>
-                    Chat with Creditor
-                </Text>
+                {/* <Text style={[styles.description]}>Chat with Creditor</Text> */}
                 <TouchableOpacity onPress={handleSelection}>
-                    <Image
-                        source={require("../../../assets/images/landing_progress_complete.png")}
-                    ></Image>
+                    <View
+                        style={{
+                            paddingVertical: sh(15),
+                            paddingHorizontal: sw(30),
+                            backgroundColor: '#5F84A1',
+                            borderRadius: 15,
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            marginTop: sh(50),
+                        }}
+                    >
+                        <Text style={{ fontFamily: fonts.interMedium, color: 'white', fontSize: 18 }}>
+                            Chat with Creditor
+                        </Text>
+                    </View>
                 </TouchableOpacity>
 
                 {/* <View style={{ marginTop: sh(20), marginEnd: sw(30), alignSelf: "flex-end" }}>
                 </View> */}
             </View>
-        </ScrollView >
+        </ScrollView>
     );
 }
 

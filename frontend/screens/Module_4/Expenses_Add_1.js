@@ -128,6 +128,10 @@ const Expenses_Add_1 = ({ navigation, route }) => {
         navigation.navigate("Open_Camera");
     };
 
+    const goBackToPreviousPage = () => {
+        navigation.goBack();
+    }
+
     useEffect(() => {
         if (route.params && route.params.transactionDetails) {
             // console.log(route.params);
@@ -144,14 +148,14 @@ const Expenses_Add_1 = ({ navigation, route }) => {
     });
     return (
         <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             style={styles.wrapper}
         >
             <TouchableWithoutFeedback onPress={dismissKeyboard}>
                 <View
                     style={{
                         backgroundColor: colors.white,
-                        height: "100%",
+                        height: '100%',
                     }}
                 >
                     <View
@@ -167,7 +171,7 @@ const Expenses_Add_1 = ({ navigation, route }) => {
                             style={[
                                 styles.rowContainer,
                                 {
-                                    justifyContent: "flex-end",
+                                    justifyContent: 'flex-end',
                                     marginTop: sh(10),
                                 },
                             ]}
@@ -202,7 +206,7 @@ const Expenses_Add_1 = ({ navigation, route }) => {
                             style={[
                                 styles.rowContainer,
                                 {
-                                    alignSelf: "center",
+                                    alignSelf: 'center',
                                     marginVertical: sh(10),
                                 },
                             ]}
@@ -216,17 +220,16 @@ const Expenses_Add_1 = ({ navigation, route }) => {
                                                   {
                                                       borderTopRightRadius: 0,
                                                       borderBottomRightRadius: 0,
-                                                      borderColor: "#5F84A1",
+                                                      borderColor: '#5F84A1',
                                                       borderWidth: 1,
                                                   },
                                               ]
                                             : [
                                                   styles.tabContainer,
                                                   {
-                                                      borderColor: "#5F84A1",
+                                                      borderColor: '#5F84A1',
                                                       borderWidth: 1,
-                                                      backgroundColor:
-                                                          colors.white,
+                                                      backgroundColor: colors.white,
                                                       borderTopRightRadius: 0,
                                                       borderBottomRightRadius: 0,
                                                   },
@@ -235,12 +238,7 @@ const Expenses_Add_1 = ({ navigation, route }) => {
                                 >
                                     <Text
                                         style={
-                                            isPressed1
-                                                ? [
-                                                      styles.tabTitle,
-                                                      { color: colors.white },
-                                                  ]
-                                                : [styles.tabTitle]
+                                            isPressed1 ? [styles.tabTitle, { color: colors.white }] : [styles.tabTitle]
                                         }
                                     >
                                         Expenses
@@ -256,7 +254,7 @@ const Expenses_Add_1 = ({ navigation, route }) => {
                                                   styles.tabContainer,
                                                   {
                                                       borderRadius: 0,
-                                                      borderColor: "#5F84A1",
+                                                      borderColor: '#5F84A1',
                                                       borderTopWidth: 1,
                                                       borderBottomWidth: 1,
                                                   },
@@ -264,10 +262,9 @@ const Expenses_Add_1 = ({ navigation, route }) => {
                                             : [
                                                   styles.tabContainer,
                                                   {
-                                                      backgroundColor:
-                                                          colors.white,
+                                                      backgroundColor: colors.white,
                                                       borderRadius: 0,
-                                                      borderColor: "#5F84A1",
+                                                      borderColor: '#5F84A1',
                                                       borderTopWidth: 1,
                                                       borderBottomWidth: 1,
                                                   },
@@ -276,12 +273,7 @@ const Expenses_Add_1 = ({ navigation, route }) => {
                                 >
                                     <Text
                                         style={
-                                            isPressed2
-                                                ? [
-                                                      styles.tabTitle,
-                                                      { color: colors.white },
-                                                  ]
-                                                : [styles.tabTitle]
+                                            isPressed2 ? [styles.tabTitle, { color: colors.white }] : [styles.tabTitle]
                                         }
                                     >
                                         Income
@@ -298,16 +290,15 @@ const Expenses_Add_1 = ({ navigation, route }) => {
                                                   {
                                                       borderTopLeftRadius: 0,
                                                       borderBottomLeftRadius: 0,
-                                                      borderColor: "#5F84A1",
+                                                      borderColor: '#5F84A1',
                                                       borderWidth: 1,
                                                   },
                                               ]
                                             : [
                                                   styles.tabContainer,
                                                   {
-                                                      backgroundColor:
-                                                          colors.white,
-                                                      borderColor: "#5F84A1",
+                                                      backgroundColor: colors.white,
+                                                      borderColor: '#5F84A1',
                                                       borderWidth: 1,
 
                                                       borderTopLeftRadius: 0,
@@ -318,12 +309,7 @@ const Expenses_Add_1 = ({ navigation, route }) => {
                                 >
                                     <Text
                                         style={
-                                            isPressed3
-                                                ? [
-                                                      styles.tabTitle,
-                                                      { color: colors.white },
-                                                  ]
-                                                : [styles.tabTitle]
+                                            isPressed3 ? [styles.tabTitle, { color: colors.white }] : [styles.tabTitle]
                                         }
                                     >
                                         Transfer
@@ -347,6 +333,7 @@ const Expenses_Add_1 = ({ navigation, route }) => {
                                 setAmount={setAmount}
                                 handleDateChange={handleDateChange}
                                 formatDate={formatDate}
+                                goBackToPreviousPage={goBackToPreviousPage}
                             />
                         )}
 
@@ -365,6 +352,7 @@ const Expenses_Add_1 = ({ navigation, route }) => {
                                 setAmount={setIncomeAmount}
                                 handleDateChange={handleIncomeDateChange}
                                 formatDate={formatDate}
+                                goBackToPreviousPage={goBackToPreviousPage}
                             />
                         )}
 
@@ -383,6 +371,7 @@ const Expenses_Add_1 = ({ navigation, route }) => {
                                 setAmount={setTransferAmount}
                                 handleDateChange={handleTransferDateChange}
                                 formatDate={formatDate}
+                                goBackToPreviousPage={goBackToPreviousPage}
                             />
                         )}
                     </View>

@@ -17,7 +17,7 @@ function DNP2({ navigation }) {
                         {
                             fontFamily: fonts.interSemiBold,
                             fontSize: 22,
-                            marginTop: sh(10),
+                            marginTop: sh(30),
                         },
                     ]}
                 >
@@ -87,8 +87,8 @@ const styles = StyleSheet.create({
         fontSize: 18,
     },
     imageStyle: {
-        width: sw(200),
-        height: sh(200),
+        width: sw(250),
+        height: sh(250),
         resizeMode: 'contain',
     },
 });

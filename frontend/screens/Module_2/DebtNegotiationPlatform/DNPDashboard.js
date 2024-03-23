@@ -73,13 +73,15 @@ const styles = StyleSheet.create({
     tabStyle: {
         borderColor: '#5F84A1',
         backgroundColor: '#f0f0f0',
+        paddingVertical: sh(10)
     },
     activeTabStyle: {
         backgroundColor: '#5F84A1',
     },
     tabTextStyle: {
         color: '#5F84A1',
-        fontWeight: 'semibold',
+        fontFamily: fonts.interSemiBold,
+        fontSize: 16
     },
     activeTabTextStyle: {
         color: '#fff',
@@ -97,13 +99,14 @@ const styles = StyleSheet.create({
         backgroundColor: '#ffffff',
         borderRadius: 10,
         padding: 20,
-        marginVertical: 5,
-        marginHorizontal: 10,
+        marginVertical: sh(5),
+        marginHorizontal: sw(5),
+        paddingVertical: sh(30),
         shadowColor: '#000',
         shadowOffset: { width: 0, height: 1 },
         shadowOpacity: 0.22,
         shadowRadius: 2.22,
-        elevation: 3,
+        elevation: 3
     },
     cardTitle: {
         fontSize: 18,
@@ -141,6 +144,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         shadowRadius: 2,
         elevation: 3,
+        marginHorizontal: sw(10),
     },
     addButtonText: {
         color: '#ffffff',
