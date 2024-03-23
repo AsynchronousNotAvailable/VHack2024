@@ -138,13 +138,15 @@ const styles = StyleSheet.create({
     },
     sender: {
         alignSelf: 'flex-end',
-        backgroundColor: '#e1ffc7',
+        backgroundColor: '#BAE1FF',
         borderBottomRightRadius: 0,
+        padding: 15,
     },
     receiver: {
         alignSelf: 'flex-start',
         backgroundColor: '#F8F9FE',
         borderBottomLeftRadius: 0,
+        padding: 15,
     },
     messageText: {
         fontSize: 16,
@@ -161,7 +163,7 @@ const styles = StyleSheet.create({
         flex: 1,
         padding: 10,
         borderRadius: 20,
-        backgroundColor: '#f0f0f0',
+        backgroundColor: '#BAE1FF',
         marginRight: 10,
     },
     sendButtonText: {
@@ -234,15 +236,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     doccard: {
-
         flexDirection: 'row',
         alignItems: 'center',
         borderRadius: 8,
-        padding: 20,
+        padding: 15,
         marginTop: 10,
         marginLeft: 75,
         marginVertical: 5,
-        backgroundColor: "#e1ffc7",
+        backgroundColor: '#BAE1FF',
         margin: 10,
         borderBottomRightRadius: 0,
     },
@@ -257,9 +258,6 @@ const styles = StyleSheet.create({
         fontWeight: '500',
         color: '#000',
     },
-
-
-
 });
 
 export default DNPChat;

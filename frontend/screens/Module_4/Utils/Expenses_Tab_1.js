@@ -27,169 +27,162 @@ const Expenses_Tab_1 = ({
     setAmount,
     handleDateChange, //function when the date is selected from calendar
     formatDate, //function to format the date
+    goBackToPreviousPage
 }) => {
     return (
-        
+        <View style={[styles.columnContainer]}>
             <View
-                style={[
-                    styles.columnContainer,
-                    
-                ]}
+                style={{
+                    // borderColor: "black",
+                    // borderWidth: 1,
+                    justifyContent: 'center',
+                }}
             >
-                <View
+                <TextInput
+                    style={[styles.input]}
+                    placeholder="20/03/2024"
+                    value={formatDate(date)}
+                    editable={false}
+                    placeholderTextColor="#DADADA"
+                />
+                <TouchableOpacity
+                    onPress={openCalendar}
                     style={{
-                        // borderColor: "black",
+                        // borderColor: "red",
                         // borderWidth: 1,
-                        justifyContent: "center",
+                        position: 'absolute',
+                        right: sw(40),
+                        width: sw(24),
+                        height: sh(25),
                     }}
                 >
-                    <TextInput
-                        style={[styles.input]}
-                        placeholder="20/03/2024"
-                        value={formatDate(date)}
-                        editable={false}
-                        placeholderTextColor="#DADADA"
-                    />
-                    <TouchableOpacity
-                        onPress={openCalendar}
+                    <Svg
+                        style={{ position: 'absolute' }}
+                        xmlns="http://www.w3.org/2000/svg"
+                        width={24}
+                        height={25}
+                        fill="none"
+                    >
+                        <Path
+                            stroke="#5F84A1"
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={3}
+                            d="M15.333 4.222V2m0 2.222v2.222m0-2.222h-5M2 10.89v10c0 1.227.995 2.222 2.222 2.222h15.556A2.222 2.222 0 0 0 22 20.89v-10H2ZM2 10.89V6.444c0-1.228.995-2.223 2.222-2.223h2.222M6.445 2v4.444M22 10.89V6.444a2.222 2.222 0 0 0-2.222-2.223h-.556"
+                        />
+                    </Svg>
+                </TouchableOpacity>
+            </View>
+
+            <TextInput
+                style={styles.input}
+                placeholder="Account"
+                keyboardType="default"
+                returnKeyType="next"
+                autoCapitalize="none"
+                placeholderTextColor="#DADADA"
+                ref={(input) => {
+                    accountInput = input;
+                }}
+                value={account}
+                onChangeText={(text) => {
+                    setAccount(text);
+                }}
+                onSubmitEditing={() => {
+                    categoryInput.focus();
+                }}
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Category"
+                keyboardType="default"
+                returnKeyType="next"
+                autoCapitalize="none"
+                value={category}
+                placeholderTextColor="#DADADA"
+                onChangeText={(text) => {
+                    // Handle text input changes here
+                    setCategory(text);
+                }}
+                ref={(input) => {
+                    categoryInput = input;
+                }}
+                onSubmitEditing={() => {
+                    descriptionInput.focus();
+                }}
+            />
+
+            <TextInput
+                style={styles.input}
+                placeholder="Description"
+                keyboardType="default"
+                returnKeyType="next"
+                autoCapitalize="none"
+                value={description}
+                placeholderTextColor="#DADADA"
+                onChangeText={(text) => {
+                    // Handle text input changes here
+                    setDescription(text);
+                }}
+                ref={(input) => (descriptionInput = input)}
+                onSubmitEditing={() => {
+                    amountInput.focus();
+                }}
+            />
+            <TextInput
+                style={styles.input}
+                placeholder="Amount"
+                keyboardType="number-pad"
+                returnKeyType="next"
+                autoCapitalize="none"
+                value={amount.toString()}
+                placeholderTextColor="#DADADA"
+                onChangeText={(text) => {
+                    // Handle text input changes here
+                    setAmount(text);
+                }}
+                ref={(input) => {
+                    amountInput = input;
+                }}
+                onSubmitEditing={() => {
+                    Keyboard.dismiss();
+                }}
+            />
+
+            <TouchableOpacity
+                style={[styles.button, { alignSelf: 'center' }]}
+                onPress={goBackToPreviousPage}
+            >
+                <Text style={styles.btnText}>Save</Text>
+            </TouchableOpacity>
+
+            {openDate &&
+                (Platform.OS === 'ios' ? (
+                    <View
                         style={{
-                            // borderColor: "red",
-                            // borderWidth: 1,
-                            position: "absolute",
-                            right: sw(40),
-                            width: sw(24),
-                            height: sh(25),
+                            position: 'absolute',
+                            alignSelf: 'center',
+                            backgroundColor: 'rgba(208, 208, 208, 1)',
+                            borderRadius: 20,
+                            padding: 10,
                         }}
                     >
-                        <Svg
-                            style={{ position: "absolute" }}
-                            xmlns="http://www.w3.org/2000/svg"
-                            width={24}
-                            height={25}
-                            fill="none"
-                        >
-                            <Path
-                                stroke="#5F84A1"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={3}
-                                d="M15.333 4.222V2m0 2.222v2.222m0-2.222h-5M2 10.89v10c0 1.227.995 2.222 2.222 2.222h15.556A2.222 2.222 0 0 0 22 20.89v-10H2ZM2 10.89V6.444c0-1.228.995-2.223 2.222-2.223h2.222M6.445 2v4.444M22 10.89V6.444a2.222 2.222 0 0 0-2.222-2.223h-.556"
-                            />
-                        </Svg>
-                    </TouchableOpacity>
-                </View>
-
-                <TextInput
-                    style={styles.input}
-                    placeholder="Account"
-                    keyboardType="default"
-                    returnKeyType="next"
-                    autoCapitalize="none"
-                    placeholderTextColor="#DADADA"
-                    ref={(input) => {
-                        accountInput = input;
-                    }}
-                    value={account}
-                    onChangeText={(text) => {
-                        setAccount(text);
-                    }}
-                    onSubmitEditing={() => {
-                        categoryInput.focus();
-                    }}
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Category"
-                    keyboardType="default"
-                    returnKeyType="next"
-                    autoCapitalize="none"
-                    value={category}
-                    placeholderTextColor="#DADADA"
-                    onChangeText={(text) => {
-                        // Handle text input changes here
-                        setCategory(text);
-                    }}
-                    ref={(input) => {
-                        categoryInput = input;
-                    }}
-                    onSubmitEditing={() => {
-                        descriptionInput.focus();
-                    }}
-                />
-
-                <TextInput
-                    style={styles.input}
-                    placeholder="Description"
-                    keyboardType="default"
-                    returnKeyType="next"
-                    autoCapitalize="none"
-                    value={description}
-                    placeholderTextColor="#DADADA"
-                    onChangeText={(text) => {
-                        // Handle text input changes here
-                        setDescription(text);
-                    }}
-                    ref={(input) => (descriptionInput = input)}
-                    onSubmitEditing={() => {
-                        amountInput.focus();
-                    }}
-                />
-                <TextInput
-                    style={styles.input}
-                    placeholder="Amount"
-                    keyboardType="number-pad"
-                    returnKeyType="next"
-                    autoCapitalize="none"
-                    value={amount.toString()}
-                    placeholderTextColor="#DADADA"
-                    onChangeText={(text) => {
-                        // Handle text input changes here
-                        setAmount(text);
-                    }}
-                    ref={(input) => {
-                        amountInput = input;
-                    }}
-                    onSubmitEditing={() => {
-                        Keyboard.dismiss();
-                    }}
-                />
-
-                <TouchableOpacity
-                    style={[styles.button, { alignSelf: "center" }]}
-                    // onPress={handleAuth}
-                >
-                    <Text style={styles.btnText}>Save</Text>
-                </TouchableOpacity>
-
-                {openDate &&
-                    (Platform.OS === "ios" ? (
-                        <View
-                            style={{
-                                position: "absolute",
-                                alignSelf: "center",
-                                backgroundColor: "rgba(208, 208, 208, 1)",
-                                borderRadius: 20,
-                                padding: 10,
-                            }}
-                        >
-                            <DateTimePicker
-                                mode="date"
-                                display="inline"
-                                value={date}
-                                onChange={handleDateChange}
-                            />
-                        </View>
-                    ) : (
                         <DateTimePicker
                             mode="date"
                             display="inline"
                             value={date}
                             onChange={handleDateChange}
                         />
-                    ))}
-                
-            </View>
-        
+                    </View>
+                ) : (
+                    <DateTimePicker
+                        mode="date"
+                        display="inline"
+                        value={date}
+                        onChange={handleDateChange}
+                    />
+                ))}
+        </View>
     );
 };
 

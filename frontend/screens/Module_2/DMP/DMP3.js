@@ -53,59 +53,59 @@ function DMP3({ navigation }) {
                         {
                             fontFamily: fonts.interSemiBold,
                             fontSize: 22,
-                            marginTop: sh(10),
+                            marginTop: sh(20),
                         },
                     ]}
                 >
                     Based on your situation
                 </Text>
                 <Image
-                    source={require("../../../assets/Module_2/dmp3.png")}
+                    source={require('../../../assets/Module_2/dmp3.png')}
                     style={styles.imageStyle}
                 />
-                <Text style={styles.description}>
-                    Here are some steps you can take right now.
-                </Text>
+                <Text style={styles.description}>Here are some steps you can take right now.</Text>
 
-                <View style={{ width: "75%", alignSelf: "center" }}>
+                <View style={{ width: '75%', alignSelf: 'center' }}>
                     <TouchableHighlight
                         underlayColor={colors.aliceBlue}
                         style={styles.selectContainer}
-                        onPress={openLink}>
+                        onPress={openLink}
+                    >
                         <Text style={styles.optionText}>Debt Restructuring</Text>
                     </TouchableHighlight>
 
                     <TouchableHighlight
                         underlayColor={colors.aliceBlue}
                         style={styles.selectContainer}
-                        onPress={handleSelection1}>
-                        <Text style={styles.optionText}>DebtFree Negotiation for Debt Relief Plan</Text>
+                        onPress={handleSelection1}
+                    >
+                        <Text style={styles.optionText}>DebtFree Negotiation for {"\n"} Debt Relief Plan</Text>
                     </TouchableHighlight>
 
                     <TouchableHighlight
                         underlayColor={colors.aliceBlue}
                         style={styles.selectContainer}
-                        onPress={openLinkvoluntary}>
+                        onPress={openLinkvoluntary}
+                    >
                         <Text style={styles.optionText}>Voluntary Arrangement</Text>
                     </TouchableHighlight>
 
-                    <Text style={[styles.description, { paddingTop: 30 }]}>
+                    <Text style={[styles.description, { paddingTop: 30, color: '#5F84A1' }]}>
                         Need further assistance?
                     </Text>
 
                     <TouchableHighlight
                         underlayColor={colors.aliceBlue}
                         style={styles.selectContainer}
-                        onPress={handleSelection3}>
+                        onPress={handleSelection3}
+                    >
                         <Text style={styles.optionText}>Debt Counselling</Text>
                     </TouchableHighlight>
                 </View>
 
-
-                <View style={{ marginTop: sh(20), marginEnd: sw(30), alignSelf: "flex-end" }}>
-                </View>
+                <View style={{ marginTop: sh(20), marginEnd: sw(30), alignSelf: 'flex-end' }}></View>
             </View>
-        </ScrollView >
+        </ScrollView>
     );
 }
 
@@ -114,25 +114,25 @@ export default DMP3;
 const styles = StyleSheet.create({
     scrollViewContainer: {
         flexGrow: 1,
-        justifyContent: "top",
+        justifyContent: 'top',
         backgroundColor: colors.white,
     },
     mainContainer: {
         backgroundColor: colors.white,
-        alignItems: "center",
+        alignItems: 'center',
     },
     title: {
         fontFamily: fonts.interSemiBold,
         fontSize: 32,
-        color: "#0F4D66",
+        color: '#0F4D66',
         marginBottom: sh(0),
         marginTop: sh(0),
     },
     description: {
-        fontFamily: fonts.interRegular,
+        fontFamily: fonts.interMedium,
         fontSize: 16,
         marginHorizontal: sw(30),
-        textAlign: "center",
+        textAlign: 'center',
         marginBottom: sh(10),
     },
     selectContainer: {
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
         padding: 15,
         paddingVertical: 15,
         marginVertical: 8,
-        shadowColor: '#535990',
+        shadowColor: '#5F84A1',
         shadowOffset: { width: 0, height: 4 },
         shadowOpacity: 0.08,
         shadowRadius: 4,

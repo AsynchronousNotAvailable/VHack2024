@@ -6,7 +6,7 @@ import { Svg, Rect } from 'react-native-svg';
 const styles = StyleSheet.create({
     buttonContainer: {
         aspectRatio: 1,
-        width: sw(25),
+        width: sw(40),
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: '#F6F7FA',

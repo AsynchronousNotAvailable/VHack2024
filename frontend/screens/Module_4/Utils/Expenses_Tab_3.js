@@ -26,12 +26,13 @@ const Expenses_Tab_3 = ({
     setAmount,
     handleDateChange,
     formatDate,
+    goBackToPreviousPage
 }) => {
     return (
         <View style={[styles.columnContainer]}>
             <View
                 style={{
-                    justifyContent: "center",
+                    justifyContent: 'center',
                 }}
             >
                 <TextInput
@@ -44,14 +45,14 @@ const Expenses_Tab_3 = ({
                 <TouchableOpacity
                     onPress={openCalendar}
                     style={{
-                        position: "absolute",
+                        position: 'absolute',
                         right: sw(40),
                         width: sw(24),
                         height: sh(25),
                     }}
                 >
                     <Svg
-                        style={{ position: "absolute" }}
+                        style={{ position: 'absolute' }}
                         xmlns="http://www.w3.org/2000/svg"
                         width={24}
                         height={25}
@@ -140,19 +141,19 @@ const Expenses_Tab_3 = ({
             />
 
             <TouchableOpacity
-                style={[styles.button, { alignSelf: "center" }]}
-                // onPress={handleAuth}
+                style={[styles.button, { alignSelf: 'center' }]}
+                onPress={goBackToPreviousPage}
             >
                 <Text style={styles.btnText}>Save</Text>
             </TouchableOpacity>
 
             {openDate &&
-                (Platform.OS === "ios" ? (
+                (Platform.OS === 'ios' ? (
                     <View
                         style={{
-                            position: "absolute",
-                            alignSelf: "center",
-                            backgroundColor: "rgba(208, 208, 208, 1)",
+                            position: 'absolute',
+                            alignSelf: 'center',
+                            backgroundColor: 'rgba(208, 208, 208, 1)',
                             borderRadius: 20,
                             padding: 10,
                         }}

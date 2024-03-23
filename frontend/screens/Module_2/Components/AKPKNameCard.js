@@ -32,8 +32,8 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.2,
         shadowRadius: 2,
         elevation: 3,
-        marginVertical: 2,
-        margin: 30,
+        marginVertical: sh(10),
+        margin: 25,
     },
     avatar: {
         width: 50,

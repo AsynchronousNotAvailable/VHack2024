@@ -35,7 +35,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.1,
         shadowRadius: 4,
         elevation: 3,
-        marginVertical: 8,
+        marginVertical: sh(15),
     },
     iconContainer: {
         marginRight: 15,
