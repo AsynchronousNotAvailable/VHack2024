@@ -1,8 +1,9 @@
 import GlobalState from "./context";
-
+import { LogBox } from "react-native";
 import { useFonts } from "expo-font";
 import AppNav from "./navigation/AppNav";
 
+LogBox.ignoreAllLogs();
 export default function App() {
     const [fontsLoaded, fontError] = useFonts({
         InterBlack: require("./assets/fonts/Inter-Bold.ttf"),
