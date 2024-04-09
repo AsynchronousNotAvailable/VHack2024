@@ -46,7 +46,7 @@ enum StrategyType{
 model User {
   id    Int     @default(autoincrement()) @id
   email String  @unique
-  name  String
+  username  String
   password String
   monthly_income Float?
   monthly_payment Float?
@@ -68,8 +68,9 @@ model Loan{
   installment_month Int
   payment_remaining Int
   interest_rate Float
-  user User @relation(fields: [userId], references: [id])
-  userId Int
+  // Define the foreign key relationship here
+  user               User      @relation(fields: [userId], references: [id])
+  userId             Int
 }
 
 
