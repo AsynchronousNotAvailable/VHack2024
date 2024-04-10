@@ -9,8 +9,7 @@ from . import assistants
 # Create your views here.
 @csrf_exempt
 def test(request):
-
-    return JsonResponse({"success": "this endpoint is localhost:8000/umhack_app/test"}, status=200)
+    return JsonResponse({"success": "this endpoint is localhost:8000/vhack_app/test"}, status=200)
 
 
 @csrf_exempt

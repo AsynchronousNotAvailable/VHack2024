@@ -22,13 +22,11 @@ client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 # will be using same assistant for all users, so to create assistant, will use openai playground directly or use assistant_create.py
 # assistant = client.beta.assistants.create(name=assistant_name, instructions=assistant_instruction, tools=assistant_tools, model=model)
-assistant = client.beta.assistants.retrieve(assistant_id="asst_IbFqFruhOkr9PRMPpxbi5f06")
+assistant = client.beta.assistants.retrieve(assistant_id="asst_LOQUKctXoPKnKXdfVTc3CvQI")
 
 # functions to be called
 def get_data(sql_query):
     # return f"Data fetched with query {sql_query}"
-    print(f"SQL_QUERY::: {sql_query}")
-    print(f"SQL_QUERY::: {sql_query}")
     print(f"SQL_QUERY::: {sql_query}")
     # Assuming execute_query returns a list of dictionaries
     query_result = execute_query(sql_query)

@@ -14,7 +14,7 @@ load_dotenv()
 
 client = openai.OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
-assistant = client.beta.assistants.retrieve(assistant_id="asst_xxwe6WGK6f8ny0YbdCK19FTP")
+assistant = client.beta.assistants.retrieve(assistant_id="asst_LOQUKctXoPKnKXdfVTc3CvQI")
 
 def upload_file():
     fetch_and_upload()
@@ -25,7 +25,7 @@ def upload_file():
     )
 
     my_updated_assistant = client.beta.assistants.update(
-    "asst_xxwe6WGK6f8ny0YbdCK19FTP",
+    "asst_LOQUKctXoPKnKXdfVTc3CvQI",
     instructions="You will perform operation on data in csv file.Always use ARIMA for forecasting purposes. Use forecast_visualisation instead of data_visualisation when it involves predicting future data. You should always show visualisation in the end. If data is insufficient for prediction due to small amount of data, just proceed with prediction and ignore low accuracy. Always have minimal to none explanation on your steps. Always show visualisation using function calling in the end. Include only monthy or weekly data for prediction. When visualising, use code_interpreter to pass the necessary data to data_visualisation.",
     name="Prediction Model",
     tools=[{"type": "code_interpreter"},
@@ -170,8 +170,6 @@ def reset_global_responses():
 
 def get_data(sql_query):
     # return f"Data fetched with query {sql_query}"
-    print(f"SQL_QUERY::: {sql_query}")
-    print(f"SQL_QUERY::: {sql_query}")
     print(f"SQL_QUERY::: {sql_query}")
     # Assuming execute_query returns a list of dictionaries
     query_result = execute_query(sql_query)
