@@ -4,7 +4,8 @@ from django.http import HttpResponse
 import json
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
-from . import assistants 
+from flask import jsonify
+from . import assistants, chatgpt
 
 # Create your views here.
 @csrf_exempt
@@ -48,4 +49,21 @@ def send_message(request):
         return JsonResponse({"success": "Message sent successfully", "responded_message": response['last_message'], "data_visualisation_response": response["data_visualisation_response"], "forecast_visualisation_response": response["forecast_visualisation_response"], "thread_id": response["thread_id"]}, status=200)
     else:
         return JsonResponse({"error": "Invalid request method"}, status=400)
+    
+@csrf_exempt
+def chatbot_middleman(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+            print(data)
+            user_input = data.get('message_to_gpt')
+            chat_history = data.get('conversation_history')
+            print("DATA: ", user_input)
+            updated_result = chatgpt.use_model(user_input, chat_history)
+            return JsonResponse(updated_result)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+
+    else:
+        return JsonResponse({'error': 'Invalid request method'}, status=400)
     

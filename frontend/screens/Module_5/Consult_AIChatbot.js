@@ -1,79 +1,88 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, ScrollView, StyleSheet, TouchableOpacity } from 'react-native';
+import {
+    View,
+    Text,
+    TextInput,
+    ScrollView,
+    StyleSheet,
+    TouchableOpacity,
+    KeyboardAvoidingView,
+    Platform,
+} from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import axios from 'axios';
-import { OPENAI_API_KEY } from "@env";
+import { OPENAI_API_KEY } from '@env';
+import sendMessageToChatGPT from './sendMessageToChatGPT';
 
-const ConsultChatscreen = ({ }) => {
+const ConsultChatscreen = ({}) => {
     const [messages, setMessages] = useState([]);
     const [message, setMessage] = useState('');
     const [sendingMessage, setSendingMessage] = useState(false);
 
-    const sendMessageToOpenAI = async () => {
-        setSendingMessage(true); 
-        try {
-            const response = await axios.post(
-                'https://api.openai.com/v1/chat/completions',
-                {
-                    model: 'gpt-3.5-turbo',
-                    messages: [{ role: 'user', content: message }],
-                },
-                {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${OPENAI_API_KEY}`,
-                    },
-                }
-            );
-
-            if (response.status === 200) {
-                const { choices } = response.data;
-                const aiReply = choices[0].message.content;
-                setMessages(prevMessages => [
-                    ...prevMessages.filter(msg => msg.type !== 'waiting'),
-                    { text: aiReply, type: 'received' }
-                ]);
-            } else {
-                console.error('Failed to get response from OpenAI');
-            }
-        } catch (error) {
-            console.error('Error sending message to OpenAI:', error);
-        } finally {
-            setSendingMessage(false); 
-        }
-    };
-
-    const sendMessage = () => {
+    const sendMessage = async () => {
         if (message) {
-            setMessages([...messages, { text: message, type: 'sent' }, { text: '...', type: 'waiting' }]);
+            const userMessage = message;
+            setMessages((prevMessages) => [
+                ...prevMessages,
+                { text: message, type: 'sent', id: 2 },
+                { text: '...', type: 'waiting', id: 0 },
+            ]);
             setMessage('');
-            sendMessageToOpenAI();
+            const response = await sendMessageToChatGPT({
+                messageText: userMessage,
+                chatHistory: messages,
+            });
+            setMessages((prevMessages) => [
+                ...prevMessages.filter((msg) => msg.id !== 0), // Remove the placeholder '...' message
+                { text: response['content'], type: 'received', id: 1 },
+            ]);
         }
     };
 
     return (
-        <View style={styles.container}>
-            <ScrollView style={styles.chatContainer}>
-                {messages.map((message, index) => (
-                    <View key={index} style={message.type === 'sent' ? styles.sentMessage : styles.receivedMessage}>
-                        <Text style={message.type === 'sent' ? styles.sentText : styles.receivedText}>{message.text}</Text>
-                    </View>
-                ))}
-            </ScrollView>
-            <View style={styles.inputContainer}>
-                <TextInput
-                    style={styles.input}
-                    placeholder="Type your message"
-                    value={message}
-                    onChangeText={(text) => setMessage(text)}
-                    onSubmitEditing={sendMessage}
-                    multiline={false}
-                />
-                <TouchableOpacity onPress={sendMessage} style={styles.sendButton}>
-                    <Ionicons name="send" size={20} color="white" />
-                </TouchableOpacity>
+        <KeyboardAvoidingView
+            style={{ flex: 1 }}
+            behavior={Platform.OS === 'ios' ? 'padding' : null}
+            keyboardVerticalOffset={Platform.OS === 'ios' ? 100 : 64} // Adjust offset based on platform
+        >
+            <View style={styles.container}>
+                <ScrollView style={styles.chatContainer}>
+                    {messages.map((message, index) => (
+                        <View
+                            key={index}
+                            style={message.type === 'sent' ? styles.sentMessage : styles.receivedMessage}
+                        >
+                            <Text
+                                style={message.type === 'sent' ? styles.sentText : styles.receivedText}
+                                selectable={true}
+                            >
+                                {message.text}
+                            </Text>
+                        </View>
+                    ))}
+                </ScrollView>
+                <View style={styles.inputContainer}>
+                    <TextInput
+                        style={styles.input}
+                        placeholder="Type your message"
+                        value={message}
+                        onChangeText={(text) => setMessage(text)}
+                        onSubmitEditing={sendMessage}
+                        multiline={false}
+                    />
+                    <TouchableOpacity
+                        onPress={sendMessage}
+                        style={styles.sendButton}
+                    >
+                        <Ionicons
+                            name="send"
+                            size={20}
+                            color="white"
+                        />
+                    </TouchableOpacity>
+                </View>
             </View>
-        </View>
+        </KeyboardAvoidingView>
     );
 };
 

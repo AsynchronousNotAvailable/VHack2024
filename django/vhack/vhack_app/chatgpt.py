@@ -1,7 +1,7 @@
 import os
 import sys
 import json
-import datetime
+from datetime import datetime, timedelta
 import re
 from openai import OpenAI
 from langchain_openai import ChatOpenAI
@@ -11,7 +11,6 @@ from langchain_core.messages import HumanMessage, AIMessage
 from langchain.agents import create_openai_functions_agent
 from langchain_community.tools.tavily_search import TavilySearchResults
 from langchain.agents import AgentExecutor
-
 from langchain.chains import LLMMathChain 
 from langchain.agents import Tool
 from system_prompts import AUTOMATED_EXPENSE_RECORDING_SP, DATA_ANALYSIS_SP, EXPENSE_PREDICTION_SP, REGULAR_CHAT_SP, SUMMARIZE_CHAT_SP, \
@@ -22,6 +21,11 @@ from model_config import __MODEL__, __MAX_TOKENS__, __TEMPERATURE__, __VERBOSE__
                          __DEBUGGING__, __MAX_ERROR_TRIAL__, \
                          __PERSONA_TEACHER_AGE__, __PERSONA_GUARDIAN_AGE__, __PERSONA_ADVISOR_AGE__
 from utils import get_csv_given_date
+from flask import Flask, render_template, request, jsonify, redirect, session, url_for
+from flask_cors import CORS, cross_origin
+
+app = Flask(__name__)
+CORS(app, resources={r"/*": {"origins": ["http://192.168.1.127:5000", "*"]}})
 
 def action_layer(client: OpenAI, user_input):
     #     functions = function_call_template,   # <========add this parameter
@@ -38,7 +42,7 @@ def action_layer(client: OpenAI, user_input):
 
 
 def get_start_end_date_for_history(client: OpenAI, user_input):
-    formatted_input = "The current datetime is " + datetime.datetime.now().strftime("%A, %B %d, %Y %H:%M:%S") + ". " + user_input
+    formatted_input = "The current datetime is " + datetime.now().strftime("%A, %B %d, %Y %H:%M:%S") + ". " + user_input
     completion = client.chat.completions.create(
         model = __MODEL__,
         messages = [{"role": "user", "content": formatted_input}],
@@ -50,8 +54,8 @@ def get_start_end_date_for_history(client: OpenAI, user_input):
     
     # if no date specified
     if not completion.choices[0].message.tool_calls[0].function.name and not completion.choices[0].message.tool_calls[0].function.arguments:
-        current_date = datetime.datetime.now()
-        one_month_ago = current_date - datetime.timedelta(days=__MAX_DATE_RANGE__)
+        current_date = datetime.now()
+        one_month_ago = current_date - timedelta(days=__MAX_DATE_RANGE__)
         formatted_current_date = current_date.strftime("%d-%m-%Y")
         formatted_one_month_ago = one_month_ago.strftime("%d-%m-%Y")
         print("--- calculating date") if __DEBUGGING__ else None
@@ -114,7 +118,7 @@ def init_summarize_text_model():
     return agent_executor
 
 def record_user_expenses_income(agent_executor:AgentExecutor, user_input):
-    formatted_input = "The current datetime is " + datetime.datetime.now().strftime("%A, %B %d, %Y %H:%M:%S") + ". " + user_input
+    formatted_input = "The current datetime is " + datetime.now().strftime("%A, %B %d, %Y %H:%M:%S") + ". " + user_input
     chat_history = []  # not required here
     try:
         response = agent_executor.invoke({
@@ -152,7 +156,7 @@ def init_functional_model(system_prompt):
     return agent_executor
 
 def regular_chat(agent_executor: AgentExecutor, chat_history, user_input):
-    formatted_input = "The current datetime is " + datetime.datetime.now().strftime("%A, %B %d, %Y %H:%M:%S") + ". " + user_input
+    formatted_input = "The current datetime is " + datetime.now().strftime("%A, %B %d, %Y %H:%M:%S") + ". " + user_input
     try:
         response = agent_executor.invoke({
             "chat_history": chat_history,
@@ -179,10 +183,18 @@ def data_analysis(client: OpenAI, agent_executor: AgentExecutor, chat_history, u
     # call acquire history data
     date_dict = get_start_end_date_for_history(client=client, user_input=user_input)
     print("--- selected date", date_dict) if __DEBUGGING__ else None
+    # Check if end date is too far away from start date to avoid crashing
+    if not date_dict:
+        start_date = datetime.strptime(date_dict['start_date'], '%d-%m-%Y')
+        end_date = datetime.strptime(date_dict['end_date'], '%d-%m-%Y')
+        difference = (end_date - start_date).days
+        if difference > 30:
+            end_date = start_date + timedelta(days=20)
+            date_dict['end_date'] = end_date.strftime('%d-%m-%Y')
     data_csv = get_csv_given_date(csv_path=__USER_DATA_PATH__, start_date=date_dict['start_date'], end_date=date_dict['end_date'])
     print("--- data_csv\n", data_csv) if __DEBUGGING__ else None
     
-    contexted_input = "The current datetime is " + datetime.datetime.now().strftime("%A, %B %d, %Y %H:%M:%S") + ". " \
+    contexted_input = "The current datetime is " + datetime.now().strftime("%A, %B %d, %Y %H:%M:%S") + ". " \
                       + user_input + "User's past expense data are as follows: " + data_csv
     try:
         response = agent_executor.invoke({
@@ -203,7 +215,7 @@ def expenses_prediction(client: OpenAI, agent_executor: AgentExecutor, chat_hist
     data_csv = get_csv_given_date(csv_path=__USER_DATA_PATH__, start_date=date_dict['start_date'], end_date=date_dict['end_date'])
     print("--- data_csv\n", data_csv) if __DEBUGGING__ else None
     
-    contexted_input = "The current datetime is " + datetime.datetime.now().strftime("%A, %B %d, %Y %H:%M:%S") + ". " \
+    contexted_input = "The current datetime is " + datetime.now().strftime("%A, %B %d, %Y %H:%M:%S") + ". " \
                       + user_input + "User's past expense data are as follows: " + data_csv
     try:
         response = agent_executor.invoke({
@@ -216,8 +228,7 @@ def expenses_prediction(client: OpenAI, agent_executor: AgentExecutor, chat_hist
         return None
 
 def is_user(history):
-    user = history['user']
-    if user['_id'] == 1:
+    if history['id'] == 1:
         return False
     else:
         return True
@@ -229,8 +240,10 @@ def convert_json(prompt):
     json_data = json.dumps(kv_pairs, indent=2)
     return json_data
     
-def use_model(prompt, chat_history, user_details):
+def use_model(prompt, chat_history):
     new_chat_history = []
+
+    chat_history = [history for history in chat_history if history['id'] != 0]
 
     if chat_history != []:
         for history in chat_history:
@@ -239,12 +252,19 @@ def use_model(prompt, chat_history, user_details):
             else:
                 new_chat_history.append(AIMessage(content=history['text']))
 
-    user_name = user_details['username']
-    user_age = user_details['age']
-    user_mbti = user_details['mbti']
-    user_gender = user_details['gender']
-    user_address = user_details['address']
-    user_set_model_name = user_details['model_name']
+    # user_name = user_details['username']
+    # user_age = user_details['age']
+    # user_mbti = user_details['mbti']
+    # user_gender = user_details['gender']
+    # user_address = user_details['address']
+    # user_set_model_name = user_details['model_name']
+
+    user_name = "Ter Qin"
+    user_age = 22
+    user_mbti = "ENTJ"
+    user_gender = "male"
+    user_address = "Kelantan"
+    user_set_model_name = "Lily"
     
     # preset persona
     if user_age in range(*__PERSONA_TEACHER_AGE__):
@@ -292,22 +312,22 @@ def use_model(prompt, chat_history, user_details):
     response_type = ''
     data = ''
     # function calls must be in order
-    if 'record_user_expenses' in funcs_to_call.keys():
-        output = None
-        c = 0
-        while (output is None) and (c < __MAX_ERROR_TRIAL__):
-            output = record_user_expenses_income(agent_executor=model_record_user_expense, user_input=prompt)
-            c += 1
-        print("\n--- record_user_expenses()") if __DEBUGGING__ else None
-        print(output)
-        if output is not None:
-            formatted_output = "I recorded your expense/income as follows: " + output
-        else:
-            formatted_output = ''
-        new_chat_history.append(AIMessage(content=formatted_output))
-        final_output = formatted_output
-        response_type = 'record_expenses'
-        data = convert_json(output)
+    # if 'record_user_expenses' in funcs_to_call.keys():
+    #     output = None
+    #     c = 0
+    #     while (output is None) and (c < __MAX_ERROR_TRIAL__):
+    #         output = record_user_expenses_income(agent_executor=model_record_user_expense, user_input=prompt)
+    #         c += 1
+    #     print("\n--- record_user_expenses()") if __DEBUGGING__ else None
+    #     print(output)
+    #     if output is not None:
+    #         formatted_output = "I recorded your expense/income as follows: " + output
+    #     else:
+    #         formatted_output = ''
+    #     new_chat_history.append(AIMessage(content=formatted_output))
+    #     final_output = formatted_output
+    #     response_type = 'record_expenses'
+    #     data = convert_json(output)
         
     if 'expense_prediction' in funcs_to_call.keys():
         output = None
@@ -363,120 +383,120 @@ def use_model(prompt, chat_history, user_details):
 
     return {'response_type': response_type, 'data': data, 'content': final_output, 'summarized_content': summarization}
 
+@app.route('/')
+def home():
+    return 'Hello World'
 
-if __name__ == "__main__":
-    # # hard codes
-    # user_name = "michelle"
-    # user_age = 3
-    # user_mbti = "enfj-t"
-    # user_gender = "female"
-    # user_address = "50603 Kuala Lumpur, Wilayah Persekutuan Kuala Lumpur"
-    # user_set_model_name = "Lily"
+@app.route('/get_user_response', methods=['POST'])
+def get_user_response():
+    user_input = request.form.get('message_to_gpt')
+    chat_history = json.loads(request.form.get('conversation_history'))
+    print("DATAAAA: ",user_input)
+    print(chat_history)
+    updated_result = use_model(user_input, chat_history)
+    return jsonify(updated_result)
+
+if __name__ == '__main__':
+    app.run(debug=True, host='0.0.0.0')
+
+# if __name__ == "__main__":
     
-    # user_name = "Tom"
-    # user_age = 15
-    # user_mbti = "ENTP"
-    # user_gender = "male"
-    # user_address = "Bukit Mertajam, Pulau Pinang"
-    # user_set_model_name = "Lily"
+#     user_name = "Zhi En"
+#     user_age = 21
+#     user_mbti = "INTJ"
+#     user_gender = "female"
+#     user_address = "Ipoh"
+#     user_set_model_name = "Lily"
     
-    user_name = "Zhi En"
-    user_age = 21
-    user_mbti = "INTJ"
-    user_gender = "female"
-    user_address = "Ipoh"
-    user_set_model_name = "Lily"
+#     # preset persona
+#     if user_age in range(*__PERSONA_TEACHER_AGE__):
+#         persona = PERSONA_TEACHER_SP
+#     elif user_age in range(*__PERSONA_GUARDIAN_AGE__):
+#         persona = PERSONA_GUARDIAN_SP
+#     else:
+#         persona = PERSONA_ADVISOR_SP
     
-    # preset persona
-    if user_age in range(*__PERSONA_TEACHER_AGE__):
-        persona = PERSONA_TEACHER_SP
-    elif user_age in range(*__PERSONA_GUARDIAN_AGE__):
-        persona = PERSONA_GUARDIAN_SP
-    else:
-        persona = PERSONA_ADVISOR_SP
+#     persona = f"Your name is {user_set_model_name}. " + persona + \
+#         f" The end user's personal info is as below. Name {user_name}, Age {user_age}, MBTI {user_mbti}, \
+#         Gender {user_gender} and is currently living at {user_address}. \
+#         Please customise and personalise your responses for the end user based on those."
     
-    persona = f"Your name is {user_set_model_name}. " + persona + \
-        f" The end user's personal info is as below. Name {user_name}, Age {user_age}, MBTI {user_mbti}, \
-        Gender {user_gender} and is currently living at {user_address}. \
-        Please customise and personalise your responses for the end user based on those."
+#     # init required models
+#     client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+#     model_record_user_expense = init_record_user_expense_income_model()
+#     model_regular_chat = init_functional_model(REGULAR_CHAT_SP + " " + MODEL_POWERS_SP + " " + persona)
+#     model_data_analysis = init_functional_model(DATA_ANALYSIS_SP + " " + MODEL_POWERS_SP + " " + persona)
+#     model_expenses_prediction = init_functional_model(EXPENSE_PREDICTION_SP + " " + MODEL_POWERS_SP + " " + persona)
     
-    # init required models
-    client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-    model_record_user_expense = init_record_user_expense_income_model()
-    model_regular_chat = init_functional_model(REGULAR_CHAT_SP + " " + MODEL_POWERS_SP + " " + persona)
-    model_data_analysis = init_functional_model(DATA_ANALYSIS_SP + " " + MODEL_POWERS_SP + " " + persona)
-    model_expenses_prediction = init_functional_model(EXPENSE_PREDICTION_SP + " " + MODEL_POWERS_SP + " " + persona)
-    
-    chat_history = []
-    while True:
-        prompt = input(">>> Prompt: ")
-        if prompt in ['quit', 'q', 'exit']:
-            sys.exit()
+#     chat_history = []
+#     while True:
+#         prompt = input(">>> Prompt: ")
+#         if prompt in ['quit', 'q', 'exit']:
+#             sys.exit()
         
-        # append to chat history
-        chat_history.append(HumanMessage(content=prompt))
+#         # append to chat history
+#         chat_history.append(HumanMessage(content=prompt))
         
-        # action layer
-        completion = action_layer(client=client, user_input=prompt)
-        # print(completion)
+#         # action layer
+#         completion = action_layer(client=client, user_input=prompt)
+#         # print(completion)
         
-        funcs_to_call = {}
-        if completion.choices[0].message.tool_calls is not None:
-            for i in completion.choices[0].message.tool_calls:
-                funcs_to_call[i.function.name] = i.function.arguments
-                # funcs_to_call[i.message.function_call.name] = i.message.function_call.arguments
-                    # funcs_to_call[i.message.tool_calls]
-        else:
-            funcs_to_call['regular_chat'] = ""
+#         funcs_to_call = {}
+#         if completion.choices[0].message.tool_calls is not None:
+#             for i in completion.choices[0].message.tool_calls:
+#                 funcs_to_call[i.function.name] = i.function.arguments
+#                 # funcs_to_call[i.message.function_call.name] = i.message.function_call.arguments
+#                     # funcs_to_call[i.message.tool_calls]
+#         else:
+#             funcs_to_call['regular_chat'] = ""
             
-        # debugging
-        if __DEBUGGING__:
-            for k,v in funcs_to_call.items():
-                print(k, "-> ", end='', flush=True)
-            print()
+#         # debugging
+#         if __DEBUGGING__:
+#             for k,v in funcs_to_call.items():
+#                 print(k, "-> ", end='', flush=True)
+#             print()
 
 
-        # function calls must be in order
-        if 'record_user_expenses' in funcs_to_call.keys():
-            output = None
-            c = 0
-            while (output is None) and (c < __MAX_ERROR_TRIAL__):
-                output = record_user_expenses_income(agent_executor=model_record_user_expense, user_input=prompt)
-                c += 1
-            print("\n--- record_user_expenses()") if __DEBUGGING__ else None
-            print(output)
-            formatted_output = "I recorded your expense/income as follows: " + output
-            chat_history.append(AIMessage(content=formatted_output)) if formatted_output is not None else None
-            # must let model know that it recorded the expense
+#         # function calls must be in order
+#         if 'record_user_expenses' in funcs_to_call.keys():
+#             output = None
+#             c = 0
+#             while (output is None) and (c < __MAX_ERROR_TRIAL__):
+#                 output = record_user_expenses_income(agent_executor=model_record_user_expense, user_input=prompt)
+#                 c += 1
+#             print("\n--- record_user_expenses()") if __DEBUGGING__ else None
+#             print(output)
+#             formatted_output = "I recorded your expense/income as follows: " + output
+#             chat_history.append(AIMessage(content=formatted_output)) if formatted_output is not None else None
+#             # must let model know that it recorded the expense
             
-        if 'expense_prediction' in funcs_to_call.keys():
-            output = None
-            c = 0
-            while (output is None) and (c < __MAX_ERROR_TRIAL__):
-                output = expenses_prediction(client=client, agent_executor=model_expenses_prediction, chat_history=chat_history, user_input=prompt)
-                c += 1
-            print("\n--- expenses_prediction()") if __DEBUGGING__ else None
-            print(output)
-            chat_history.append(AIMessage(content=output)) if output is not None else None
+#         if 'expense_prediction' in funcs_to_call.keys():
+#             output = None
+#             c = 0
+#             while (output is None) and (c < __MAX_ERROR_TRIAL__):
+#                 output = expenses_prediction(client=client, agent_executor=model_expenses_prediction, chat_history=chat_history, user_input=prompt)
+#                 c += 1
+#             print("\n--- expenses_prediction()") if __DEBUGGING__ else None
+#             print(output)
+#             chat_history.append(AIMessage(content=output)) if output is not None else None
     
-        if 'data_analysis' in funcs_to_call.keys():
-            output = None
-            c = 0
-            while (output is None) and (c < __MAX_ERROR_TRIAL__):
-                output = data_analysis(client=client, agent_executor=model_data_analysis, chat_history=chat_history, user_input=prompt)
-                c += 1
-            print("\n--- data_analysis()") if __DEBUGGING__ else None
-            print(output)
-            chat_history.append(AIMessage(content=output)) if output is not None else None
+#         if 'data_analysis' in funcs_to_call.keys():
+#             output = None
+#             c = 0
+#             while (output is None) and (c < __MAX_ERROR_TRIAL__):
+#                 output = data_analysis(client=client, agent_executor=model_data_analysis, chat_history=chat_history, user_input=prompt)
+#                 c += 1
+#             print("\n--- data_analysis()") if __DEBUGGING__ else None
+#             print(output)
+#             chat_history.append(AIMessage(content=output)) if output is not None else None
     
-        # final revert
-        if 'regular_chat' in funcs_to_call.keys():
-            output = None
-            c = 0
-            while (output is None) and (c < __MAX_ERROR_TRIAL__):
-                output = regular_chat(agent_executor=model_regular_chat, chat_history=chat_history, user_input=prompt)
-                c += 1
-            print("\n--- regular_chat()") if __DEBUGGING__ else None
-            print(output)
-            chat_history.append(AIMessage(content=output)) if output is not None else None
-
+#         # final revert
+#         if 'regular_chat' in funcs_to_call.keys():
+#             output = None
+#             c = 0
+#             while (output is None) and (c < __MAX_ERROR_TRIAL__):
+#                 output = regular_chat(agent_executor=model_regular_chat, chat_history=chat_history, user_input=prompt)
+#                 c += 1
+#             print("\n--- regular_chat()") if __DEBUGGING__ else None
+#             print(output)
+#             chat_history.append(AIMessage(content=output)) if output is not None else None

@@ -18,6 +18,4 @@ urlpatterns = [
     #     body:{
     #             "thread_id": "thread_2pW1ODo2IyUiX9tYpfsqlW79", (user value)
     #         }
-
-    
 ]
