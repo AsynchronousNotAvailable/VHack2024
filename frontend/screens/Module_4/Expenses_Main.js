@@ -1,40 +1,35 @@
-import React, { useContext, useEffect, useState } from "react";
-import {
-    Image,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
-} from "react-native";
-import axios from "axios";
-import { sw, sh, fonts, colors } from "../../styles/GlobalStyles";
-import { LinearGradient } from "expo-linear-gradient";
-import { LineChart } from "react-native-gifted-charts";
-import { Path, Circle, Svg, Ellipse } from "react-native-svg";
-import { AreaChart, XAxis } from "react-native-svg-charts";
-import * as Progress from "react-native-progress";
+import React, { useContext, useEffect, useState } from 'react';
+import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import axios from 'axios';
+import { sw, sh, fonts, colors } from '../../styles/GlobalStyles';
+import { LinearGradient } from 'expo-linear-gradient';
+import { LineChart } from 'react-native-gifted-charts';
+import { Path, Circle, Svg, Ellipse } from 'react-native-svg';
+import { AreaChart, XAxis } from 'react-native-svg-charts';
+import * as Progress from 'react-native-progress';
 
-import * as shape from "d3-shape";
-import { GlobalContext } from "../../context";
+import * as shape from 'd3-shape';
+import { GlobalContext } from '../../context';
+import BudgetCard from './Utils/BudgetCard';
 
 function Expenses_Main({ navigation }) {
     const { userId } = useContext(GlobalContext);
     const [transactions, setTransactions] = useState([]);
-
+    const [transactionsCategory, setTransactionsCategory] = useState([]);
+    const [budgets, setBudgets] = useState([]);
     let totalIncome = 0;
     let totalExpense = 0;
     let totalBalance = 0;
     const toTransactionPage = () => {
-        navigation.navigate("Expenses_Transaction");
+        navigation.navigate('Expenses_Transaction');
     };
 
     const toAddBudget = () => {
-        navigation.navigate("Expenses_Add_1");
+        navigation.navigate('Expenses_Add_1');
     };
 
     const toAddBudgetBottom = () => {
-        navigation.navigate("Expenses_Budget");
+        navigation.navigate('Expenses_Budget');
     };
 
     // const data = [50, 10, 40, 95, 30, 24, 85, 91, 35, 53, 53, 24];
@@ -52,54 +47,118 @@ function Expenses_Main({ navigation }) {
     //     // "Nov",
     //     // "Dec",
     // ];
-    const data = [
-        { value: 35 },
-        { value: 40 },
-        { value: 30 },
-        { value: 15 },
-        { value: 30 },
-        { value: 20 },
-    ];
+    const data = [{ value: 35 }, { value: 40 }, { value: 30 }, { value: 15 }, { value: 30 }, { value: 20 }];
 
-    const xAxisLabels = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
+    const xAxisLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
 
-    const yLabels = ["Poor", "Fair", "Good", "Very Good", "Excellent"];
+    const yLabels = ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent'];
 
     const Line = ({ line }) => (
         <Path
-            key={"line"}
+            key={'line'}
             d={line}
-            stroke={"rgb(95, 132, 161)"}
-            fill={"none"}
+            stroke={'rgb(95, 132, 161)'}
+            fill={'none'}
         />
     );
-
-    const fetchAllTransactions = async () => {
-        try {
-            const response = await axios.get(`http://192.168.100.14:3000/transactions/${userId}`);
-            console.log(response.data);
-            setTransactions(response.data);
-        } catch (error) {
-            console.error('Error fetching transactions:', error);
-        }
-    };
 
     //calculate total income, expense and balance
     transactions.forEach((transaction) => {
         if (transaction.type === 'EXPENSE') {
             totalExpense += transaction.amount;
-        }
-        else {
+        } else {
             totalIncome += transaction.amount;
         }
     });
 
     totalBalance = totalIncome - totalExpense;
+
     
-    
+
+    const fetchAllTransactions = async () => {
+        try {
+            const response = await axios.get(`http://192.168.100.14:3000/transactions/${userId}`);
+            // console.log(response.data);
+            
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching transactions:', error);
+        }
+    };
+
+    const fetchTransactionCategory = async () => {
+        try {
+            const response = await axios.get(`http://192.168.100.14:3000/transactions/category/${userId}`);
+            // console.log(response.data);
+            const transactionsCategory = response.data;
+            const transformedTransactionsCat = transactionsCategory.map((transaction) => ({
+                spent: transaction._sum.amount,
+                category: transaction.category,
+            }));
+            console.log(transformedTransactionsCat);
+            return transformedTransactionsCat;
+        } catch (error) {
+            console.error('Error fetching transactions category:', error);
+        }
+    };
+
+    const fetchAllBudgets = async () => {
+        try {
+            const response = await axios.get(`http://192.168.100.14:3000/budgets/category/${userId}`);
+            // console.log(response.data);
+            const budgets = response.data;
+            const transformedBudgets = budgets.map((budget) => ({
+                amount: budget._sum.amount,
+                category: budget.category,
+            }));
+
+            return transformedBudgets;
+        } catch (error) {
+            console.error('Error fetching budgets:', error);
+        }
+    };
+
     useEffect(() => {
-        fetchAllTransactions();
-    }, [])
+        const fetchData = async () => {
+            const transactions = await fetchAllTransactions();
+            const transactionsCategory = await fetchTransactionCategory();
+            const budgets = await fetchAllBudgets();
+            setTransactions(transactions);
+            setTransactionsCategory(transactionsCategory);
+            setBudgets(budgets);
+            
+
+            if(budgets.length > 0 && transactionsCategory.length > 0) {
+                const updatedBudgets = budgets.map((budget) => {
+                    const transaction = transactionsCategory.find(
+                        (transaction) => transaction.category === budget.category,
+                    );
+                    if (transaction) {
+                        return { ...budget, spent: transaction.spent };
+                    }
+                    return budget;
+                });
+                console.log(updatedBudgets);
+                setBudgets(updatedBudgets);
+            }
+        }
+        fetchData();
+    }, []);
+
+    // useEffect(() => {
+    //     if (transactionsCategory.length > 0 && budgets.length > 0) {
+    //         const updatedBudgets = budgets.map((budget) => {
+    //             const transaction = transactionsCategory.find(
+    //                 (transaction) => transaction.category === budget.category,
+    //             );
+    //             if (transaction) {
+    //                 return { ...budget, spent: transaction.spent };
+    //             }
+    //             return budget;
+    //         });
+    //         setBudgets(updatedBudgets);
+    //     }
+    // }, [transactionsCategory, budgets]);
 
     return (
         <ScrollView style={{ backgroundColor: colors.white, height: '100%' }}>
@@ -309,98 +368,21 @@ function Expenses_Main({ navigation }) {
                 </View>
 
                 {/* details frame */}
-                <View style={[styles.columnContainer, { gap: 10 }]}>
-                    <View style={[styles.columnContainer]}>
-                        <Text style={[styles.cardTitle, { color: colors.black, fontSize: 18 }]}>Food</Text>
 
-                        <View
-                            style={[
-                                styles.rowContainer,
-                                {
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center',
-                                },
-                            ]}
-                        >
-                            <Text
-                                style={[
-                                    {
-                                        fontFamily: fonts.interRegular,
-                                        color: colors.black,
-                                        fontSize: 18,
-                                        flex: 1,
-                                    },
-                                ]}
-                            >
-                                RM600 Spent
-                            </Text>
-                            <Text
-                                style={[
-                                    {
-                                        fontFamily: fonts.interRegular,
-                                        color: colors.black,
-                                        fontSize: 18,
-                                    },
-                                ]}
-                            >
-                                RM1000
-                            </Text>
-                        </View>
-                    </View>
-                    <Progress.Bar
-                        progress={0.5}
-                        color="#B5FFE3"
-                        width={sw(370)}
-                        height={sh(10)}
-                    />
-                </View>
+                {budgets.length > 0 &&
+                    budgets.map((budget) => (
+                        <BudgetCard
+                            key={budget.category}
+                            category={budget.category}
+                            usedAmount={budget.spent}
+                            totalAmount={budget.amount}
+                        />
+                    ))}
+
+                
 
                 {/* details frame */}
-                <View style={[styles.columnContainer, { gap: 10 }]}>
-                    <View style={[styles.columnContainer]}>
-                        <Text style={[styles.cardTitle, { color: colors.black, fontSize: 18 }]}>Clothing</Text>
-
-                        <View
-                            style={[
-                                styles.rowContainer,
-                                {
-                                    justifyContent: 'space-between',
-                                    alignItems: 'center',
-                                },
-                            ]}
-                        >
-                            <Text
-                                style={[
-                                    {
-                                        fontFamily: fonts.interRegular,
-                                        color: colors.black,
-                                        fontSize: 18,
-                                        flex: 1,
-                                    },
-                                ]}
-                            >
-                                RM100 Spent
-                            </Text>
-                            <Text
-                                style={[
-                                    {
-                                        fontFamily: fonts.interRegular,
-                                        color: colors.black,
-                                        fontSize: 18,
-                                    },
-                                ]}
-                            >
-                                RM500
-                            </Text>
-                        </View>
-                    </View>
-                    <Progress.Bar
-                        progress={1}
-                        color="#FFD1D3"
-                        height={sh(10)}
-                        width={sw(370)}
-                    />
-                </View>
+               
 
                 <TouchableOpacity onPress={toAddBudgetBottom}>
                     <View
@@ -470,22 +452,22 @@ export default Expenses_Main;
 
 const styles = StyleSheet.create({
     cardContainer: {
-        display: "flex",
-        flexDirection: "column",
+        display: 'flex',
+        flexDirection: 'column',
         gap: 20,
         paddingHorizontal: sw(24),
         paddingVertical: sh(15),
         marginVertical: sh(15),
         marginHorizontal: sw(20),
         borderRadius: 20,
-        shadowColor: "#000",
+        shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
         elevation: 10,
     },
     balanceContainer: {
-        flexDirection: "column",
+        flexDirection: 'column',
         gap: 4,
     },
     cardTitle: {
@@ -497,10 +479,10 @@ const styles = StyleSheet.create({
         fontFamily: fonts.interSemiBold,
         color: colors.white,
     },
-    rowContainer: { flexDirection: "row" },
-    columnContainer: { flexDirection: "column" },
+    rowContainer: { flexDirection: 'row' },
+    columnContainer: { flexDirection: 'column' },
     subTitleContainer: {
-        flexDirection: "row",
+        flexDirection: 'row',
         gap: 5,
     },
     subTitleText: {
@@ -512,6 +494,6 @@ const styles = StyleSheet.create({
         // borderColor: "black",
         // borderWidth: 1,
         padding: sw(20),
-        flexDirection: "column",
+        flexDirection: 'column',
     },
 });

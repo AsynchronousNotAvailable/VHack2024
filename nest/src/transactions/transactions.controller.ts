@@ -13,8 +13,13 @@ export class TransactionsController {
   }
 
   @Get(':userId')
-  findAll(@Param('userId', ParseIntPipe) userId: number){
+  findAll(@Param('userId', ParseIntPipe) userId: number) {
     return this.transactionsService.findAllForUser(userId);
+  }
+
+  @Get('category/:userId')
+  findByCategory(@Param('userId', ParseIntPipe) userId: number) {
+    return this.transactionsService.findByCategory(userId);
   }
 
   // @Get(':id')

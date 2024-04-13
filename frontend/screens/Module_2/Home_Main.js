@@ -36,7 +36,7 @@ function Home_Main({ navigation }) {
 
     useEffect(() => { 
         console.log("Hi");
-        fetchAllTransactions();
+        // fetchAllTransactions();
         // setTransactions(data);
     }, [])
 

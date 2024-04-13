@@ -48,6 +48,27 @@ export class TransactionsService {
     }
   }
 
+  async findByCategory(userId: number)
+  {
+    const userExist = await this.user.findOne(userId);
+    if(!userExist) {
+      throw new NotFoundException('User not found');
+    }
+
+    const transactionCategory = await this.prisma.transaction.groupBy({
+      by: ['category'],
+      _sum: {
+        amount: true,
+      },
+      where: {
+        userId: userId,
+      },
+    });
+
+    return transactionCategory;
+
+  } 
+
   // findOne(id: number) {
   //   return `This action returns a #${id} transaction`;
   // }

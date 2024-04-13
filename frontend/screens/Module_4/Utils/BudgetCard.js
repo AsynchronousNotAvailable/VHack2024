@@ -1,55 +1,57 @@
-import { View, Text } from 'react-native'
+import { View, Text, StyleSheet } from 'react-native'
 import React from 'react'
 import * as Progress from 'react-native-progress';
+import { colors, fonts, sh, sw } from '../../../styles/GlobalStyles';
 
-const BudgetCard = ({usedAmount, totalAmount}) => {
-  return (
-      <View style={[styles.columnContainer, { gap: 10 }]}>
-          <View style={[styles.columnContainer]}>
-              <Text style={[styles.cardTitle, { color: colors.black, fontSize: 18 }]}>Clothing</Text>
+const BudgetCard = ({category, usedAmount, totalAmount}) => {
+    const percentage = (usedAmount / totalAmount);
+    return (
+        <View style={[styles.columnContainer, { gap: 10 }]}>
+            <View style={[styles.columnContainer]}>
+                <Text style={[styles.cardTitle, { color: colors.black, fontSize: 18 }]}>{category}</Text>
 
-              <View
-                  style={[
-                      styles.rowContainer,
-                      {
-                          justifyContent: 'space-between',
-                          alignItems: 'center',
-                      },
-                  ]}
-              >
-                  <Text
-                      style={[
-                          {
-                              fontFamily: fonts.interRegular,
-                              color: colors.black,
-                              fontSize: 18,
-                              flex: 1,
-                          },
-                      ]}
-                  >
-                      RM100 Spent
-                  </Text>
-                  <Text
-                      style={[
-                          {
-                              fontFamily: fonts.interRegular,
-                              color: colors.black,
-                              fontSize: 18,
-                          },
-                      ]}
-                  >
-                      RM500
-                  </Text>
-              </View>
-          </View>
-          <Progress.Bar
-              progress={1}
-              color="#FFD1D3"
-              height={sh(10)}
-              width={sw(370)}
-          />
-      </View>
-  );
+                <View
+                    style={[
+                        styles.rowContainer,
+                        {
+                            justifyContent: 'space-between',
+                            alignItems: 'center',
+                        },
+                    ]}
+                >
+                    <Text
+                        style={[
+                            {
+                                fontFamily: fonts.interRegular,
+                                color: colors.black,
+                                fontSize: 18,
+                                flex: 1,
+                            },
+                        ]}
+                    >
+                        RM{usedAmount} Spent
+                    </Text>
+                    <Text
+                        style={[
+                            {
+                                fontFamily: fonts.interRegular,
+                                color: colors.black,
+                                fontSize: 18,
+                            },
+                        ]}
+                    >
+                        RM{totalAmount}
+                    </Text>
+                </View>
+            </View>
+            <Progress.Bar
+                progress={(usedAmount && totalAmount) ? usedAmount / totalAmount : 0.5}
+                color={usedAmount > totalAmount ? '#FFD1D3' : '#B5FFE3'}
+                height={sh(10)}
+                width={sw(370)}
+            />
+        </View>
+    );
 }
 
 export default BudgetCard;
