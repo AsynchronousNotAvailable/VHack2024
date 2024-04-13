@@ -28,7 +28,7 @@ export class UsersService {
     if (userExist.password !== loginUserDto.password) {
       throw new ConflictException('Invalid credentials');
     }
-
+    console.log(userExist.user_type);
     return userExist;
   }
 

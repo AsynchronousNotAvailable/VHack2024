@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -14,110 +8,113 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+model User {
+  id              Int           @id @default(autoincrement())
+  email           String        @unique
+  password        String
+  monthly_income  Float?
+  monthly_payment Float?
+  monthly_loan    Float?
+  debt_free_date  DateTime?
+  strategy        StrategyType?
+  username        String
+  user_type       UserType     @default(DEBTOR)
+  appointment     Appointment[]
+  bills           Bill[]
+  budgets         Budget[]
+  loans           Loan[]
+  transactions    Transaction[]
+}
+
+model Loan {
+  id                Int      @id @default(autoincrement())
+  name              String
+  end_date          DateTime
+  loan_amount       Float
+  installment_month Int
+  payment_remaining Int
+  interest_rate     Float
+  userId            Int
+  user              User     @relation(fields: [userId], references: [id])
+}
+
+model Bill {
+  id               Int          @id @default(autoincrement())
+  name             String
+  amount           Float
+  repeating_option RepeatOption
+  userId           Int
+  user             User         @relation(fields: [userId], references: [id])
+}
+
+model Transaction {
+  id          Int                 @id @default(autoincrement())
+  date        DateTime
+  account     AccountType
+  category    TransactionCategory
+  description String?
+  amount      Float
+  type        TransactionType
+  userId      Int
+  user        User                @relation(fields: [userId], references: [id])
+}
+
+model Budget {
+  id       Int                 @id @default(autoincrement())
+  name     String
+  amount   Float
+  category TransactionCategory
+  account  AccountType
+  userId   Int
+  user     User                @relation(fields: [userId], references: [id])
+}
+
+model Consultant {
+  id          Int           @id @default(autoincrement())
+  name        String
+  position    String
+  description String
+  appointment Appointment[]
+}
+
+model Appointment {
+  id           Int        @id @default(autoincrement())
+  time         DateTime
+  consultantId Int
+  userId       Int
+  consultant   Consultant @relation(fields: [consultantId], references: [id])
+  user         User       @relation(fields: [userId], references: [id])
+}
+
 enum TransactionType {
   INCOME
   EXPENSE
 }
 
-enum TransactionCategory{
+enum TransactionCategory {
   SHOPPING
   ENTERTAINMENT
   FOOD
   SALARY
 }
 
-enum AccountType{
+enum AccountType {
   PERSONAL
   EDUCATION
-  
 }
 
-enum RepeatOption{
+enum RepeatOption {
   DAILY
   MONTHLY
   YEARLY
 }
 
-enum StrategyType{
+enum StrategyType {
   AVALANCHE
   SNOWBALL
 }
 
-model User {
-  id    Int     @default(autoincrement()) @id
-  email String  @unique
-  username  String
-  password String
-  monthly_income Float?
-  monthly_payment Float?
-  monthly_loan Float?
-  debt_free_date DateTime?
-  strategy StrategyType?
-  loans Loan[]
-  transactions Transaction[]
-  budgets Budget[]
-  appointment Appointment[]
-  bills Bill[]
-}
-
-model Loan{
-  id    Int     @default(autoincrement()) @id
-  name String
-  end_date DateTime
-  loan_amount Float
-  installment_month Int
-  payment_remaining Int
-  interest_rate Float
-  // Define the foreign key relationship here
-  user               User      @relation(fields: [userId], references: [id])
-  userId             Int
-}
-
-
-model Bill{
-  id    Int     @default(autoincrement()) @id
-  name String
-  amount Float
-  repeating_option RepeatOption
-  user User @relation(fields: [userId], references: [id])
-  userId Int
-}
-
-model Transaction{
-  id    Int     @default(autoincrement()) @id
-  date DateTime
-  account AccountType
-  category TransactionCategory
-  description String?
-  amount Float
-  type TransactionType
-  user User @relation(fields: [userId], references: [id])
-  userId Int
-}
-
-model Budget{
-  id    Int     @default(autoincrement()) @id
-  name String
-  amount Float
-  category TransactionCategory
-  account AccountType
-  user User @relation(fields: [userId], references: [id])
-  userId Int
-}
-
-model Consultant {
-  id    Int     @default(autoincrement()) @id
-  name String
-  position String
-  description String
-  appointment Appointment[]
-}
-
-model Appointment {
-  id    Int     @default(autoincrement()) @id
-  time DateTime
-  consultant Consultant @relation(fields: [consultantId], references: [id])
-  consultantId Int
-  user User @relation(fields: [userId], references: [id])
-  userId Int
+enum UserType {
+  DEBTOR
+  CONSULTANT
 }

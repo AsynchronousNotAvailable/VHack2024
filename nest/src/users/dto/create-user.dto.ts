@@ -1,4 +1,4 @@
-import { StrategyType } from "@prisma/client";
+import { StrategyType, UserType } from "@prisma/client";
 
 
 export class CreateUserDto {
