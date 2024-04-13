@@ -57,8 +57,8 @@ export class BudgetsService {
 
   async findBudgetByCategory(
     userId: number,
-    category: string,
-  ): Promise<Budget[]> {
+   
+  ) {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
     });
@@ -66,8 +66,14 @@ export class BudgetsService {
       throw new NotFoundException(`User with id ${userId} not found`);
     }
 
-    const budgetsCategory = await this.prisma.budget.findMany({
-      where: { userId, category: category as TransactionCategory },
+    const budgetsCategory = await this.prisma.budget.groupBy({
+      by: ['category'],
+      _sum: {
+        amount: true,
+      },
+      where: {
+        userId: userId,
+      },
     });
 
     return budgetsCategory;
@@ -75,8 +81,8 @@ export class BudgetsService {
 
   async findBudgetByAccount(
     userId: number,
-    account: string,
-  ): Promise<Budget[]> {
+    
+  ) {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
     });
@@ -84,8 +90,14 @@ export class BudgetsService {
       throw new NotFoundException(`User with id ${userId} not found`);
     }
 
-    const budgetsAccount = await this.prisma.budget.findMany({
-      where: { userId, account: account as AccountType },
+    const budgetsAccount = await this.prisma.budget.groupBy({
+      by: ['account'],
+      _sum: {
+        amount: true,
+      },
+      where: {
+        userId: userId,
+      },
     });
 
     return budgetsAccount;

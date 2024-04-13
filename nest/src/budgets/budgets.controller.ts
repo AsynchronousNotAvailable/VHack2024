@@ -27,20 +27,20 @@ export class BudgetsController {
     return this.budgetsService.findAllForUser(userId);
   }
 
-  @Get('category/:userId/:category')
+  @Get('category/:userId')
   findOneByCategory(
     @Param('userId', ParseIntPipe) userId: number,
     @Param('category') category: string,
   ) {
-    return this.budgetsService.findBudgetByCategory(userId, category);
+    return this.budgetsService.findBudgetByCategory(userId);
   }
 
-  @Get('account/:userId/:account')
+  @Get('account/:userId')
   findOneByAccount(
     @Param('userId', ParseIntPipe) userId: number,
     @Param('account') account: string,
   ) {
-    return this.budgetsService.findBudgetByAccount(userId, account);
+    return this.budgetsService.findBudgetByAccount(userId);
   }
 
   // @Delete(':id')
