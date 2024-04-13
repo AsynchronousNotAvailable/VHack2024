@@ -18,6 +18,8 @@ export class UsersController {
     return this.usersService.login(loginUserDto);
   }
 
+  
+
   @Patch('update/:id')
   updateUser(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto: UpdateUserDto) {
     return this.usersService.updateUser(id, updateUserDto);

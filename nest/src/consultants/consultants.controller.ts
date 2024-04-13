@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe } from '@nestjs/common';
 import { ConsultantsService } from './consultants.service';
 import { CreateConsultantDto } from './dto/create-consultant.dto';
 import { UpdateConsultantDto } from './dto/update-consultant.dto';
@@ -7,28 +7,23 @@ import { UpdateConsultantDto } from './dto/update-consultant.dto';
 export class ConsultantsController {
   constructor(private readonly consultantsService: ConsultantsService) {}
 
-  @Post('singup')
-  create(@Body() createConsultantDto: CreateConsultantDto) {
-    return this.consultantsService.create(createConsultantDto);
-  }
-
   @Get()
   findAll() {
     return this.consultantsService.findAll();
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.consultantsService.findOne(+id);
+  findOne(@Param('id', ParseIntPipe) id: number) {
+    return this.consultantsService.findOne(id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateConsultantDto: UpdateConsultantDto) {
-    return this.consultantsService.update(+id, updateConsultantDto);
-  }
+  // @Patch(':id')
+  // update(@Param('id') id: string, @Body() updateConsultantDto: UpdateConsultantDto) {
+  //   return this.consultantsService.update(+id, updateConsultantDto);
+  // }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.consultantsService.remove(+id);
-  }
+  // @Delete(':id')
+  // remove(@Param('id') id: string) {
+  //   return this.consultantsService.remove(+id);
+  // }
 }

@@ -20,7 +20,19 @@ export class TransactionsService {
       throw new NotFoundException('User not found');
     }
     const createdTransaction = await this.prisma.transaction.create({
-      data: createTransactionDto,
+      data: {
+        date: createTransactionDto.date,
+        account: createTransactionDto.account,
+        category: createTransactionDto.category,
+        description: createTransactionDto.description,
+        amount: createTransactionDto.amount,
+        type: createTransactionDto.type,
+        user: {
+          connect: {
+            id: createTransactionDto.userId,
+          },
+        },
+      }
     });
     return createdTransaction;
   }
