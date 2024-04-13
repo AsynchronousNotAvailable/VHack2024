@@ -5,8 +5,12 @@ import DebtFreeCountdownCard from './Components/DebtFreeCountdownCard';
 import MonthlyPayment from './Components/MonthlyPayment';
 import ServicesList from './Components/ServicesList';
 import { colors, fonts, sh, sw } from '../../styles/GlobalStyles';
+import axios from 'axios';
+import { useContext, useEffect } from 'react';
+import { GlobalContext } from '../../context';
 
 function Home_Main({ navigation }) {
+    const { userId, setTransactions} = useContext(GlobalContext);
     const username = 'Jason';
 
     const handleNotificationPress = () => {
@@ -16,6 +20,25 @@ function Home_Main({ navigation }) {
     const goDebtPage = () => {
         navigation.navigate('Debt');
     };
+
+
+    // pre-load transaction data
+    const fetchAllTransactions = async () => {
+        try {
+            const response = await axios.get(`http://192.168.100.14:3000/transactions/${userId}`);
+            console.log(response.data);
+            
+        } catch (error) {
+            console.error('Error fetching transactions:', error);
+        }
+        
+    }
+
+    useEffect(() => { 
+        console.log("Hi");
+        fetchAllTransactions();
+        // setTransactions(data);
+    }, [])
 
     return (
         <ScrollView style={styles.container}>

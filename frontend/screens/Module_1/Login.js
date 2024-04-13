@@ -16,7 +16,7 @@ function Login({ navigation, route }) {
     // const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const { currentUsername, setCurrentUsername } = useContext(GlobalContext);
+    const { currentUsername, setCurrentUsername, setUserId } = useContext(GlobalContext);
     const handleAuth = () => {
         if (email != "") {
             setCurrentUsername(email);
@@ -26,6 +26,7 @@ function Login({ navigation, route }) {
         }
         else {
             setIsAuth(true);
+            setUserId(1);
         }
         
     };

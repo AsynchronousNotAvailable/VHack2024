@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
     Image,
     ScrollView,
@@ -7,6 +7,7 @@ import {
     TouchableOpacity,
     View,
 } from "react-native";
+import axios from "axios";
 import { sw, sh, fonts, colors } from "../../styles/GlobalStyles";
 import { LinearGradient } from "expo-linear-gradient";
 import { LineChart } from "react-native-gifted-charts";
@@ -15,8 +16,15 @@ import { AreaChart, XAxis } from "react-native-svg-charts";
 import * as Progress from "react-native-progress";
 
 import * as shape from "d3-shape";
+import { GlobalContext } from "../../context";
 
 function Expenses_Main({ navigation }) {
+    const { userId } = useContext(GlobalContext);
+    const [transactions, setTransactions] = useState([]);
+
+    let totalIncome = 0;
+    let totalExpense = 0;
+    let totalBalance = 0;
     const toTransactionPage = () => {
         navigation.navigate("Expenses_Transaction");
     };
@@ -66,6 +74,33 @@ function Expenses_Main({ navigation }) {
         />
     );
 
+    const fetchAllTransactions = async () => {
+        try {
+            const response = await axios.get(`http://192.168.100.14:3000/transactions/${userId}`);
+            console.log(response.data);
+            setTransactions(response.data);
+        } catch (error) {
+            console.error('Error fetching transactions:', error);
+        }
+    };
+
+    //calculate total income, expense and balance
+    transactions.forEach((transaction) => {
+        if (transaction.type === 'EXPENSE') {
+            totalExpense += transaction.amount;
+        }
+        else {
+            totalIncome += transaction.amount;
+        }
+    });
+
+    totalBalance = totalIncome - totalExpense;
+    
+    
+    useEffect(() => {
+        fetchAllTransactions();
+    }, [])
+
     return (
         <ScrollView style={{ backgroundColor: colors.white, height: '100%' }}>
             <View style={{ height: sh(230), backgroundColor: '#DFEEF8', paddingTop: sh(60), marginBottom: sh(70) }}>
@@ -79,7 +114,7 @@ function Expenses_Main({ navigation }) {
                 >
                     <View style={styles.balanceContainer}>
                         <Text style={[styles.cardTitle, { fontSize: 18 }]}>Total Balance</Text>
-                        <Text style={[styles.cardDescription, { fontSize: 30 }]}>RM 2548.00</Text>
+                        <Text style={[styles.cardDescription, { fontSize: 30 }]}>RM {totalBalance}</Text>
                     </View>
 
                     <View style={styles.rowContainer}>
@@ -88,14 +123,14 @@ function Expenses_Main({ navigation }) {
                                 <Image source={require('../../assets/images/expenses_arrow_up.png')} />
                                 <Text style={[styles.subTitleText, { fontSize: 16, color: '#D0DAE5' }]}>Income</Text>
                             </View>
-                            <Text style={[styles.subTitleText, { fontSize: 20 }]}>RM 1840.00</Text>
+                            <Text style={[styles.subTitleText, { fontSize: 20 }]}>RM {totalIncome}</Text>
                         </View>
                         <View style={styles.columnContainer}>
                             <View style={styles.subTitleContainer}>
                                 <Image source={require('../../assets/images/expenses_arrow_down.png')} />
                                 <Text style={[styles.subTitleText, { fontSize: 16, color: '#D0DAE5' }]}>Expenses</Text>
                             </View>
-                            <Text style={[styles.subTitleText, { fontSize: 20 }]}>RM 544.00</Text>
+                            <Text style={[styles.subTitleText, { fontSize: 20 }]}>RM {totalExpense}</Text>
                         </View>
                     </View>
                 </LinearGradient>
