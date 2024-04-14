@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import DonutChartContainer from '../Utils/DonutChartContainer';
 import { ScrollView, StyleSheet, View, Text, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -9,6 +9,8 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import DebtMainBottomImage from '../Utils/DebtMainBottomImage';
 import * as Progress from 'react-native-progress';
+import axios from 'axios';
+import { GlobalContext } from '../../../context';
 // Can be passed into DonutChartContainer if we wanna make it dynamic
 // const chart_data = {
 //     labels: ['Netflix', 'Unifi', 'Electric', 'Car', 'House'],
@@ -168,6 +170,228 @@ function DebtMain({ navigation }) {
         navigation.navigate('DebtRepaymentPlanSummary');
     };
 
+    const { userId } = useContext(GlobalContext);
+    const [transactions, setTransactions] = useState([]);
+    const [transactionsCategory, setTransactionsCategory] = useState([]);
+    const [bills, setBills] = useState([]);
+    const [loans, setLoans] = useState([]);
+    let totalIncome = 0;
+    let totalExpense = 0;
+    const [totalMonthlyLoanAmount, setTotalMonthlyLoanAmount] = useState(0);
+    const [totalOverdueAmount, setTotalOverdueAmount] = useState(0);
+    const [totalDebt, setTotalDebt] = useState(0);
+    const [totalPrinciple, setTotalPrinciple] = useState(0);
+    const [totalBalance, setTotalBalance] = useState(0);
+    const [totalMonthlyBill, setTotalMonthlyBill] = useState(0);
+    const [totalMonthlyPayment, setTotalMonthlyPayment] = useState(0);
+    const [mergedLoansAndBills, setMergedLoansAndBills] = useState([{ name: 'placeholder', amount: 0 }]);
+
+    transactions.forEach((transaction) => {
+        if (transaction.type === 'EXPENSE') {
+            totalExpense += transaction.amount;
+        } else {
+            totalIncome += transaction.amount;
+        }
+    });
+
+    const fetchAllTransactions = async () => {
+        try {
+            const response = await axios.get(`http://192.168.100.14:3000/transactions/${userId}`);
+            // console.log(response.data);
+
+            return response.data;
+        } catch (error) {
+            console.error('Error fetching transactions:', error);
+        }
+    };
+
+    const fetchTransactionCategory = async () => {
+        try {
+            const response = await axios.get(`http://192.168.100.14:3000/transactions/category/${userId}`);
+            // console.log(response.data);
+            const transactionsCategory = response.data;
+            const transformedTransactionsCat = transactionsCategory.map((transaction) => ({
+                spent: transaction._sum.amount,
+                category: transaction.category,
+            }));
+            return transformedTransactionsCat;
+        } catch (error) {
+            console.error('Error fetching transactions category:', error);
+        }
+    };
+
+    const fetchAllBills = async () => {
+        try {
+            const response = await axios.get(`http://192.168.100.14:3000/bills/${userId}`);
+            // console.log(response.data);
+            const bills = response.data;
+            const transformedBills = bills.map((bill) => ({
+                name: bill.name,
+                amount: bill.amount,
+                repeating_option: bill.repeating_option,
+            }));
+            return transformedBills;
+        } catch (error) {
+            console.error('Error fetching bills:', error);
+        }
+    };
+
+    const fetchAllLoans = async () => {
+        try {
+            const response = await axios.get(`http://192.168.100.14:3000/loans/${userId}`);
+            // console.log(response.data);
+            const loans = response.data;
+            const transformedLoans = loans.map((loan) => ({
+                name: loan.name,
+                amount: loan.loan_amount,
+                installment_month: loan.installment_month,
+                payment_remaining: loan.payment_remaining,
+                interest_rate: loan.interest_rate,
+            }));
+            return transformedLoans;
+        } catch (error) {
+            console.error('Error fetching loans:', error);
+        }
+    };
+
+    const tallyDiscountedValueWithLoan = (
+        random_preset_repayment_amount,
+        discounting_factors,
+        loan,
+        installment_month,
+    ) => {
+        let repaymentAmount = random_preset_repayment_amount;
+        const discounted_value = [];
+        for (let i = 0; i < installment_month; i++) {
+            discounted_value.push(random_preset_repayment_amount * discounting_factors[i]);
+        }
+        let sum_discounted_value = discounted_value.reduce((total, a) => total + a, 0);
+
+        while (Math.abs(sum_discounted_value - loan) > 0.01) {
+            const discounted_value = [];
+            for (let i = 0; i < installment_month; i++) {
+                discounted_value.push(repaymentAmount * discounting_factors[i]);
+            }
+            sum_discounted_value = discounted_value.reduce((total, a) => total + a, 0);
+            if (sum_discounted_value < loan) {
+                repaymentAmount += Math.random() * ((loan - sum_discounted_value) / installment_month);
+            } else {
+                repaymentAmount -= Math.random() * ((sum_discounted_value - loan) / installment_month);
+            }
+        }
+        return repaymentAmount;
+    };
+
+    const calculateMonthlyLoanRepaymentAmount = (loan) => {
+        const monthlyInterestRate = Math.pow(1 + loan.interest_rate / 100, 1 / 12) - 1;
+        const installment_month = loan.installment_month;
+        const amount = loan.amount;
+        const accumulation_interest = [];
+        for (let i = 1; i <= installment_month; i++) {
+            accumulation_interest.push(Math.pow(1 + monthlyInterestRate, i));
+        }
+        const discounting_factors = [];
+        for (let i = 0; i < installment_month; i++) {
+            discounting_factors.push(1 / accumulation_interest[i]);
+        }
+        const random_preset_repayment_amount = amount / installment_month;
+        const monthlyRepaymentAmount = tallyDiscountedValueWithLoan(
+            random_preset_repayment_amount,
+            discounting_factors,
+            amount,
+            installment_month,
+        );
+        return monthlyRepaymentAmount;
+    };
+
+    const calculateTotalLoanPayment = (loan) => {
+        const installment_month = loan.installment_month;
+        const monthlyRepaymentAmount = calculateMonthlyLoanRepaymentAmount(loan);
+        const totalPayment = monthlyRepaymentAmount * installment_month;
+        return totalPayment;
+    };
+
+    const calculateTotalBalance = (loan) => {
+        const remaining_month = loan.payment_remaining;
+        const monthlyRepaymentAmount = calculateMonthlyLoanRepaymentAmount(loan);
+        const totalBalance = monthlyRepaymentAmount * remaining_month;
+        return totalBalance;
+    };
+
+    const calculateTotalMonthlyBills = (bill) => {
+        const bill_name = bill.name;
+        const bill_amount = bill.amount;
+        const bill_repeating_option = bill.repeating_option;
+
+        // Depends on the options available
+        if (bill_repeating_option == 'MONTHLY') {
+            return bill_amount;
+        } else if (bill_repeating_option == 'YEARLY') {
+            return bill_amount / 12;
+        } else if (bill_repeating_option == 'DAILY') {
+            return bill_amount * 30;
+        }
+    };
+
+    const fetchData = async () => {
+        const transactions = await fetchAllTransactions();
+        const transactionsCategory = await fetchTransactionCategory();
+        const bills = await fetchAllBills();
+        const loans = await fetchAllLoans();
+        setTransactions(transactions);
+        setTransactionsCategory(transactionsCategory);
+        setBills(bills);
+        setLoans(loans);
+
+        const totalMonthlyLoanAmount = loans.reduce((total, loan) => total + loan.amount, 0);
+        setTotalMonthlyLoanAmount(totalMonthlyLoanAmount);
+
+        const totalDebt = loans.reduce((total, loan) => {
+            const totalPayment = calculateTotalLoanPayment(loan);
+            return total + totalPayment;
+        }, 0);
+        setTotalDebt(Math.round(totalDebt, 0));
+
+        const totalBalance = loans.reduce((total, loan) => {
+            const totalPayment = calculateTotalBalance(loan);
+            return total + totalPayment;
+        }, 0);
+        setTotalBalance(Math.round(totalBalance, 0));
+        setTotalPrinciple(Math.round(totalDebt - totalBalance, 0));
+
+        const totalMonthlyBill = bills.reduce((total, bill) => {
+            const totalPayment = calculateTotalMonthlyBills(bill);
+            return total + totalPayment;
+        }, 0);
+        setTotalMonthlyBill(totalMonthlyBill);
+
+        const totalMonthlyPayment = totalMonthlyLoanAmount + totalMonthlyBill;
+        setTotalMonthlyPayment(totalMonthlyPayment);
+
+        const loanRepayments = loans.map((loan) => ({
+            name: loan.name,
+            amount: calculateMonthlyLoanRepaymentAmount(loan),
+        }));
+
+        const mergedList = [
+            ...loanRepayments.map((loan) => ({
+                name: loan.name,
+                amount: loan.amount,
+            })),
+            ...bills.map((bill) => ({
+                name: bill.name,
+                amount: bill.amount,
+            })),
+        ];
+
+        setMergedLoansAndBills(mergedList);
+    };
+
+    useEffect(() => {
+        console.log('DebtMain component mounted');
+        fetchData();
+    }, []);
+
     return (
         <LinearGradient
             colors={['#DFEEF8', '#FFFFFF']}
@@ -187,15 +411,15 @@ function DebtMain({ navigation }) {
                     >
                         Debt
                     </Text>
-                    <DonutChartContainer />
+                    <DonutChartContainer mergedLoansAndBills={mergedLoansAndBills} />
                     <View style={styles.twoBoxesContainer}>
                         <View style={styles.boxContainer}>
                             <Text style={styles.monthlyLoansTitleText}>Monthly Loans</Text>
-                            <Text style={styles.monthlyLoansText}>RM{monthlyLoansText}</Text>
+                            <Text style={styles.monthlyLoansText}>RM{totalMonthlyLoanAmount}</Text>
                         </View>
                         <View style={styles.boxContainer2}>
                             <Text style={styles.overdueTitleText}>Overdue</Text>
-                            <Text style={styles.overdueText}>RM{overdueAmount}</Text>
+                            <Text style={styles.overdueText}>RM{totalOverdueAmount}</Text>
                         </View>
                     </View>
                     <View style={styles.totalDebtAndSeeAllButton}>
@@ -221,12 +445,12 @@ function DebtMain({ navigation }) {
                     </View>
                     <View style={styles.principlePaidAndBalanceContainer}>
                         <View>
-                            <Text style={greenPrinciplePaidText.principlePaidAndBalanceText}>Total Debts</Text>
-                            <Text style={greenPrinciplePaidNumber.principlePaidAndBalanceText}>RM{principlePaid}</Text>
+                            <Text style={greenPrinciplePaidText.principlePaidAndBalanceText}>Principle paid</Text>
+                            <Text style={greenPrinciplePaidNumber.principlePaidAndBalanceText}>RM{totalPrinciple}</Text>
                         </View>
                         <View>
                             <Text style={redBalanceText.principlePaidAndBalanceText}>Balance</Text>
-                            <Text style={redBalanceNumber.principlePaidAndBalanceText}>RM{balance}</Text>
+                            <Text style={redBalanceNumber.principlePaidAndBalanceText}>RM{totalBalance}</Text>
                         </View>
                     </View>
                     <TouchableOpacity
