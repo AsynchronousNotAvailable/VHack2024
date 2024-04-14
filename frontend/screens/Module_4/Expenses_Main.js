@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useCallback, useContext, useEffect, useState } from 'react';
 import { Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import axios from 'axios';
 import { sw, sh, fonts, colors } from '../../styles/GlobalStyles';
@@ -7,12 +7,46 @@ import { LineChart } from 'react-native-gifted-charts';
 import { Path, Circle, Svg, Ellipse } from 'react-native-svg';
 import { AreaChart, XAxis } from 'react-native-svg-charts';
 import * as Progress from 'react-native-progress';
-
+import { useFocusEffect } from '@react-navigation/native';
 import * as shape from 'd3-shape';
 import { GlobalContext } from '../../context';
 import BudgetCard from './Utils/BudgetCard';
 
 function Expenses_Main({ navigation }) {
+
+    useFocusEffect(
+        useCallback(() => {
+            const fetchData = async () => {
+                const transactions = await fetchAllTransactions();
+                const transactionsCategory = await fetchTransactionCategory();
+                const budgets = await fetchAllBudgets();
+                setTransactions(transactions);
+                setTransactionsCategory(transactionsCategory);
+                setBudgets(budgets);
+
+                if (budgets.length > 0 && transactionsCategory.length > 0) {
+                    const updatedBudgets = budgets.map((budget) => {
+                        const transaction = transactionsCategory.find(
+                            (transaction) => transaction.category === budget.category,
+                        );
+                        if (transaction) {
+                            return { ...budget, spent: transaction.spent };
+                        }
+                        return budget;
+                    });
+                    console.log(updatedBudgets);
+                    setBudgets(updatedBudgets);
+                }
+            };
+            fetchData();
+
+            return () => {
+                console.log('Leaving');
+            };
+        }, []),
+    );
+
+
     const { userId } = useContext(GlobalContext);
     const [transactions, setTransactions] = useState([]);
     const [transactionsCategory, setTransactionsCategory] = useState([]);
@@ -73,13 +107,11 @@ function Expenses_Main({ navigation }) {
 
     totalBalance = totalIncome - totalExpense;
 
-    
-
     const fetchAllTransactions = async () => {
         try {
             const response = await axios.get(`http://192.168.100.14:3000/transactions/${userId}`);
             // console.log(response.data);
-            
+
             return response.data;
         } catch (error) {
             console.error('Error fetching transactions:', error);
@@ -117,49 +149,7 @@ function Expenses_Main({ navigation }) {
             console.error('Error fetching budgets:', error);
         }
     };
-
-    useEffect(() => {
-        const fetchData = async () => {
-            const transactions = await fetchAllTransactions();
-            const transactionsCategory = await fetchTransactionCategory();
-            const budgets = await fetchAllBudgets();
-            setTransactions(transactions);
-            setTransactionsCategory(transactionsCategory);
-            setBudgets(budgets);
-            
-
-            if(budgets.length > 0 && transactionsCategory.length > 0) {
-                const updatedBudgets = budgets.map((budget) => {
-                    const transaction = transactionsCategory.find(
-                        (transaction) => transaction.category === budget.category,
-                    );
-                    if (transaction) {
-                        return { ...budget, spent: transaction.spent };
-                    }
-                    return budget;
-                });
-                console.log(updatedBudgets);
-                setBudgets(updatedBudgets);
-            }
-        }
-        fetchData();
-    }, []);
-
-    // useEffect(() => {
-    //     if (transactionsCategory.length > 0 && budgets.length > 0) {
-    //         const updatedBudgets = budgets.map((budget) => {
-    //             const transaction = transactionsCategory.find(
-    //                 (transaction) => transaction.category === budget.category,
-    //             );
-    //             if (transaction) {
-    //                 return { ...budget, spent: transaction.spent };
-    //             }
-    //             return budget;
-    //         });
-    //         setBudgets(updatedBudgets);
-    //     }
-    // }, [transactionsCategory, budgets]);
-
+    
     return (
         <ScrollView style={{ backgroundColor: colors.white, height: '100%' }}>
             <View style={{ height: sh(230), backgroundColor: '#DFEEF8', paddingTop: sh(60), marginBottom: sh(70) }}>
@@ -379,10 +369,7 @@ function Expenses_Main({ navigation }) {
                         />
                     ))}
 
-                
-
                 {/* details frame */}
-               
 
                 <TouchableOpacity onPress={toAddBudgetBottom}>
                     <View

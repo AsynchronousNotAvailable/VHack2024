@@ -34,6 +34,7 @@ model Loan {
   installment_month Int
   payment_remaining Int
   interest_rate     Float
+  loan_status       PaymentStatus @default(UNPAID)
   userId            Int
   user              User     @relation(fields: [userId], references: [id])
 }
@@ -43,6 +44,7 @@ model Bill {
   name             String
   amount           Float
   repeating_option RepeatOption
+  bill_status      PaymentStatus @default(UNPAID)
   userId           Int
   user             User         @relation(fields: [userId], references: [id])
 }
@@ -117,4 +119,9 @@ enum StrategyType {
 enum UserType {
   DEBTOR
   CONSULTANT
+}
+
+enum PaymentStatus{
+  PAID
+  UNPAID
 }
