@@ -7,7 +7,8 @@ import {
     Platform
 } from "react-native";
 import Svg, { Path } from "react-native-svg";
-import React from "react";
+import React, { useState } from 'react';
+import { SelectList } from 'react-native-dropdown-select-list';
 import { colors, sw, sh, fonts } from "../../../styles/GlobalStyles.js";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { Keyboard } from "react-native";
@@ -26,8 +27,37 @@ const Expenses_Tab_3 = ({
     setAmount,
     handleDateChange,
     formatDate,
-    goBackToPreviousPage
+    goBackToPreviousPage,
+    closeDropDown1,
+    dropdownShown1,
+    toggleDropDown1,
+    closeDropDown2,
+    dropdownShown2,
+    toggleDropDown2
 }) => {
+    const [accountOptions, setAccountOptions] = useState([
+        { key: '1', value: 'Personal', disabled: false },
+        { key: '2', value: 'Education', disabled: false },
+    ]);
+    // let accountOptions = [
+    //     { key: '1', value: 'Personal', disabled: false },
+    //     { key: '2', value: 'Education', disabled: false },
+    // ];
+    const handleDropDownFrom = () => {
+        Keyboard.dismiss();
+        // setDropdownShown2(!dropdownShown2);
+        // setDropdownShown1(false);
+        toggleDropDown1();
+        closeDropDown2();
+    };
+
+    const handleDropDownTo = () => {
+        Keyboard.dismiss();
+        // setDropdownShown2(!dropdownShown2);
+        // setDropdownShown1(false);
+        toggleDropDown2();
+        closeDropDown1();
+    };
     return (
         <View style={[styles.columnContainer]}>
             <View
@@ -68,7 +98,48 @@ const Expenses_Tab_3 = ({
                     </Svg>
                 </TouchableOpacity>
             </View>
-            <TextInput
+            <View style={{ position: 'relative' }}>
+                <TouchableOpacity
+                    onPress={handleDropDownFrom}
+                    style={{
+                        // backgroundColor: 'grey',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        zIndex: 99,
+                        maxHeight: sh(70),
+                    }}
+                >
+                    {/* This TouchableOpacity covers the entire area of SelectList */}
+                </TouchableOpacity>
+                <SelectList
+                    onSelect={() => accountOptions.forEach((item) => { 
+                        console.log(item.value, fromInput);
+                        if (item.value === fromInput) {
+                            item.disabled = true;
+                        }
+                        else {
+                            item.disabled = false;
+                        }
+                        
+                        console.log(accountOptions);
+                        setAccountOptions(accountOptions);
+                    })}
+                    boxStyles={[styles.input, { marginVertical: sh(15) }]}
+                    dropdownStyles={styles.dropdownInput}
+                    inputStyles={styles.textInput}
+                    dropdownTextStyles={styles.textInput}
+                    setSelected={(val) => setFromInput(val)}
+                    data={accountOptions}
+                    dropdownShown={dropdownShown1}
+                    search={false}
+                    save="value"
+                    placeholder="Select From Account"
+                />
+            </View>
+            {/* <TextInput
                 style={styles.input}
                 placeholder="From"
                 keyboardType="default"
@@ -85,8 +156,39 @@ const Expenses_Tab_3 = ({
                 onSubmitEditing={() => {
                     toInput.focus();
                 }}
-            />
-            <TextInput
+            /> */}
+
+            <View style={{ position: 'relative' }}>
+                <TouchableOpacity
+                    onPress={handleDropDownTo}
+                    style={{
+                        // backgroundColor: 'grey',
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        right: 0,
+                        bottom: 0,
+                        zIndex: 99,
+                        maxHeight: sh(70),
+                    }}
+                >
+                    {/* This TouchableOpacity covers the entire area of SelectList */}
+                </TouchableOpacity>
+                <SelectList
+                    boxStyles={[styles.input, { marginVertical: sh(15) }]}
+                    dropdownStyles={styles.dropdownInput}
+                    inputStyles={styles.textInput}
+                    dropdownTextStyles={styles.textInput}
+                    setSelected={(val) => setToInput(val)}
+                    data={accountOptions}
+                    dropdownShown={dropdownShown2}
+                    search={false}
+                    save="value"
+                    placeholder="Select To Account"
+                />
+            </View>
+
+            {/* <TextInput
                 style={styles.input}
                 placeholder="To"
                 keyboardType="default"
@@ -103,7 +205,7 @@ const Expenses_Tab_3 = ({
                 onSubmitEditing={() => {
                     descriptionInput.focus();
                 }}
-            />
+            /> */}
 
             <TextInput
                 style={styles.input}
@@ -180,30 +282,45 @@ const Expenses_Tab_3 = ({
 export default Expenses_Tab_3;
 
 const styles = StyleSheet.create({
-    columnContainer: { flexDirection: "column" },
+    columnContainer: { flexDirection: 'column' },
 
+    dropdownInput: {
+        alignSelf: 'center',
+        paddingVertical: sh(0),
+        paddingHorizontal: sw(10),
+        borderRadius: 10,
+        borderColor: '#DADADA',
+        borderWidth: 1,
+        width: '90%',
+    },
     input: {
-        alignSelf: "center",
+        alignSelf: 'center',
         paddingVertical: sh(13),
         paddingHorizontal: sw(20),
         borderRadius: 10,
-        borderColor: "#DADADA",
+        borderColor: '#DADADA',
         borderWidth: 1,
         fontSize: 18,
         marginVertical: sh(15),
-        width: "90%",
-        color: "black",
+        width: '90%',
+        color: 'black',
+        fontFamily: fonts.interRegular,
+    },
+    textInput: {
+        fontSize: 18,
+        width: '90%',
+        color: 'black',
         fontFamily: fonts.interRegular,
     },
     button: {
-        backgroundColor: "#5F84A1",
+        backgroundColor: '#5F84A1',
         paddingVertical: sh(13),
         paddingHorizontal: sw(20),
         marginTop: sh(30),
         borderRadius: 10,
-        width: "60%",
-        alignItems: "center",
-        justifyContent: "center",
+        width: '60%',
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     btnText: {
         fontFamily: fonts.interSemiBold,

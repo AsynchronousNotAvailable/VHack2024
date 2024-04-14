@@ -19,14 +19,16 @@ const Expenses_Add_1 = ({ navigation, route }) => {
     const [isPressed1, setIsPressed1] = useState(true);
     const [isPressed2, setIsPressed2] = useState(false);
     const [isPressed3, setIsPressed3] = useState(false);
+    const [dropdownShown1, setDropdownShown1] = useState(false);
+    const [dropdownShown2, setDropdownShown2] = useState(false);
 
     //for Expenses Component
     const [openDate, setOpenDate] = useState(false);
     const [date, setDate] = useState(new Date());
-    const [account, setAccount] = useState("");
-    const [category, setCategory] = useState("");
-    const [amount, setAmount] = useState("");
-    const [description, setDescription] = useState("");
+    const [account, setAccount] = useState('');
+    const [category, setCategory] = useState('');
+    const [amount, setAmount] = useState('');
+    const [description, setDescription] = useState('');
 
     const openCalendar = () => {
         setOpenDate(true);
@@ -39,17 +41,17 @@ const Expenses_Add_1 = ({ navigation, route }) => {
     };
 
     const formatDate = (date) => {
-        let formattedDate = new Intl.DateTimeFormat("en-GB", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
+        let formattedDate = new Intl.DateTimeFormat('en-GB', {
+            day: '2-digit',
+            month: '2-digit',
+            year: 'numeric',
         }).format(date);
 
         return formattedDate;
     };
 
     const handleDateChange = ({ type }, selectedDate) => {
-        if (type === "set") {
+        if (type === 'set') {
             setOpenDate(false);
             setDate(selectedDate);
         } else {
@@ -57,20 +59,39 @@ const Expenses_Add_1 = ({ navigation, route }) => {
         }
     };
 
+    //account
+    const closeDropDown1 = () => {
+        setDropdownShown1(false);
+    };
+
+    //account
+    const toggleDropDown1 = () => {
+        setDropdownShown1(!dropdownShown1);
+    };
+    //category
+    const closeDropDown2 = () => {
+        setDropdownShown2(false);
+    };
+
+    //category
+    const toggleDropDown2 = () => {
+        setDropdownShown2(!dropdownShown2);
+    };
+
     //for Income Component
     const [incomeOpenDate, setIncomeOpenDate] = useState(false);
     const [incomeDate, setIncomeDate] = useState(new Date());
-    const [incomeAccount, setIncomeAccount] = useState("");
-    const [incomeCategory, setIncomeCategory] = useState("");
-    const [incomeAmount, setIncomeAmount] = useState("");
-    const [incomeDescription, setIncomeDescription] = useState("");
+    const [incomeAccount, setIncomeAccount] = useState('');
+    const [incomeCategory, setIncomeCategory] = useState('');
+    const [incomeAmount, setIncomeAmount] = useState('');
+    const [incomeDescription, setIncomeDescription] = useState('');
 
     const openIncomeCalendar = () => {
         setIncomeOpenDate(true);
     };
 
     const handleIncomeDateChange = ({ type }, selectedDate) => {
-        if (type === "set") {
+        if (type === 'set') {
             setIncomeOpenDate(false);
             setIncomeDate(selectedDate);
             // setBudgetDate(selectedDate.toDateString()); // Convert date to string format and set it to the input
@@ -82,17 +103,17 @@ const Expenses_Add_1 = ({ navigation, route }) => {
     //for Transfer Component
     const [transferOpenDate, setTransferOpenDate] = useState(false);
     const [transferDate, setTransferDate] = useState(new Date());
-    const [transferToInput, setTransferToInput] = useState("");
-    const [transferFromInput, setTransferFromInput] = useState("");
-    const [transferAmount, setTransferAmount] = useState("");
-    const [transferDescription, setTransferDescription] = useState("");
+    const [transferToInput, setTransferToInput] = useState('');
+    const [transferFromInput, setTransferFromInput] = useState('');
+    const [transferAmount, setTransferAmount] = useState('');
+    const [transferDescription, setTransferDescription] = useState('');
 
     const openTransferCalendar = () => {
         setTransferOpenDate(true);
     };
 
     const handleTransferDateChange = ({ type }, selectedDate) => {
-        if (type === "set") {
+        if (type === 'set') {
             setTransferOpenDate(false);
             setTransferDate(selectedDate);
             // setBudgetDate(selectedDate.toDateString()); // Convert date to string format and set it to the input
@@ -105,37 +126,45 @@ const Expenses_Add_1 = ({ navigation, route }) => {
         setIsPressed1(true);
         setIsPressed2(false);
         setIsPressed3(false);
+        closeDropDown1();
+        closeDropDown2();
     };
 
     const handlePress2 = () => {
         setIsPressed1(false);
         setIsPressed2(true);
         setIsPressed3(false);
+        closeDropDown1();
+        closeDropDown2();
     };
 
     const handlePress3 = () => {
         setIsPressed1(false);
         setIsPressed2(false);
         setIsPressed3(true);
+        closeDropDown1();
+        closeDropDown2();
     };
 
     const dismissKeyboard = () => {
         Keyboard.dismiss();
         closeCalendar();
+        closeDropDown1();
+        closeDropDown2();
     };
 
     const scanReceipt = () => {
-        navigation.navigate("Open_Camera");
+        navigation.navigate('Open_Camera');
     };
 
     const goBackToPreviousPage = () => {
         navigation.goBack();
-    }
+    };
 
     useEffect(() => {
         if (route.params && route.params.transactionDetails) {
             // console.log(route.params);
-            const transactionDetails  = route.params.transactionDetails;
+            const transactionDetails = route.params.transactionDetails;
             // console.log(transactionDetails);
             setDate(transactionDetails.date);
             setAccount(transactionDetails.account);
@@ -143,8 +172,6 @@ const Expenses_Add_1 = ({ navigation, route }) => {
             setDescription(transactionDetails.description);
             setAmount(transactionDetails.amount);
         }
-
-        
     });
     return (
         <KeyboardAvoidingView
@@ -334,6 +361,12 @@ const Expenses_Add_1 = ({ navigation, route }) => {
                                 handleDateChange={handleDateChange}
                                 formatDate={formatDate}
                                 goBackToPreviousPage={goBackToPreviousPage}
+                                closeDropDown1={closeDropDown1}
+                                dropdownShown1={dropdownShown1}
+                                toggleDropDown1={toggleDropDown1}
+                                closeDropDown2={closeDropDown2}
+                                dropdownShown2={dropdownShown2}
+                                toggleDropDown2={toggleDropDown2}
                             />
                         )}
 
@@ -353,6 +386,12 @@ const Expenses_Add_1 = ({ navigation, route }) => {
                                 handleDateChange={handleIncomeDateChange}
                                 formatDate={formatDate}
                                 goBackToPreviousPage={goBackToPreviousPage}
+                                closeDropDown1={closeDropDown1}
+                                dropdownShown1={dropdownShown1}
+                                toggleDropDown1={toggleDropDown1}
+                                closeDropDown2={closeDropDown2}
+                                dropdownShown2={dropdownShown2}
+                                toggleDropDown2={toggleDropDown2}
                             />
                         )}
 
@@ -372,6 +411,12 @@ const Expenses_Add_1 = ({ navigation, route }) => {
                                 handleDateChange={handleTransferDateChange}
                                 formatDate={formatDate}
                                 goBackToPreviousPage={goBackToPreviousPage}
+                                closeDropDown1={closeDropDown1}
+                                dropdownShown1={dropdownShown1}
+                                toggleDropDown1={toggleDropDown1}
+                                closeDropDown2={closeDropDown2}
+                                dropdownShown2={dropdownShown2}
+                                toggleDropDown2={toggleDropDown2}
                             />
                         )}
                     </View>
