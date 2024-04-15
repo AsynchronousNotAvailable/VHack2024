@@ -13,17 +13,24 @@ CREATE TYPE "RepeatOption" AS ENUM ('DAILY', 'MONTHLY', 'YEARLY');
 -- CreateEnum
 CREATE TYPE "StrategyType" AS ENUM ('AVALANCHE', 'SNOWBALL');
 
+-- CreateEnum
+CREATE TYPE "UserType" AS ENUM ('DEBTOR', 'CONSULTANT');
+
+-- CreateEnum
+CREATE TYPE "PaymentStatus" AS ENUM ('PAID', 'UNPAID');
+
 -- CreateTable
 CREATE TABLE "User" (
     "id" SERIAL NOT NULL,
     "email" TEXT NOT NULL,
-    "name" TEXT NOT NULL,
     "password" TEXT NOT NULL,
     "monthly_income" DOUBLE PRECISION,
     "monthly_payment" DOUBLE PRECISION,
     "monthly_loan" DOUBLE PRECISION,
     "debt_free_date" TIMESTAMP(3),
     "strategy" "StrategyType",
+    "username" TEXT NOT NULL,
+    "user_type" "UserType" NOT NULL DEFAULT 'DEBTOR',
 
     CONSTRAINT "User_pkey" PRIMARY KEY ("id")
 );
@@ -37,6 +44,7 @@ CREATE TABLE "Loan" (
     "installment_month" INTEGER NOT NULL,
     "payment_remaining" INTEGER NOT NULL,
     "interest_rate" DOUBLE PRECISION NOT NULL,
+    "loan_status" "PaymentStatus" NOT NULL DEFAULT 'UNPAID',
     "userId" INTEGER NOT NULL,
 
     CONSTRAINT "Loan_pkey" PRIMARY KEY ("id")
@@ -48,6 +56,7 @@ CREATE TABLE "Bill" (
     "name" TEXT NOT NULL,
     "amount" DOUBLE PRECISION NOT NULL,
     "repeating_option" "RepeatOption" NOT NULL,
+    "bill_status" "PaymentStatus" NOT NULL DEFAULT 'UNPAID',
     "userId" INTEGER NOT NULL,
 
     CONSTRAINT "Bill_pkey" PRIMARY KEY ("id")

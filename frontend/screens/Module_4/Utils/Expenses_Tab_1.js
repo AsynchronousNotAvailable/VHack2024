@@ -36,10 +36,9 @@ const Expenses_Tab_1 = ({
     ];
 
     const categoryOptions = [
-        { key: '1', value: 'Salary' },
-        { key: '2', value: 'Shopping' },
-        { key: '3', value: 'Entertainment' },
-        { key: '4', value: 'Food' },
+        { key: '1', value: 'Shopping' },
+        { key: '2', value: 'Entertainment' },
+        { key: '3', value: 'Food' },
     ];
 
     const handleDropDownAccount = () => {

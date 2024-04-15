@@ -8,6 +8,7 @@ import DonutChartContainer from './Utils/DonutChart/DonutChartContainer.js';
 import Transaction_Card from './Utils/Transaction/Transaction_Card.js';
 import { Url } from '../../url';
 import { useEffect, useCallback } from 'react';
+import { useFocusEffect } from '@react-navigation/native';
 import Transaction_Container from './Utils/Transaction/Transaction_Container';
 
 function Expenses_Transaction({ navigation }) {
@@ -54,6 +55,7 @@ function Expenses_Transaction({ navigation }) {
         } else {
             setCurrentMonth(currentMonth + 1);
         }
+        
     };
     const decreaseMonth = () => {
         if (currentMonth === 1) {
@@ -62,12 +64,12 @@ function Expenses_Transaction({ navigation }) {
         } else {
             setCurrentMonth(currentMonth - 1);
         }
+      
     };
 
     useEffect(() => {
         const changeData = async () => {
             if (selectedCategory === '1') {
-                fetchMonthlyTransactionsByCategory();
                 const [amount, name] = await fetchMonthlyTransactionsByCategory();
                 setCategoryAmount(amount);
                 setCategoryName(name);
@@ -77,91 +79,80 @@ function Expenses_Transaction({ navigation }) {
                 setCategoryName(name);
             }
         };
-
         changeData();
-    }, [selectedCategory]);
+    }, [selectedCategory, currentMonth]);
+    useFocusEffect(
+        useCallback(() => {
+            
 
-    useEffect(() => {
-        const fetchAllData = async () => {
-            const monthTrans = await fetchMonthlyTransactions();
-            const currentTransactions = [];
-            monthTrans.forEach((transaction) => {
-                // console.log(transaction);
-                const [processedDate, processedTime] = convertDate(transaction.date);
-                // console.log(processedDate, processedTime);
-                const processedTransaction = {
-                    ...transaction,
-                    date: processedDate,
-                    time: processedTime,
-                };
-                // console.log(processedTransaction);
-                currentTransactions.push(processedTransaction);
-                // setMonthlyTransactions((prevTransactions) => [...prevTransactions, processedTransaction]);
-            });
-            setMonthlyTransactions(currentTransactions);
+            const fetchAllData = async () => {
+                const monthTrans = await fetchMonthlyTransactions();
+                const currentTransactions = [];
+                monthTrans.forEach((transaction) => {
+                    // console.log(transaction);
+                    const [processedDate, processedTime] = convertDate(transaction.date);
+                    // console.log(processedDate, processedTime);
+                    const processedTransaction = {
+                        ...transaction,
+                        date: processedDate,
+                        time: processedTime,
+                    };
+                    // console.log(processedTransaction);
+                    currentTransactions.push(processedTransaction);
+                    // setMonthlyTransactions((prevTransactions) => [...prevTransactions, processedTransaction]);
+                });
+                setMonthlyTransactions(currentTransactions);
+                
+                
+                const [processedAmount, processedName] = selectedCategory === '1' ? await fetchMonthlyTransactionsByCategory() : await fetchMonthlyTransactionsByAccount();
+                setCategoryAmount(processedAmount);
+                setCategoryName(processedName);
+                // setSelectedCategory('1');
 
-            const [processedAmount, processedName] = await fetchMonthlyTransactionsByCategory();
-            setCategoryAmount(processedAmount);
-            setCategoryName(processedName);
-            // setSelectedCategory('1');
+                console.log(processedAmount, processedName);
 
-            console.log(processedAmount, processedName);
+                // setIsLoading(false);
+            };
 
-            // setIsLoading(false);
-        };
+            const fetchMonthlyTransactions = async () => {
+                try {
+                    const response = await axios.get(
+                        `http://${Url}:3000/transactions/${userId}/${currentYear}/${currentMonth}`,
+                    );
+                    return response.data;
+                } catch (error) {}
+            };
 
-        const fetchMonthlyTransactions = async () => {
-            try {
-                const response = await axios.get(
-                    `http://${Url}:3000/transactions/${userId}/${currentYear}/${currentMonth}`,
-                );
-                return response.data;
-            } catch (error) {}
-        };
+            const convertDate = (date) => {
+                const originalDate = new Date(date); // Convert the date string to a Date object
 
-        const convertDate = (date) => {
-            const originalDate = new Date(date); // Convert the date string to a Date object
+                // Extract date components
+                const year = originalDate.getFullYear();
+                const month = (originalDate.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based, so add 1
+                const day = originalDate.getDate().toString().padStart(2, '0');
 
-            // Extract date components
-            const year = originalDate.getFullYear();
-            const month = (originalDate.getMonth() + 1).toString().padStart(2, '0'); // Month is zero-based, so add 1
-            const day = originalDate.getDate().toString().padStart(2, '0');
+                // Format the date string as YYYY-MM-DD
+                const formattedDate = `${year}-${month}-${day}`;
 
-            // Format the date string as YYYY-MM-DD
-            const formattedDate = `${year}-${month}-${day}`;
+                // Extract time components
+                const hours = originalDate.getHours().toString().padStart(2, '0');
+                const minutes = originalDate.getMinutes().toString().padStart(2, '0');
 
-            // Extract time components
-            const hours = originalDate.getHours().toString().padStart(2, '0');
-            const minutes = originalDate.getMinutes().toString().padStart(2, '0');
+                // Format the time string as HH:MM AM/PM
+                const meridiem = hours >= 12 ? 'PM' : 'AM';
+                const formattedHours = (hours % 12 || 12).toString(); // Convert 0 to 12 for midnight
+                const formattedTime = `${formattedHours}:${minutes} ${meridiem}`;
 
-            // Format the time string as HH:MM AM/PM
-            const meridiem = hours >= 12 ? 'PM' : 'AM';
-            const formattedHours = (hours % 12 || 12).toString(); // Convert 0 to 12 for midnight
-            const formattedTime = `${formattedHours}:${minutes} ${meridiem}`;
+                // Log the formatted date and time
+                // console.log(`Date: ${formattedDate}, Time: ${formattedTime}`);
+                return [formattedDate, formattedTime];
+            };
 
-            // Log the formatted date and time
-            // console.log(`Date: ${formattedDate}, Time: ${formattedTime}`);
-            return [formattedDate, formattedTime];
-        };
+            fetchAllData();
 
-        // const changeData = async () => {
-        //     if (selectedCategory === '1') {
-        //         fetchMonthlyTransactionsByCategory();
-        //         const [amount, name] = await fetchMonthlyTransactionsByCategory();
-        //         setCategoryAmount(amount);
-        //         setCategoryName(name);
-        //     } else if (selectedCategory === '2') {
-        //         const [amount, name] = await fetchMonthlyTransactionsByAccount();
-        //         setCategoryAmount(amount);
-        //         setCategoryName(name);
-        //     }
-        // };
-
-        // changeData();
-        // fetchMonthlyTransactionsByCategory();
-        // fetchMonthlyTransactions();
-        fetchAllData();
-    }, [currentMonth]);
+            
+        }, [currentMonth]),
+    );
 
     const fetchMonthlyTransactionsByCategory = async () => {
         // console.log(month[currentMonth]);
@@ -338,6 +329,7 @@ function Expenses_Transaction({ navigation }) {
                 <View style={{ position: 'absolute', right: 0, top: 55, zIndex: 999 }}>
                     <SelectList
                         // onSelect={(val)=> setFilter(val)}
+                        
                         dropdownStyles={{
                             position: 'absolute',
                             right: 20,
