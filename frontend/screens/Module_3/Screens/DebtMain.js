@@ -171,12 +171,8 @@ function DebtMain({ navigation }) {
     };
 
     const { userId } = useContext(GlobalContext);
-    const [transactions, setTransactions] = useState([]);
-    const [transactionsCategory, setTransactionsCategory] = useState([]);
     const [bills, setBills] = useState([]);
     const [loans, setLoans] = useState([]);
-    let totalIncome = 0;
-    let totalExpense = 0;
     const [totalMonthlyLoanAmount, setTotalMonthlyLoanAmount] = useState(0);
     const [totalOverdueAmount, setTotalOverdueAmount] = useState(0);
     const [totalDebt, setTotalDebt] = useState(0);
@@ -185,40 +181,6 @@ function DebtMain({ navigation }) {
     const [totalMonthlyBill, setTotalMonthlyBill] = useState(0);
     const [totalMonthlyPayment, setTotalMonthlyPayment] = useState(0);
     const [mergedLoansAndBills, setMergedLoansAndBills] = useState([{ name: 'placeholder', amount: 0 }]);
-
-    transactions.forEach((transaction) => {
-        if (transaction.type === 'EXPENSE') {
-            totalExpense += transaction.amount;
-        } else {
-            totalIncome += transaction.amount;
-        }
-    });
-
-    const fetchAllTransactions = async () => {
-        try {
-            const response = await axios.get(`http://192.168.100.14:3000/transactions/${userId}`);
-            // console.log(response.data);
-
-            return response.data;
-        } catch (error) {
-            console.error('Error fetching transactions:', error);
-        }
-    };
-
-    const fetchTransactionCategory = async () => {
-        try {
-            const response = await axios.get(`http://192.168.100.14:3000/transactions/category/${userId}`);
-            // console.log(response.data);
-            const transactionsCategory = response.data;
-            const transformedTransactionsCat = transactionsCategory.map((transaction) => ({
-                spent: transaction._sum.amount,
-                category: transaction.category,
-            }));
-            return transformedTransactionsCat;
-        } catch (error) {
-            console.error('Error fetching transactions category:', error);
-        }
-    };
 
     const fetchAllBills = async () => {
         try {
@@ -334,12 +296,8 @@ function DebtMain({ navigation }) {
     };
 
     const fetchData = async () => {
-        const transactions = await fetchAllTransactions();
-        const transactionsCategory = await fetchTransactionCategory();
         const bills = await fetchAllBills();
         const loans = await fetchAllLoans();
-        setTransactions(transactions);
-        setTransactionsCategory(transactionsCategory);
         setBills(bills);
         setLoans(loans);
 

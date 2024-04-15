@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { ScrollView, StyleSheet, View, Text, TouchableOpacity, Image, SafeAreaView } from 'react-native';
 import { sw, sh } from '../../../styles/GlobalStyles';
 import AppBar from '../Utils/AppBar';
@@ -8,6 +8,8 @@ import RenderWidget2 from '../Utils/RenderSummaryWidget2';
 import { mockData1, mockData2 } from '../MockData/mockData';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import axios from 'axios';
+import { GlobalContext } from '../../../context';
 
 const styles = StyleSheet.create({
     container: {
@@ -54,7 +56,199 @@ const styles = StyleSheet.create({
 const mockData_1 = mockData1;
 const mockData_2 = mockData2;
 
+const tinycolor = require('tinycolor2');
+const generateRandomColors = (length) => {
+    const randomColors = [];
+
+    for (let i = 0; i < length; i++) {
+        const randomColor = tinycolor.random().toHexString();
+        randomColors.push(randomColor);
+    }
+
+    return randomColors;
+};
+
 function DebtSummary({ navigation }) {
+    const { userId } = useContext(GlobalContext);
+    const [bills, setBills] = useState([]);
+    const [loans, setLoans] = useState([]);
+    const [totalMonthlyLoanAmount, setTotalMonthlyLoanAmount] = useState(0);
+    const [totalOverdueAmount, setTotalOverdueAmount] = useState(0);
+    const [totalDebt, setTotalDebt] = useState(0);
+    const [totalPrinciple, setTotalPrinciple] = useState(0);
+    const [totalBalance, setTotalBalance] = useState(0);
+    const [totalMonthlyBill, setTotalMonthlyBill] = useState(0);
+    const [totalMonthlyPayment, setTotalMonthlyPayment] = useState(0);
+    const [mergedLoansAndBills, setMergedLoansAndBills] = useState([{ name: 'placeholder', amount: 0 }]);
+
+    const fetchAllBills = async () => {
+        try {
+            const response = await axios.get(`http://192.168.100.14:3000/bills/${userId}`);
+            // console.log(response.data);
+            const bills = response.data;
+            const transformedBills = bills.map((bill) => ({
+                name: bill.name,
+                amount: bill.amount,
+                repeating_option: bill.repeating_option,
+            }));
+            return transformedBills;
+        } catch (error) {
+            console.error('Error fetching bills:', error);
+        }
+    };
+
+    const fetchAllLoans = async () => {
+        try {
+            const response = await axios.get(`http://192.168.100.14:3000/loans/${userId}`);
+            // console.log(response.data);
+            const loans = response.data;
+            const transformedLoans = loans.map((loan) => ({
+                name: loan.name,
+                amount: loan.loan_amount,
+                installment_month: loan.installment_month,
+                payment_remaining: loan.payment_remaining,
+                interest_rate: loan.interest_rate,
+            }));
+            return transformedLoans;
+        } catch (error) {
+            console.error('Error fetching loans:', error);
+        }
+    };
+
+    const tallyDiscountedValueWithLoan = (
+        random_preset_repayment_amount,
+        discounting_factors,
+        loan,
+        installment_month,
+    ) => {
+        let repaymentAmount = random_preset_repayment_amount;
+        const discounted_value = [];
+        for (let i = 0; i < installment_month; i++) {
+            discounted_value.push(random_preset_repayment_amount * discounting_factors[i]);
+        }
+        let sum_discounted_value = discounted_value.reduce((total, a) => total + a, 0);
+
+        while (Math.abs(sum_discounted_value - loan) > 0.01) {
+            const discounted_value = [];
+            for (let i = 0; i < installment_month; i++) {
+                discounted_value.push(repaymentAmount * discounting_factors[i]);
+            }
+            sum_discounted_value = discounted_value.reduce((total, a) => total + a, 0);
+            if (sum_discounted_value < loan) {
+                repaymentAmount += Math.random() * ((loan - sum_discounted_value) / installment_month);
+            } else {
+                repaymentAmount -= Math.random() * ((sum_discounted_value - loan) / installment_month);
+            }
+        }
+        return repaymentAmount;
+    };
+
+    const calculateMonthlyLoanRepaymentAmount = (loan) => {
+        const monthlyInterestRate = Math.pow(1 + loan.interest_rate / 100, 1 / 12) - 1;
+        const installment_month = loan.installment_month;
+        const amount = loan.amount;
+        const accumulation_interest = [];
+        for (let i = 1; i <= installment_month; i++) {
+            accumulation_interest.push(Math.pow(1 + monthlyInterestRate, i));
+        }
+        const discounting_factors = [];
+        for (let i = 0; i < installment_month; i++) {
+            discounting_factors.push(1 / accumulation_interest[i]);
+        }
+        const random_preset_repayment_amount = amount / installment_month;
+        const monthlyRepaymentAmount = tallyDiscountedValueWithLoan(
+            random_preset_repayment_amount,
+            discounting_factors,
+            amount,
+            installment_month,
+        );
+        return monthlyRepaymentAmount;
+    };
+
+    const calculateTotalLoanPayment = (loan) => {
+        const installment_month = loan.installment_month;
+        const monthlyRepaymentAmount = calculateMonthlyLoanRepaymentAmount(loan);
+        const totalPayment = monthlyRepaymentAmount * installment_month;
+        return totalPayment;
+    };
+
+    const calculateTotalBalance = (loan) => {
+        const remaining_month = loan.payment_remaining;
+        const monthlyRepaymentAmount = calculateMonthlyLoanRepaymentAmount(loan);
+        const totalBalance = monthlyRepaymentAmount * remaining_month;
+        return totalBalance;
+    };
+
+    const calculateTotalMonthlyBills = (bill) => {
+        const bill_name = bill.name;
+        const bill_amount = bill.amount;
+        const bill_repeating_option = bill.repeating_option;
+
+        // Depends on the options available
+        if (bill_repeating_option == 'MONTHLY') {
+            return bill_amount;
+        } else if (bill_repeating_option == 'YEARLY') {
+            return bill_amount / 12;
+        } else if (bill_repeating_option == 'DAILY') {
+            return bill_amount * 30;
+        }
+    };
+
+    // const fetchData = async () => {
+    //     const bills = await fetchAllBills();
+    //     const loans = await fetchAllLoans();
+    //     setBills(bills);
+    //     setLoans(loans);
+
+    //     const totalMonthlyLoanAmount = loans.reduce((total, loan) => total + loan.amount, 0);
+    //     setTotalMonthlyLoanAmount(totalMonthlyLoanAmount);
+
+    //     const totalDebt = loans.reduce((total, loan) => {
+    //         const totalPayment = calculateTotalLoanPayment(loan);
+    //         return total + totalPayment;
+    //     }, 0);
+    //     setTotalDebt(Math.round(totalDebt, 0));
+
+    //     const totalBalance = loans.reduce((total, loan) => {
+    //         const totalPayment = calculateTotalBalance(loan);
+    //         return total + totalPayment;
+    //     }, 0);
+    //     setTotalBalance(Math.round(totalBalance, 0));
+    //     setTotalPrinciple(Math.round(totalDebt - totalBalance, 0));
+
+    //     const totalMonthlyBill = bills.reduce((total, bill) => {
+    //         const totalPayment = calculateTotalMonthlyBills(bill);
+    //         return total + totalPayment;
+    //     }, 0);
+    //     setTotalMonthlyBill(totalMonthlyBill);
+
+    //     const totalMonthlyPayment = totalMonthlyLoanAmount + totalMonthlyBill;
+    //     setTotalMonthlyPayment(totalMonthlyPayment);
+
+    //     const loanRepayments = loans.map((loan) => ({
+    //         name: loan.name,
+    //         amount: calculateMonthlyLoanRepaymentAmount(loan),
+    //     }));
+
+    //     const mergedList = [
+    //         ...loanRepayments.map((loan) => ({
+    //             name: loan.name,
+    //             amount: loan.amount,
+    //         })),
+    //         ...bills.map((bill) => ({
+    //             name: bill.name,
+    //             amount: bill.amount,
+    //         })),
+    //     ];
+
+    //     setMergedLoansAndBills(mergedList);
+    // };
+
+    // useEffect(() => {
+    //     console.log('DebtMain component mounted');
+    //     fetchData();
+    // }, []);
+
     const [mockData1, setMockData1] = useState(mockData_1);
     const [mockData2, setMockData2] = useState(mockData_2);
 
