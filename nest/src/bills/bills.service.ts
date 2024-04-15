@@ -20,6 +20,7 @@ export class BillsService {
       data: {
         name: createBillDto.name,
         amount: createBillDto.amount,
+        repayment_date: createBillDto.repayment_date,
         repeating_option: createBillDto.repeating_option,
         user: {
           connect: {

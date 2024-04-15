@@ -30,13 +30,13 @@ model Loan {
   id                Int           @id @default(autoincrement())
   name              String
   end_date          DateTime
+  repayment_date DateTime
   loan_amount       Float
   installment_month Int
   payment_remaining Int
   interest_rate     Float
   loan_status       PaymentStatus @default(UNPAID)
   userId            Int
-  loan_status       PaymentStatus @default(UNPAID)
   user              User          @relation(fields: [userId], references: [id])
 }
 
@@ -44,10 +44,10 @@ model Bill {
   id               Int           @id @default(autoincrement())
   name             String
   amount           Float
+  repayment_date DateTime
   repeating_option RepeatOption
   bill_status      PaymentStatus @default(UNPAID)
   userId           Int
-  bill_status      PaymentStatus @default(UNPAID)
   user             User          @relation(fields: [userId], references: [id])
 }
 
@@ -123,7 +123,7 @@ enum UserType {
   CONSULTANT
 }
 
-enum PaymentStatus{
+enum PaymentStatus {
   PAID
   UNPAID
 }
