@@ -15,6 +15,8 @@ import AppBar from '../Utils/AppBar';
 import { BottomButton } from '../Utils/RenderBottomButton';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import axios from 'axios';
+import { Url } from '../../../url.js';
 
 const styles = StyleSheet.create({
     container: {
@@ -124,9 +126,11 @@ const calculateMonthlyLoanRepaymentAmount = (loan_interest_rate, loan_installmen
 };
 
 function DebtAddExistingLoan2({ navigation, route }) {
-    const { loanName, loanAmount, tenureYears, interestRate, startingYear, mockData1, setMockData1 } = route.params;
+    const { loanName, loanAmount, tenureYears, interestRate, repaymentDate, mockData1, setMockData1 } = route.params;
 
-    var now = new Date();
+    const startingYear = repaymentDate.getFullYear();
+
+    var now = repaymentDate;
     if (now.getMonth() == 11) {
         var nextMonth = new Date(now.getFullYear() + 1, 0, now.getDate());
     } else {
@@ -146,7 +150,28 @@ function DebtAddExistingLoan2({ navigation, route }) {
     const expiryDateObj = new Date(endYear, nextMonth.getMonth(), now.getDate());
     const expiryDateISOString = expiryDateObj.toISOString();
 
+    const handleAddLoan = async () => {
+        try {
+            const newBudget = {
+                name: loanName,
+                end_date: expiryDateISOString,
+                loan_amount: parseFloat(loanAmount),
+                installment_month: installment_month,
+                payment_remaining: installment_month,
+                interest_rate: parseInt(interestRate),
+                loan_status: 'UNPAID',
+                userId: 1,
+                repayment_date: repaymentDate,
+            };
+            console.log(newBudget);
+            const response = await axios.post(`http://${Url}:3000/loans/new`, newBudget);
+        } catch (error) {
+            console.error(error.message);
+        }
+    };
+
     const DebtSummary = () => {
+        handleAddLoan();
         const newData = {
             image: logo.loan_logo,
             backgroundColor: '#FDD5D7',
@@ -161,28 +186,6 @@ function DebtAddExistingLoan2({ navigation, route }) {
     };
     const PreviousPage = () => {
         navigation.goBack();
-    };
-
-    const handleAddLoan = async () => {
-        try {
-            const newBudget = {
-                name: loanName,
-                end_date: expiryDateISOString,
-                loan_amount: parseFloat(loanAmount),
-                installment_month: installment_month,
-                payment_remaining: installment_month,
-                interest_rate: interestRate,
-                userId: 1,
-            };
-            console.log(newBudget);
-            const response = await axios.post(`http://${Url}:3000/loans/new`, newBudget);
-            console.log(response.status);
-            if (response.status === 201) {
-                navigation.goBack();
-            }
-        } catch (error) {
-            console.error(error.message);
-        }
     };
 
     return (
@@ -231,6 +234,7 @@ function DebtAddExistingLoan2({ navigation, route }) {
             <BottomButton
                 value="Add"
                 navigation={DebtSummary}
+                action={handleAddLoan}
             />
         </SafeAreaView>
     );

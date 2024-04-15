@@ -9,6 +9,7 @@ import HouseSVG from './HouseSVG';
 import UnifiSVG from './UnifiSVG';
 import PersonalSVG from './PersonalSVG';
 import EducationSVG from './EducationSVG';
+import BillSVG from './billSVG';
 
 const styles = StyleSheet.create({
     widgetContainer: {
@@ -69,16 +70,17 @@ const RenderWidget2 = ({ image, backgroundColor, itemName, paymentDate, upcoming
             exiting={FadeOutDown}
         >
             {/* <Image
-                    source={image}
-                    style={styles.imageStyle}
-                ></Image> */}
-            {itemName === 'Education Loan' && <EducationSVG backgroundColor={backgroundColor} />}
+                source={image}
+                style={styles.imageStyle}
+            ></Image> */}
+            <BillSVG backgroundColor={backgroundColor} />
+            {/* {itemName === 'Education Loan' && <EducationSVG backgroundColor={backgroundColor} />}
             {itemName === 'House Loan' && <HouseSVG backgroundColor={backgroundColor} />}
             {itemName === 'Car Loan' && <CarSVG backgroundColor={backgroundColor} />}
             {itemName === 'Personal Loan' && <PersonalSVG backgroundColor={backgroundColor} />}
             {itemName === 'Electric Bill' && <TnbSVG backgroundColor={backgroundColor} />}
             {itemName === 'Unifi Wifi' && <UnifiSVG backgroundColor={backgroundColor} />}
-            {itemName === 'Netflix' && <NetflixSVG backgroundColor={backgroundColor} />}
+            {itemName === 'Netflix' && <NetflixSVG backgroundColor={backgroundColor} />} */}
 
             <View style={[styles.contentContainer, { alignItems: 'flex-start' }]}>
                 <Text style={styles.titleText}>{itemName}</Text>

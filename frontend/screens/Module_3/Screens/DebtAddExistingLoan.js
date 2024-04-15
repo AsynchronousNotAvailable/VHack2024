@@ -48,19 +48,13 @@ const styles = StyleSheet.create({
     },
 });
 
-const isValidStartingYear = (year) => {
-    const currentYear = new Date().getFullYear();
-    return /^\d{4}$/.test(year) && parseInt(year) >= currentYear;
-};
-
 function DebtAddExistingLoan({ navigation, route }) {
     const [loanName, setLoanName] = useState('');
     const [loanAmount, setLoanAmount] = useState('');
     const [tenureYears, setTenureYears] = useState('');
     const [interestRate, setInterestRate] = useState('');
-    const [startingYear, setStartingYear] = useState('');
-    const [repaymentDate, setRepaymentDate] = useState(null);
-    const [showDatePicker, setShowDatePicker] = useState(false);
+    const [repaymentDate, setRepaymentDate] = useState(new Date());
+    const [showDatePicker, setShowDatePicker] = useState(true);
 
     const handleDateChange = (event, selectedDate) => {
         setShowDatePicker(Platform.OS === 'ios');
@@ -69,11 +63,12 @@ function DebtAddExistingLoan({ navigation, route }) {
         }
     };
 
+    const currentDate = new Date();
+
     // Reference for all constant
     const loanAmountRef = useRef(null);
     const tenureYearsRef = useRef(null);
     const interestRateRef = useRef(null);
-    const startingYearRef = useRef(null);
     const [error, setError] = useState(undefined);
 
     const validateInputs = () => {
@@ -87,9 +82,6 @@ function DebtAddExistingLoan({ navigation, route }) {
         } else if (parseFloat(interestRate) < 0 || parseFloat(interestRate) > 100) {
             Alert.alert('Error', 'Interest rate must be between 0 and 100.');
             isValid = false;
-        } else if (!isValidStartingYear(startingYear)) {
-            Alert.alert('Error', 'Starting year must be a valid 4-digit year and not earlier than the current year.');
-            isValid = false;
         }
         return isValid;
     };
@@ -101,7 +93,7 @@ function DebtAddExistingLoan({ navigation, route }) {
                 loanAmount: loanAmount,
                 tenureYears: tenureYears,
                 interestRate: interestRate,
-                startingYear: startingYear,
+                repaymentDate: repaymentDate,
                 mockData1: route.params.mockData1,
                 setMockData1: route.params.setMockData1,
             });
@@ -184,7 +176,7 @@ function DebtAddExistingLoan({ navigation, route }) {
                                 startingYearRef.current?.focus();
                             }}
                         />
-                        <TextInputPaper
+                        {/* <TextInputPaper
                             style={styles.inputPaper}
                             placeholder=""
                             label="Start From (Year)"
@@ -196,23 +188,25 @@ function DebtAddExistingLoan({ navigation, route }) {
                             onChangeText={(startingYear) => {
                                 setStartingYear(startingYear);
                             }}
-                        />
+                        /> */}
                         <View>
-                            <TouchableOpacity onPress={() => setShowDatePicker(true)}>
-                                <TextInputPaper
-                                    style={styles.inputPaper}
-                                    placeholder="Select Date"
-                                    label="Select Date"
-                                    mode="outlined"
-                                    editable={false}
-                                    value={repaymentDate ? repaymentDate.toLocaleDateString() : ''}
-                                />
-                            </TouchableOpacity>
+                            <TextInputPaper
+                                style={styles.inputPaper}
+                                placeholder="Select Repayment Date"
+                                label="Select Repayment Date"
+                                mode="outlined"
+                                editable={false}
+                                value={
+                                    repaymentDate
+                                        ? repaymentDate.toLocaleDateString()
+                                        : currentDate.toLocaleDateString()
+                                }
+                            />
                             {showDatePicker && (
                                 <DateTimePicker
-                                    value={repaymentDate || new Date()}
+                                    value={repaymentDate ? repaymentDate : currentDate}
                                     mode="date"
-                                    minimumDate={new Date()}
+                                    minimumDate={currentDate}
                                     is24Hour={true}
                                     display="default"
                                     onChange={handleDateChange}
