@@ -1,13 +1,15 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { ScrollView, StyleSheet, View, Text } from 'react-native';
 import DonutChart from './DonutChart';
+import axios from 'axios';
 import { useFont, SkFont, Skia, SkRect } from '@shopify/react-native-skia';
 import { SharedValue, useDerivedValue, useSharedValue, withTiming } from 'react-native-reanimated';
 import { calculatePercentage } from './calculatePercentage';
 import RenderItem from './RenderItem';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { sw, sh, fonts } from '../../../styles/GlobalStyles';
+import { GlobalContext } from '../../../context';
 
 const styles = StyleSheet.create({
     mainTitle: {
@@ -60,7 +62,27 @@ const styles = StyleSheet.create({
     },
 });
 
-const DonutChartContainer = () => {
+const tinycolor = require('tinycolor2');
+const generateRandomColors = (length) => {
+    const randomColors = [];
+
+    for (let i = 0; i < length; i++) {
+        const randomColor = tinycolor.random().toHexString();
+        randomColors.push(randomColor);
+    }
+
+    return randomColors;
+};
+
+const DonutChartContainer = ({ mergedLoansAndBills }) => {
+    const [updatedLoansAndBills, setUpdatedLoansAndBills] = useState(mergedLoansAndBills);
+
+    useEffect(() => {
+        setUpdatedLoansAndBills(mergedLoansAndBills);
+    }, []); // Run once when component mounts
+
+    console.log(updatedLoansAndBills);
+
     const RADIUS = sw(100);
     const STROKE_WIDTH = sw(30);
     const OUTER_STROKE_WIDTH = sw(46);
@@ -70,9 +92,17 @@ const DonutChartContainer = () => {
     const n = 6;
     const totalValue = useSharedValue(0);
     const decimals = useSharedValue(0);
-    const colors = ['#D8FFFC', '#FFF0D4', '#FDCED0', '#CAFDEA', '#BCDAFC', '#E5D8FF'];
-    const debtNumbers = [41.5, 215.75, 252.6, 337.57, 661.43, 2121.35];
-    const debtNames = ['Netflix Bill', 'Wifi Bill', 'Electric Bill', 'Car Loan', 'Personal Loan', 'House Loan'];
+
+    const debtNumbers = [];
+    const debtNames = [];
+
+    updatedLoansAndBills.forEach(({ name, amount }) => {
+        debtNames.push(name);
+        debtNumbers.push(amount);
+    });
+
+    const colors = generateRandomColors(debtNumbers.length);
+
     const total = debtNumbers.reduce((acc, currentValue) => acc + currentValue, 0);
     const generatePercentages = calculatePercentage(debtNumbers, total);
     const generateDecimals = generatePercentages.map((number) => Number(number.toFixed(0)) / 100);

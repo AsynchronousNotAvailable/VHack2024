@@ -18,7 +18,7 @@ model User {
   debt_free_date  DateTime?
   strategy        StrategyType?
   username        String
-  user_type       UserType     @default(DEBTOR)
+  user_type       UserType      @default(DEBTOR)
   appointment     Appointment[]
   bills           Bill[]
   budgets         Budget[]
@@ -27,7 +27,7 @@ model User {
 }
 
 model Loan {
-  id                Int      @id @default(autoincrement())
+  id                Int           @id @default(autoincrement())
   name              String
   end_date          DateTime
   loan_amount       Float
@@ -36,17 +36,19 @@ model Loan {
   interest_rate     Float
   loan_status       PaymentStatus @default(UNPAID)
   userId            Int
-  user              User     @relation(fields: [userId], references: [id])
+  loan_status       PaymentStatus @default(UNPAID)
+  user              User          @relation(fields: [userId], references: [id])
 }
 
 model Bill {
-  id               Int          @id @default(autoincrement())
+  id               Int           @id @default(autoincrement())
   name             String
   amount           Float
   repeating_option RepeatOption
   bill_status      PaymentStatus @default(UNPAID)
   userId           Int
-  user             User         @relation(fields: [userId], references: [id])
+  bill_status      PaymentStatus @default(UNPAID)
+  user             User          @relation(fields: [userId], references: [id])
 }
 
 model Transaction {
