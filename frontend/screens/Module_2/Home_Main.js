@@ -34,11 +34,7 @@ function Home_Main({ navigation }) {
         
     }
 
-    useEffect(() => { 
-        console.log("Hi");
-        // fetchAllTransactions();
-        // setTransactions(data);
-    }, [])
+   
 
     return (
         <ScrollView style={styles.container}>

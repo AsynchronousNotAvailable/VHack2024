@@ -5,7 +5,7 @@ import ShoppingSVG from "./ShoppingSVG";
 import EntertainmentSVG from "./EntertainmentSVG";
 import FoodSVG from "./FoodSVG";
 import SalarySVG from "./SalarySVG";
-const Transaction_Card = ({ category, name, description, amount, time }) => {
+const Transaction_Card = ({ category, description, amount, type, time }) => {
     return (
         <View
             style={[
@@ -14,36 +14,29 @@ const Transaction_Card = ({ category, name, description, amount, time }) => {
                     paddingHorizontal: sw(10),
                     paddingVertical: sh(10),
                     gap: 10,
-                    justifyContent: "space-between",
+                    justifyContent: 'space-between',
                 },
             ]}
         >
             <View style={[styles.rowContainer, { gap: 15 }]}>
-                {name === "Shopping" && <ShoppingSVG />}
-                {name === "Entertainment" && <EntertainmentSVG />}
-                {name === "Food" && <FoodSVG />}
-                {name === "Salary" && <SalarySVG />}
+                {category === 'SHOPPING' && <ShoppingSVG />}
+                {category === 'ENTERTAINMENT' && <EntertainmentSVG />}
+                {category === 'FOOD' && <FoodSVG />}
+                {category === 'SALARY' && <SalarySVG />}
 
-                <View
-                    style={[
-                        styles.columnContainer,
-                        { justifyContent: "space-between" },
-                    ]}
-                >
-                    <Text style={[styles.cardTitle, { marginTop: sh(5) }]}>
-                        {name}
-                    </Text>
+                <View style={[styles.columnContainer, { justifyContent: 'space-between' }]}>
+                    <Text style={[styles.cardTitle, { marginTop: sh(5) }]}>{description}</Text>
                     <Text
                         style={[
                             styles.cardDescription,
                             {
-                                alignSelf: "flex-end",
+                                alignSelf: 'flex-start',
                                 marginBottom: sh(5),
-                                color: "#91919F",
+                                color: '#91919F',
                             },
                         ]}
                     >
-                        {description}
+                        {category}
                     </Text>
                 </View>
             </View>
@@ -52,41 +45,41 @@ const Transaction_Card = ({ category, name, description, amount, time }) => {
                 style={[
                     styles.columnContainer,
                     {
-                        justifyContent: "space-between",
+                        justifyContent: 'space-between',
                     },
                 ]}
             >
                 <Text
                     style={
-                        category === "Expenses"
+                        type === 'EXPENSE'
                             ? [
                                   styles.cardTitle,
                                   {
                                       marginTop: sh(5),
-                                      alignSelf: "flex-end",
-                                      color: "#FD3C4A",
+                                      alignSelf: 'flex-end',
+                                      color: '#FD3C4A',
                                   },
                               ]
                             : [
                                   styles.cardTitle,
                                   {
                                       marginTop: sh(5),
-                                      alignSelf: "flex-end",
-                                      color: "#00A86B",
+                                      alignSelf: 'flex-end',
+                                      color: '#00A86B',
                                   },
                               ]
                     }
                 >
-                    {category === "Expenses" ? `-RM ${amount}` : `+RM ${amount}`}
+                    {type === 'EXPENSE' ? `-RM ${amount}` : `+RM ${amount}`}
                 </Text>
                 <Text
                     style={[
                         styles.cardDescription,
                         {
-                            alignSelf: "flex-end",
+                            alignSelf: 'flex-end',
                             marginBottom: sh(5),
-                            alignSelf: "flex-end",
-                            color: "#91919F",
+                            alignSelf: 'flex-end',
+                            color: '#91919F',
                         },
                     ]}
                 >

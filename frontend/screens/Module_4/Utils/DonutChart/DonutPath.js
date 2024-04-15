@@ -70,7 +70,7 @@ const DonutPath = ({
             style="stroke"
             strokeJoin="bevel"
             strokeWidth={strokeWidth}
-            strokeCap="round"
+            strokeCap="square"
             start={start}
             end={end}
         />
