@@ -79,7 +79,9 @@ const DonutChartContainer = ({ mergedLoansAndBills }) => {
 
     useEffect(() => {
         setUpdatedLoansAndBills(mergedLoansAndBills);
-    }, [updatedLoansAndBills]); // Run once when component mounts
+    }, []); // Run once when component mounts
+
+    console.log(updatedLoansAndBills);
 
     const RADIUS = sw(100);
     const STROKE_WIDTH = sw(30);

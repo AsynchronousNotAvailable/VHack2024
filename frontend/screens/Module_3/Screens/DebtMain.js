@@ -11,6 +11,7 @@ import DebtMainBottomImage from '../Utils/DebtMainBottomImage';
 import * as Progress from 'react-native-progress';
 import axios from 'axios';
 import { GlobalContext } from '../../../context';
+import { Url } from '../../../url';
 // Can be passed into DonutChartContainer if we wanna make it dynamic
 // const chart_data = {
 //     labels: ['Netflix', 'Unifi', 'Electric', 'Car', 'House'],
@@ -184,7 +185,7 @@ function DebtMain({ navigation }) {
 
     const fetchAllBills = async () => {
         try {
-            const response = await axios.get(`http://192.168.100.14:3000/bills/${userId}`);
+            const response = await axios.get(`http://${Url}:3000/bills/${userId}`);
             // console.log(response.data);
             const bills = response.data;
             const transformedBills = bills.map((bill) => ({
@@ -200,7 +201,7 @@ function DebtMain({ navigation }) {
 
     const fetchAllLoans = async () => {
         try {
-            const response = await axios.get(`http://192.168.100.14:3000/loans/${userId}`);
+            const response = await axios.get(`http://${Url}:3000/loans/${userId}`);
             // console.log(response.data);
             const loans = response.data;
             const transformedLoans = loans.map((loan) => ({
@@ -352,6 +353,8 @@ function DebtMain({ navigation }) {
         console.log('DebtMain component mounted');
         fetchData();
     }, []);
+
+    console.log(mergedLoansAndBills);
 
     return (
         <LinearGradient
