@@ -19,7 +19,6 @@ model User {
   strategy        StrategyType?
   username        String
   user_type       UserType      @default(DEBTOR)
-  debt_strategy   String?       @default("avalanche")
   appointment     Appointment[]
   bills           Bill[]
   budgets         Budget[]
@@ -98,14 +97,23 @@ enum TransactionType {
 
 enum TransactionCategory {
   SHOPPING
+  HOUSING
+  TRANSPORTATION
+  EDUCATION
+  HEALTH
   ENTERTAINMENT
   FOOD
   SALARY
+  SCHOLARSHIP
+  GIFTS
+  OTHER
 }
 
 enum AccountType {
-  PERSONAL
-  EDUCATION
+  CASH
+  CREDIT_CARD
+  DEBIT_CARD
+  E_WALLET
 }
 
 enum RepeatOption {

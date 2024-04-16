@@ -2,10 +2,10 @@
 CREATE TYPE "TransactionType" AS ENUM ('INCOME', 'EXPENSE');
 
 -- CreateEnum
-CREATE TYPE "TransactionCategory" AS ENUM ('SHOPPING', 'ENTERTAINMENT', 'FOOD', 'SALARY');
+CREATE TYPE "TransactionCategory" AS ENUM ('SHOPPING', 'HOUSING', 'TRANSPORTATION', 'EDUCATION', 'HEALTH', 'ENTERTAINMENT', 'FOOD', 'SALARY', 'SCHOLARSHIP', 'GIFTS', 'OTHER');
 
 -- CreateEnum
-CREATE TYPE "AccountType" AS ENUM ('PERSONAL', 'EDUCATION');
+CREATE TYPE "AccountType" AS ENUM ('CASH', 'CREDIT_CARD', 'DEBIT_CARD', 'E_WALLET');
 
 -- CreateEnum
 CREATE TYPE "RepeatOption" AS ENUM ('DAILY', 'MONTHLY', 'YEARLY');
@@ -46,6 +46,7 @@ CREATE TABLE "Loan" (
     "interest_rate" DOUBLE PRECISION NOT NULL,
     "loan_status" "PaymentStatus" NOT NULL DEFAULT 'UNPAID',
     "userId" INTEGER NOT NULL,
+    "repayment_date" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Loan_pkey" PRIMARY KEY ("id")
 );
@@ -58,6 +59,7 @@ CREATE TABLE "Bill" (
     "repeating_option" "RepeatOption" NOT NULL,
     "bill_status" "PaymentStatus" NOT NULL DEFAULT 'UNPAID',
     "userId" INTEGER NOT NULL,
+    "repayment_date" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Bill_pkey" PRIMARY KEY ("id")
 );

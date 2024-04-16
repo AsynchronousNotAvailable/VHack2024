@@ -23,10 +23,9 @@ export default RenderItem;
 
 const styles = StyleSheet.create({
     container: {
-        paddingVertical: sh(8),
-        marginBottom: sh(10),
+        paddingVertical: sh(5),
+        marginBottom: sh(0),
 
-        borderRadius: sw(20),
     },
     contentContainer: {
         flexDirection: "row",
@@ -40,7 +39,7 @@ const styles = StyleSheet.create({
         borderRadius: sw(10),
     },
     text: {
-        fontSize: 14,
+        fontSize: 12,
 
         color: "#8C97A7",
     },

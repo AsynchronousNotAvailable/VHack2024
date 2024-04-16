@@ -46,9 +46,23 @@ const Expenses_Tab_2 = ({
 
     const handleAddTransaction = async () => {
         try {
+            let formattedAccount;
+            if (account === 'Credit Card') {
+                console.log('yes');
+                formattedAccount = 'CREDIT_CARD';
+            } else if (account === 'Debit Card') {
+                console.log('yes');
+                formattedAccount = 'DEBIT_CARD';
+            } else if (account === 'E-wallet') {
+                formattedAccount = 'E_WALLET';
+            } else if (account === 'Cash') {
+                formattedAccount = 'CASH';
+            } else {
+                formattedAccount = account.toUpperCase();
+            }
             const newTransaction = {
                 date: date,
-                account: account.toUpperCase(),
+                account: formattedAccount,
                 category: category.toUpperCase(),
                 description: description,
                 amount: parseFloat(amount),

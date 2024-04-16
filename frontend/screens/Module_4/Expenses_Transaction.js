@@ -174,7 +174,15 @@ function Expenses_Transaction({ navigation }) {
         const name = [];
         monthlyTransactionsAccount.map((item) => {
             amount.push(item._sum.amount);
-            name.push(item.account);
+            if (item.account === 'E_WALLET') {
+                name.push('E-WALLET');
+            } else if (item.account === 'CREDIT_CARD') {
+                name.push('CREDIT CARD');
+            } else if (item.account === 'DEBIT_CARD') {
+                name.push('DEBIT CARD');
+            } else {
+                name.push(item.account);
+            }
         });
         console.log(amount, name);
         return [amount, name];

@@ -5,6 +5,14 @@ import ShoppingSVG from "./ShoppingSVG";
 import EntertainmentSVG from "./EntertainmentSVG";
 import FoodSVG from "./FoodSVG";
 import SalarySVG from "./SalarySVG";
+import TransportationSVG from "./TransportationSVG";
+import ScholarshipSVG from "./ScholarshipSVG";
+import OtherSVG from "./OtherSVG";
+import IncomeOtherSVG from "./IncomeOtherSVG";
+import HousingSVG from "./HousingSVG";
+import HealthSVG from "./HealthSVG";
+import EducationSVG from "./EducationSVG";
+import GiftSVG from "./GiftSVG";
 const Transaction_Card = ({ category, description, amount, type, time }) => {
     return (
         <View
@@ -22,7 +30,14 @@ const Transaction_Card = ({ category, description, amount, type, time }) => {
                 {category === 'SHOPPING' && <ShoppingSVG />}
                 {category === 'ENTERTAINMENT' && <EntertainmentSVG />}
                 {category === 'FOOD' && <FoodSVG />}
-                {category === 'SALARY' && <SalarySVG />}
+                {category === 'TRANSPORTATION' && <TransportationSVG />}
+                {category === 'SCHOLARSHIP' && <ScholarshipSVG />}
+                {category === 'OTHER' && type === 'EXPENSE' && <OtherSVG />}
+                {category === 'OTHER' && type === 'INCOME' && <IncomeOtherSVG />}
+                {category === 'HEALTH' && <HealthSVG />}
+                {category === 'HOUSING' && <HousingSVG />}
+                {category === 'EDUCATION' && <EducationSVG />}
+                {category === 'GIFTS' && <GiftSVG />}
 
                 <View style={[styles.columnContainer, { justifyContent: 'space-between' }]}>
                     <Text style={[styles.cardTitle, { marginTop: sh(5) }]}>{description}</Text>

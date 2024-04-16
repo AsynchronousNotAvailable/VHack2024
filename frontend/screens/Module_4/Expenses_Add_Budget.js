@@ -53,13 +53,11 @@ const Expenses_Add_Budget = ({ navigation }) => {
         Keyboard.dismiss();
         setDropdownShown1(false);
         setDropdownShown2(false);
-     
     };
 
-    
     const handleDropDownCategory = () => {
         console.log('clicked also');
-         Keyboard.dismiss();
+        Keyboard.dismiss();
         setDropdownShown1(!dropdownShown1);
         setDropdownShown2(false);
     };
@@ -73,11 +71,25 @@ const Expenses_Add_Budget = ({ navigation }) => {
 
     const handleAddBudget = async () => {
         try {
+            let formattedAccount;
+            if (account === 'Credit Card') {
+                console.log('yes');
+                formattedAccount = 'CREDIT_CARD';
+            } else if (account === 'Debit Card') {
+                console.log('yes');
+                formattedAccount = 'DEBIT_CARD';
+            } else if (account === 'E-wallet') {
+                formattedAccount = 'E_WALLET';
+            } else if (account === 'Cash') {
+                formattedAccount = 'CASH';
+            } else {
+                formattedAccount = account.toUpperCase();
+            }
             const newBudget = {
                 name: name,
                 amount: parseFloat(amount),
                 category: category.toUpperCase(),
-                account: account.toUpperCase(),
+                account: formattedAccount,
                 userId: 1,
             };
             console.log(newBudget);
