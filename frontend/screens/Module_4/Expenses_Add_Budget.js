@@ -24,16 +24,23 @@ const Expenses_Add_Budget = ({ navigation }) => {
     const [dropdownShown1, setDropdownShown1] = useState(false);
     const [dropdownShown2, setDropdownShown2] = useState(false);
     const accountOptions = [
-        { key: '1', value: 'Personal' },
-        { key: '2', value: 'Education' },
+        { key: '1', value: 'Cash' },
+        { key: '2', value: 'Credit Card' },
+        { key: '3', value: 'Debit Card' },
+        { key: '4', value: 'E-wallet' },
     ];
 
     const categoryOptions = [
-        { key: '1', value: 'Salary' },
+        { key: '1', value: 'Food' },
         { key: '2', value: 'Shopping' },
-        { key: '3', value: 'Entertainment' },
-        { key: '4', value: 'Food' },
+        { key: '3', value: 'Housing' },
+        { key: '4', value: 'Transportation' },
+        { key: '5', value: 'Education' },
+        { key: '6', value: 'Entertainment' },
+        { key: '7', value: 'Health' },
+        { key: '8', value: 'Other' },
     ];
+
     const toggleSwitch1 = () => {
         setIsEnabled1(!isEnabled1);
     };

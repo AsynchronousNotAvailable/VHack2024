@@ -31,15 +31,17 @@ const Expenses_Tab_2 = ({
     toggleDropDown2,
 }) => {
     const accountOptions = [
-        { key: '1', value: 'Personal' },
-        { key: '2', value: 'Education' },
+        { key: '1', value: 'Cash' },
+        { key: '2', value: 'Credit Card' },
+        { key: '3', value: 'Debit Card' },
+        { key: '4', value: 'E-wallet' },
     ];
 
     const categoryOptions = [
         { key: '1', value: 'Salary' },
-        // { key: '2', value: 'Shopping' },
-        // { key: '3', value: 'Entertainment' },
-        // { key: '4', value: 'Food' },
+        { key: '2', value: 'Scholarship' },
+        { key: '3', value: 'Gifts' },
+        { key: '4', value: 'Other' },
     ];
 
     const handleAddTransaction = async () => {
