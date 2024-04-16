@@ -306,20 +306,20 @@ function DebtMain({ navigation }) {
             (total, loan) => total + calculateMonthlyLoanRepaymentAmount(loan),
             0,
         );
-        setTotalMonthlyLoanAmount(Math.round(totalMonthlyLoanAmount, 2));
+        setTotalMonthlyLoanAmount(Math.round(totalMonthlyLoanAmount * 100) / 100);
 
         const totalDebt = loans.reduce((total, loan) => {
             const totalPayment = calculateTotalLoanPayment(loan);
             return total + totalPayment;
         }, 0);
-        setTotalDebt(Math.round(totalDebt, 0));
+        setTotalDebt(Math.round(totalDebt));
 
         const totalBalance = loans.reduce((total, loan) => {
             const totalPayment = calculateTotalBalance(loan);
             return total + totalPayment;
         }, 0);
         setTotalBalance(Math.round(totalBalance, 0));
-        setTotalPrinciple(Math.round(totalDebt - totalBalance, 0));
+        setTotalPrinciple(Math.round(totalDebt - totalBalance));
 
         const totalMonthlyBill = bills.reduce((total, bill) => {
             const totalPayment = calculateTotalMonthlyBills(bill);

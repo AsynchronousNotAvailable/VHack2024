@@ -19,6 +19,7 @@ model User {
   strategy        StrategyType?
   username        String
   user_type       UserType      @default(DEBTOR)
+  debt_strategy   String?       @default("avalanche")
   appointment     Appointment[]
   bills           Bill[]
   budgets         Budget[]

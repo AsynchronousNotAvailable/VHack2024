@@ -116,6 +116,21 @@ function DebtRepaymentPlanSummary({ navigation }) {
         }
     };
 
+    const fetchAllUsers = async () => {
+        try {
+            const response = await axios.get(`http://192.168.100.14:3000/users/login/`);
+            console.log(response.data);
+            const users = response.data;
+            const transformedUsers = users.map((user) => ({
+                name: user.name,
+                strategy: user.strategy,
+            }));
+            return transformedUsers;
+        } catch (error) {
+            console.error('Error fetching loans:', error);
+        }
+    };
+
     const tallyDiscountedValueWithLoan = (
         random_preset_repayment_amount,
         discounting_factors,
@@ -277,7 +292,7 @@ function DebtRepaymentPlanSummary({ navigation }) {
 
         const payoffSummaryList = loans.map((loan) => ({
             name: loan.name,
-            amount: loan.loan_amount,
+            amount: loan.amount,
             end_date: loan.end_date,
             installment_month: loan.installment_month,
             payment_remaining: loan.payment_remaining,
@@ -346,6 +361,9 @@ function DebtRepaymentPlanSummary({ navigation }) {
         ];
 
         setPlanSummaryComponents(updatedPlanSummaryComponents);
+
+        const users = await fetchAllUsers();
+        console.log(users);
     };
 
     useEffect(() => {
@@ -354,7 +372,7 @@ function DebtRepaymentPlanSummary({ navigation }) {
     }, []);
 
     const DebtRepaymentPlanChoicePage = () => {
-        navigation.navigate('DebtRepaymentPlanChoice');
+        navigation.navigate('DebtRepaymentPlanChoice', { extraPayment: extraPayment });
     };
     const PreviousPage = () => {
         navigation.goBack();
@@ -374,7 +392,7 @@ function DebtRepaymentPlanSummary({ navigation }) {
                         placeholder="RM"
                         label="Extra Payment"
                         mode="outlined"
-                        keyboardType="default"
+                        keyboardType="numeric"
                         returnKeyType="next"
                         autoCapitalize="none"
                         onChangeText={(extraPayment) => {
