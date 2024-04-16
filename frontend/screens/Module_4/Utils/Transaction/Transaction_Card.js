@@ -1,18 +1,18 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { sw, sh, fonts, colors } from "../../../../styles/GlobalStyles";
-import ShoppingSVG from "./ShoppingSVG";
-import EntertainmentSVG from "./EntertainmentSVG";
-import FoodSVG from "./FoodSVG";
-import SalarySVG from "./SalarySVG";
-import TransportationSVG from "./TransportationSVG";
-import ScholarshipSVG from "./ScholarshipSVG";
-import OtherSVG from "./OtherSVG";
-import IncomeOtherSVG from "./IncomeOtherSVG";
-import HousingSVG from "./HousingSVG";
-import HealthSVG from "./HealthSVG";
-import EducationSVG from "./EducationSVG";
-import GiftSVG from "./GiftSVG";
+import React, { useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+import { sw, sh, fonts, colors } from '../../../../styles/GlobalStyles';
+import ShoppingSVG from './ShoppingSVG';
+import EntertainmentSVG from './EntertainmentSVG';
+import FoodSVG from './FoodSVG';
+import SalarySVG from './SalarySVG';
+import TransportationSVG from './TransportationSVG';
+import ScholarshipSVG from './ScholarshipSVG';
+import OtherSVG from './OtherSVG';
+import IncomeOtherSVG from './IncomeOtherSVG';
+import HousingSVG from './HousingSVG';
+import HealthSVG from './HealthSVG';
+import EducationSVG from './EducationSVG';
+import GiftSVG from './GiftSVG';
 const Transaction_Card = ({ category, description, amount, type, time }) => {
     return (
         <View
@@ -38,6 +38,7 @@ const Transaction_Card = ({ category, description, amount, type, time }) => {
                 {category === 'HOUSING' && <HousingSVG />}
                 {category === 'EDUCATION' && <EducationSVG />}
                 {category === 'GIFTS' && <GiftSVG />}
+                {category === 'SALARY' && <SalarySVG />}
 
                 <View style={[styles.columnContainer, { justifyContent: 'space-between' }]}>
                     <Text style={[styles.cardTitle, { marginTop: sh(5) }]}>{description}</Text>
@@ -109,15 +110,15 @@ export default Transaction_Card;
 
 const styles = StyleSheet.create({
     cardContainer: {
-        display: "flex",
-        flexDirection: "column",
+        display: 'flex',
+        flexDirection: 'column',
         gap: 20,
         paddingHorizontal: sw(24),
         paddingVertical: sh(15),
         marginVertical: sh(15),
         marginHorizontal: sw(20),
         borderRadius: 20,
-        shadowColor: "#000",
+        shadowColor: '#000',
         shadowOffset: { width: 0, height: 2 },
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
@@ -125,7 +126,7 @@ const styles = StyleSheet.create({
     },
 
     balanceContainer: {
-        flexDirection: "column",
+        flexDirection: 'column',
         gap: 4,
     },
     cardTitle: {
@@ -136,10 +137,10 @@ const styles = StyleSheet.create({
         fontFamily: fonts.interRegular,
         color: colors.black,
     },
-    rowContainer: { flexDirection: "row" },
-    columnContainer: { flexDirection: "column" },
+    rowContainer: { flexDirection: 'row' },
+    columnContainer: { flexDirection: 'column' },
     subTitleContainer: {
-        flexDirection: "row",
+        flexDirection: 'row',
         gap: 5,
     },
     subTitleText: {
@@ -148,6 +149,6 @@ const styles = StyleSheet.create({
     },
     chartContainer: {
         // marginHorizontal: sw(20),
-        flexDirection: "column",
+        flexDirection: 'column',
     },
 });
