@@ -1,5 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect, useContext } from 'react';
 import {
+    Platform,
     Keyboard,
     ScrollView,
     StyleSheet,
@@ -10,6 +11,7 @@ import {
     Image,
     SafeAreaView,
 } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { fonts, sw, sh, logo } from '../../../styles/GlobalStyles';
 import AppBar from '../Utils/AppBar';
 import { BottomButton } from '../Utils/RenderBottomButton';
@@ -17,6 +19,8 @@ import { TextInput as TextInputPaper } from 'react-native-paper';
 import { Dropdown } from 'react-native-element-dropdown';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import axios from 'axios';
+import { Url } from '../../../url.js';
 
 const styles = StyleSheet.create({
     container: {
@@ -75,65 +79,94 @@ const styles = StyleSheet.create({
     },
 });
 
-function DebtAddUpcomingBill({navigation, route}) {
-    const {mockData2, setMockData2} = route.params
+function DebtAddUpcomingBill({ navigation, route }) {
+    const currentDate = new Date();
+
+    const { mockData2, setMockData2 } = route.params;
     const [upcomingBillName, setUpcomingBillName] = useState('');
     const [upcomingBillAmount, setUpcomingBillAmount] = useState('');
     const [showDropDown, setShowDropDown] = useState(false);
 
     const upcomingBillAmountRef = useRef(null);
 
-    const [value, setValue] = useState(null);
-    const [paymentDate, setPaymentDate] = useState(null);
+    const [repeatingOptionsValue, setRepeatingOptionsValue] = useState('MONTHLY');
+    const [repaymentDate, setRepaymentDate] = useState(new Date());
+    console.log('Repayment Date: ' + repaymentDate);
+    const [displayDate, setDisplayDate] = useState('');
+    const [showDatePicker, setShowDatePicker] = useState(true);
     const [isFocus, setIsFocus] = useState(false);
 
+    const handleDateChange = (event, selectedDate) => {
+        setShowDatePicker(Platform.OS === 'ios');
+        if (selectedDate) {
+            setRepaymentDate(selectedDate);
+        }
+    };
+
     const data = [
-        { label: 'Every Day', value: '1' },
-        { label: 'Every Week', value: '2' },
-        { label: 'Every Month', value: '3' },
-        { label: 'Every Year', value: '4' },
+        { label: 'Every Day', value: 'DAILY' },
+        { label: 'Every Month', value: 'MONTHLY' },
+        { label: 'Every Year', value: 'YEARLY' },
     ];
 
-    const addDays = (date, days) => {
-        const result = new Date(date);
-        result.setDate(result.getDate() + 1);
-        return formatDate(result);
-    };
-
-    const addWeeks = (date, weeks) => {
-        const result = new Date(date);
-        result.setDate(result.getDate() + 7);
-        return formatDate(result);
-    };
-
-    const addMonths = (date, months) => {
-        const result = new Date(date);
-        result.setMonth(result.getMonth() + 1);
-        return formatDate(result);
-    };
-
-    const addYears = (date, years) => {
-        const result = new Date(date);
-        result.setFullYear(result.getFullYear() + 1);
-        return formatDate(result);
-    };
-
     const formatDate = (date) => {
-        const day = date.getDate().toString().padStart(2, '0'); 
-        const month = (date.getMonth() + 1).toString().padStart(2, '0'); 
-        const year = (date.getFullYear()).toString(); 
+        const day = date.getDate().toString().padStart(2, '0');
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const year = date.getFullYear().toString();
         return `${day}/${month}/${year}`;
     };
 
+    const addDays = (date) => {
+        date.setDate(date.getDate() + 1);
+        return {
+            displayDate: formatDate(date),
+            storeDate: date,
+        };
+    };
+
+    const addMonths = (date) => {
+        date.setMonth(date.getMonth() + 1);
+        return {
+            displayDate: formatDate(date),
+            storeDate: date,
+        };
+    };
+
+    const addYears = (date) => {
+        date.setFullYear(date.getFullYear() + 1);
+        return {
+            displayDate: formatDate(date),
+            storeDate: date,
+        };
+    };
+
+    const handleAddBills = async () => {
+        try {
+            const newBills = {
+                name: upcomingBillName,
+                amount: parseFloat(upcomingBillAmount),
+                repeating_option: repeatingOptionsValue,
+                bill_status: 'UNPAID',
+                userId: 1,
+                repayment_date: repaymentDate,
+            };
+            console.log(newBills);
+            const response = await axios.post(`http://${Url}:3000/bills/new`, newBills);
+        } catch (error) {
+            console.error(error.message);
+        }
+    };
+
     const DebtMainPage = () => {
+        handleAddBills();
         const newData = {
-            image: logo.school_logo,
+            image: logo.bill_logo,
             backgroundColor: '#CFFAEA',
             itemName: upcomingBillName,
-            paymentDate: paymentDate,
+            paymentDate: displayDate,
             upcomingBills: upcomingBillAmount,
-            index: mockData2.length+2,
-        }
+            index: mockData2.length + 2,
+        };
         setMockData2([...mockData2, newData]);
         navigation.navigate('DebtSummary');
     };
@@ -170,7 +203,7 @@ function DebtAddUpcomingBill({navigation, route}) {
                         label="Enter Amount"
                         mode="outlined"
                         ref={upcomingBillAmountRef}
-                        keyboardType="default"
+                        keyboardType="numeric"
                         returnKeyType="next"
                         autoCapitalize="none"
                         onChangeText={(upcomingBillAmount) => {
@@ -189,33 +222,52 @@ function DebtAddUpcomingBill({navigation, route}) {
                         valueField="value"
                         placeholder={!isFocus ? 'Repeat Option' : '...'}
                         searchPlaceholder="Option..."
-                        value={value}
+                        value={repeatingOptionsValue}
                         onFocus={() => setIsFocus(true)}
                         onBlur={() => setIsFocus(false)}
                         onChange={(item) => {
-                            setValue(item.value);
+                            setRepeatingOptionsValue(item.value);
                             setIsFocus(false);
-                            const now = new Date();
                             switch (item.label) {
                                 case 'Every Day':
-                                    newDate = addDays(now, parseInt(item.value));
-                                    break;
-                                case 'Every Week':
-                                    newDate = addWeeks(now, parseInt(item.value));
+                                    date = addDays(repaymentDate, parseInt(item.value));
                                     break;
                                 case 'Every Month':
-                                    newDate = addMonths(now, parseInt(item.value));
+                                    date = addMonths(repaymentDate, parseInt(item.value));
                                     break;
                                 case 'Every Year':
-                                    newDate = addYears(now, parseInt(item.value));
+                                    date = addYears(repaymentDate, parseInt(item.value));
                                     break;
                                 default:
-                                    newDate = now;
+                                    date = addMonths(repaymentDate, parseInt(item.value));
                                     break;
                             }
-                            setPaymentDate(newDate)
+                            setDisplayDate(date.displayDate);
+                            setRepaymentDate(date.storeDate);
                         }}
                     />
+                    <View>
+                        <TextInputPaper
+                            style={styles.inputPaper}
+                            placeholder="Select Repayment Date"
+                            label="Select Repayment Date"
+                            mode="outlined"
+                            editable={false}
+                            value={
+                                repaymentDate ? repaymentDate.toLocaleDateString() : currentDate.toLocaleDateString()
+                            }
+                        />
+                        {showDatePicker && (
+                            <DateTimePicker
+                                value={repaymentDate ? repaymentDate : currentDate}
+                                mode="date"
+                                minimumDate={currentDate}
+                                is24Hour={true}
+                                display="default"
+                                onChange={handleDateChange}
+                            />
+                        )}
+                    </View>
                 </View>
             </ScrollView>
             <BottomButton

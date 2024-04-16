@@ -35,12 +35,12 @@ const DonutChart = ({
     path.addCircle(radius, radius, innerRadius);
 
     const targetText = useDerivedValue(
-        () => `$${Math.round(totalValue.value * 100) / 100}`,
+        () => `RM ${Math.round(totalValue.value * 100) / 100}`,
         []
     );
 
     // Placeholder for the value
-    const fontSize = font.measureText("$" + totalValue);
+    const fontSize = font.measureText("RM" + totalValue);
 
     const textX = useDerivedValue(() => {
         const _fontSize = font.measureText(targetText.value);

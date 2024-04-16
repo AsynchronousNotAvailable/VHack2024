@@ -15,6 +15,8 @@ import AppBar from '../Utils/AppBar';
 import { BottomButton } from '../Utils/RenderBottomButton';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import axios from 'axios';
+import { Url } from '../../../url.js';
 
 const styles = StyleSheet.create({
     container: {
@@ -78,26 +80,101 @@ const styles = StyleSheet.create({
     },
 });
 
-function DebtAddExistingLoan2({ navigation, route }) {
-    const { loanName, loanAmount, tenureYears, interestRate, startingYear, mockData1, setMockData1 } = route.params;
+const tallyDiscountedValueWithLoan = (random_preset_repayment_amount, discounting_factors, loan, installment_month) => {
+    let repaymentAmount = random_preset_repayment_amount;
+    const discounted_value = [];
+    for (let i = 0; i < installment_month; i++) {
+        discounted_value.push(random_preset_repayment_amount * discounting_factors[i]);
+    }
+    let sum_discounted_value = discounted_value.reduce((total, a) => total + a, 0);
 
-    var now = new Date();
+    while (Math.abs(sum_discounted_value - loan) > 0.01) {
+        const discounted_value = [];
+        for (let i = 0; i < installment_month; i++) {
+            discounted_value.push(repaymentAmount * discounting_factors[i]);
+        }
+        sum_discounted_value = discounted_value.reduce((total, a) => total + a, 0);
+        if (sum_discounted_value < loan) {
+            repaymentAmount += Math.random() * ((loan - sum_discounted_value) / installment_month);
+        } else {
+            repaymentAmount -= Math.random() * ((sum_discounted_value - loan) / installment_month);
+        }
+    }
+    return repaymentAmount;
+};
+
+const calculateMonthlyLoanRepaymentAmount = (loan_interest_rate, loan_installment_month, loan_amount) => {
+    const monthlyInterestRate = Math.pow(1 + loan_interest_rate / 100, 1 / 12) - 1;
+    const installment_month = loan_installment_month;
+    const amount = loan_amount;
+    const accumulation_interest = [];
+    for (let i = 1; i <= installment_month; i++) {
+        accumulation_interest.push(Math.pow(1 + monthlyInterestRate, i));
+    }
+    const discounting_factors = [];
+    for (let i = 0; i < installment_month; i++) {
+        discounting_factors.push(1 / accumulation_interest[i]);
+    }
+    const random_preset_repayment_amount = amount / installment_month;
+    const monthlyRepaymentAmount = tallyDiscountedValueWithLoan(
+        random_preset_repayment_amount,
+        discounting_factors,
+        amount,
+        installment_month,
+    );
+    return monthlyRepaymentAmount;
+};
+
+function DebtAddExistingLoan2({ navigation, route }) {
+    const { loanName, loanAmount, tenureYears, interestRate, repaymentDate, mockData1, setMockData1 } = route.params;
+
+    const startingYear = repaymentDate.getFullYear();
+
+    var now = repaymentDate;
     if (now.getMonth() == 11) {
         var nextMonth = new Date(now.getFullYear() + 1, 0, now.getDate());
     } else {
         var nextMonth = new Date(now.getFullYear(), now.getMonth() + 2, now.getDate());
     }
 
-    const interestAmount = (loanAmount * (interestRate / 100)).toFixed(2);
+    const installment_month = Math.ceil(tenureYears * 12);
+    const monthlyLoanRepaymentAmount = calculateMonthlyLoanRepaymentAmount(interestRate, installment_month, loanAmount);
+    const totalRepaymentAmountAfterInterest = monthlyLoanRepaymentAmount * installment_month;
+
+    const interestAmount = (totalRepaymentAmountAfterInterest - loanAmount).toFixed(2);
     const endYear = nextMonth.getFullYear() + Number(tenureYears);
     const monthlyPayment = (Number(loanAmount) + Number(interestAmount)) / (12 * tenureYears);
     const expiryDate =
         now.getDate() + '/' + nextMonth.getMonth() + '/' + (Number(nextMonth.getFullYear()) + Number(tenureYears));
 
+    const expiryDateObj = new Date(endYear, nextMonth.getMonth(), now.getDate());
+    const expiryDateISOString = expiryDateObj.toISOString();
+
+    const handleAddLoan = async () => {
+        try {
+            const newBudget = {
+                name: loanName,
+                end_date: expiryDateISOString,
+                loan_amount: parseFloat(loanAmount),
+                installment_month: installment_month,
+                payment_remaining: installment_month,
+                interest_rate: parseInt(interestRate),
+                loan_status: 'UNPAID',
+                userId: 1,
+                repayment_date: repaymentDate,
+            };
+            console.log(newBudget);
+            const response = await axios.post(`http://${Url}:3000/loans/new`, newBudget);
+        } catch (error) {
+            console.error(error.message);
+        }
+    };
+
     const DebtSummary = () => {
+        handleAddLoan();
         const newData = {
-            image: logo.school_logo,
-            backgroundColor: '#CFFAEA',
+            image: logo.loan_logo,
+            backgroundColor: '#FDD5D7',
             itemName: loanName,
             expiryDate: expiryDate,
             currentLoan: 0,
@@ -157,6 +234,7 @@ function DebtAddExistingLoan2({ navigation, route }) {
             <BottomButton
                 value="Add"
                 navigation={DebtSummary}
+                action={handleAddLoan}
             />
         </SafeAreaView>
     );

@@ -5,9 +5,11 @@ export function calculatePercentage(
     const percentageArray = [];
   
     numbers.forEach(number => {
-      const percentage = Math.round((number / total) * 100);
+      let percentage = ((number / total) * 100);
+      const rounded = Math.round(percentage * 100) / 100;
+
   
-      percentageArray.push(percentage);
+      percentageArray.push(rounded);
     });
   
     return percentageArray;

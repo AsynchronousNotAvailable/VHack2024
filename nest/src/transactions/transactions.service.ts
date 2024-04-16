@@ -32,7 +32,7 @@ export class TransactionsService {
             id: createTransactionDto.userId,
           },
         },
-      }
+      },
     });
     return createdTransaction;
   }
@@ -48,10 +48,84 @@ export class TransactionsService {
     }
   }
 
-  async findByCategory(userId: number)
-  {
+  async getTransactionsByMonth(
+    userId: number,
+    year: number,
+    month: number,
+  ): Promise<Transaction[]> {
     const userExist = await this.user.findOne(userId);
-    if(!userExist) {
+    if (!userExist) {
+      throw new NotFoundException('User not found');
+    }
+    const transactions = await this.prisma.transaction.findMany({
+      where: {
+        userId: userId,
+        date: {
+          gte: new Date(year, month - 1, 1),
+          lt: new Date(year, month, 1),
+        },
+      },
+    });
+    return transactions;
+  }
+
+  async getMonthlyTransactionsByCategory(
+    userId: number,
+    year: number,
+    month: number,
+  ) {
+    const userExist = await this.user.findOne(userId);
+    if (!userExist) {
+      throw new NotFoundException('User not found');
+    }
+
+    const transactionCategory = await this.prisma.transaction.groupBy({
+      by: ['category'],
+      _sum: {
+        amount: true,
+      },
+      where: {
+        userId: userId,
+        date: {
+          gte: new Date(year, month - 1, 1),
+          lt: new Date(year, month, 1),
+        },
+      },
+    });
+
+    return transactionCategory;
+  }
+
+  async getMonthlyTransactionsByAccount(
+    userId: number,
+    year: number,
+    month: number,
+  ) {
+    const userExist = await this.user.findOne(userId);
+    if (!userExist) {
+      throw new NotFoundException('User not found');
+    }
+
+    const transactionAccount = await this.prisma.transaction.groupBy({
+      by: ['account'],
+      _sum: {
+        amount: true,
+      },
+      where: {
+        userId: userId,
+        date: {
+          gte: new Date(year, month - 1, 1),
+          lt: new Date(year, month, 1),
+        },
+      },
+    });
+
+    return transactionAccount
+  }
+
+  async findByCategory(userId: number) {
+    const userExist = await this.user.findOne(userId);
+    if (!userExist) {
       throw new NotFoundException('User not found');
     }
 
@@ -66,8 +140,7 @@ export class TransactionsService {
     });
 
     return transactionCategory;
-
-  } 
+  }
 
   // findOne(id: number) {
   //   return `This action returns a #${id} transaction`;

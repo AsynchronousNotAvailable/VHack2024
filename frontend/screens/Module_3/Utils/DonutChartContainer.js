@@ -75,14 +75,6 @@ const generateRandomColors = (length) => {
 };
 
 const DonutChartContainer = ({ mergedLoansAndBills }) => {
-    const [updatedLoansAndBills, setUpdatedLoansAndBills] = useState(mergedLoansAndBills);
-
-    useEffect(() => {
-        setUpdatedLoansAndBills(mergedLoansAndBills);
-    }, []); // Run once when component mounts
-
-    console.log(updatedLoansAndBills);
-
     const RADIUS = sw(100);
     const STROKE_WIDTH = sw(30);
     const OUTER_STROKE_WIDTH = sw(46);
@@ -96,7 +88,7 @@ const DonutChartContainer = ({ mergedLoansAndBills }) => {
     const debtNumbers = [];
     const debtNames = [];
 
-    updatedLoansAndBills.forEach(({ name, amount }) => {
+    mergedLoansAndBills.forEach(({ name, amount }) => {
         debtNames.push(name);
         debtNumbers.push(amount);
     });
@@ -149,7 +141,7 @@ const DonutChartContainer = ({ mergedLoansAndBills }) => {
                 style={{
                     // flex: 1,
                     flexDirection: 'row',
-                    alignItems: 'flex-end',
+                    alignItems: 'flex-start',
                     gap: 6,
                     marginHorizontal: sw(20),
                 }}

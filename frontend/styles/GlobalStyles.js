@@ -1,35 +1,32 @@
-
-import { Dimensions } from "react-native";
+import { Dimensions } from 'react-native';
 const designed_on_width = 412;
 const designed_on_height = 892;
 
 // scale width & height
-const sw = (width) =>
-    (Dimensions.get("window").width * width) / designed_on_width;
-const sh = (height) =>
-    (Dimensions.get("window").height * height) / designed_on_height;
+const sw = (width) => (Dimensions.get('window').width * width) / designed_on_width;
+const sh = (height) => (Dimensions.get('window').height * height) / designed_on_height;
 export { sw, sh };
 
 export const colors = {
-    aliceBlue: "#DBECF4",
-    columbiaBlue: "#CBDEED",
-    columbiaBlue2: "#B6D0E1",
-    powderBlue: "#90AFC4",
-    aliForceBlue: "#5F84A1",
-    indigoDye: "#1A4568",
-    black: "#000000",
-    white: "#FFFFFF"
+    aliceBlue: '#DBECF4',
+    columbiaBlue: '#CBDEED',
+    columbiaBlue2: '#B6D0E1',
+    powderBlue: '#90AFC4',
+    aliForceBlue: '#5F84A1',
+    indigoDye: '#1A4568',
+    black: '#000000',
+    white: '#FFFFFF',
 };
 
 export const fonts = {
-    interBlack: "InterBlack",
-    interExtraLight: "InterExtraLight",
-    interLight: "InterMedium",
-    interMedium: "InterMedium",
-    interRegular: "InterRegular",
-    interSemiBold: "InterSemiBold",
-    interThin: "InterThin",
-    openSansBold: "OpenSansBold",
+    interBlack: 'InterBlack',
+    interExtraLight: 'InterExtraLight',
+    interLight: 'InterMedium',
+    interMedium: 'InterMedium',
+    interRegular: 'InterRegular',
+    interSemiBold: 'InterSemiBold',
+    interThin: 'InterThin',
+    openSansBold: 'OpenSansBold',
 };
 
 export const logo = {
@@ -55,5 +52,7 @@ export const logo = {
     help_center_security_logo: require('../assets/images/Module_6_Help_Center_Security_Logo.png'),
     help_center_debt_logo: require('../assets/images/Module_6_Help_Center_Debt_Logo.png'),
     plus_icon: require('../assets/images/plus.png'),
-    minus_icon: require('../assets/images/minus.png')
-}
+    minus_icon: require('../assets/images/minus.png'),
+    loan_logo: require('../assets/images/loan_logo.png'),
+    bill_logo: require('../assets/images/bill_logo.png'),
+};

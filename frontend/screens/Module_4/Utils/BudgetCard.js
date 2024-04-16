@@ -78,7 +78,6 @@ const styles = StyleSheet.create({
     },
     cardTitle: {
         fontFamily: fonts.interSemiBold,
-
         color: colors.white,
     },
     cardDescription: {

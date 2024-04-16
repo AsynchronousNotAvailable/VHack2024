@@ -19,6 +19,7 @@ model User {
   strategy        StrategyType?
   username        String
   user_type       UserType      @default(DEBTOR)
+  debt_strategy   String?       @default("avalanche")
   appointment     Appointment[]
   bills           Bill[]
   budgets         Budget[]
@@ -36,7 +37,7 @@ model Loan {
   interest_rate     Float
   loan_status       PaymentStatus @default(UNPAID)
   userId            Int
-  loan_status       PaymentStatus @default(UNPAID)
+  repayment_date    DateTime
   user              User          @relation(fields: [userId], references: [id])
 }
 
@@ -47,7 +48,7 @@ model Bill {
   repeating_option RepeatOption
   bill_status      PaymentStatus @default(UNPAID)
   userId           Int
-  bill_status      PaymentStatus @default(UNPAID)
+  repayment_date   DateTime
   user             User          @relation(fields: [userId], references: [id])
 }
 
@@ -123,7 +124,7 @@ enum UserType {
   CONSULTANT
 }
 
-enum PaymentStatus{
+enum PaymentStatus {
   PAID
   UNPAID
 }

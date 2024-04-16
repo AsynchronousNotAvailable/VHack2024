@@ -18,6 +18,10 @@ export class UsersController {
     return this.usersService.login(loginUserDto);
   }
 
+  @Get(':id')
+  getUserDetails(@Param('id', ParseIntPipe) id: number) {
+    return this.usersService.findOne(id);
+  }
   
 
   @Patch('update/:id')

@@ -11,6 +11,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as shape from 'd3-shape';
 import { GlobalContext } from '../../context';
 import BudgetCard from './Utils/BudgetCard';
+import { Url } from '../../url';
 
 function Expenses_Main({ navigation }) {
 
@@ -109,7 +110,7 @@ function Expenses_Main({ navigation }) {
 
     const fetchAllTransactions = async () => {
         try {
-            const response = await axios.get(`http://192.168.100.14:3000/transactions/${userId}`);
+            const response = await axios.get(`http://${Url}:3000/transactions/${userId}`);
             // console.log(response.data);
 
             return response.data;
@@ -120,7 +121,7 @@ function Expenses_Main({ navigation }) {
 
     const fetchTransactionCategory = async () => {
         try {
-            const response = await axios.get(`http://192.168.100.14:3000/transactions/category/${userId}`);
+            const response = await axios.get(`http://${Url}:3000/transactions/category/${userId}`);
             // console.log(response.data);
             const transactionsCategory = response.data;
             const transformedTransactionsCat = transactionsCategory.map((transaction) => ({
@@ -136,7 +137,7 @@ function Expenses_Main({ navigation }) {
 
     const fetchAllBudgets = async () => {
         try {
-            const response = await axios.get(`http://192.168.100.14:3000/budgets/category/${userId}`);
+            const response = await axios.get(`http://${Url}:3000/budgets/category/${userId}`);
             // console.log(response.data);
             const budgets = response.data;
             const transformedBudgets = budgets.map((budget) => ({

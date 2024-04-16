@@ -12,23 +12,23 @@ import { sw, sh, fonts } from "../../../../styles/GlobalStyles";
 
 
 const RADIUS = sw(100);
-const STROKE_WIDTH = sw(30);
+const STROKE_WIDTH = sw(10);
 const OUTER_STROKE_WIDTH = sw(40);
-const GAP = 0.02;
+const GAP = 0;
 
-const DonutChartContainer = () => {
-    const n = 5;
+const DonutChartContainer = ({n, debtNumbers, debtNames}) => {
+    // const n = 5;
     const totalValue = useSharedValue(0);
     const decimals = useSharedValue([]);
     const colors = ["#E5D8FF", "#FFF0D4", "#FDCED0", "#CAFDEA", "#BCDAFC"];
-    const debtNumbers = [37, 25, 16, 14, 8];
-    const debtNames = [
-        "Food",
-        "Housing",
-        "Transportation",
-        "Apparel",
-        "Entertainment",
-    ];
+    // const debtNumbers = [37, 25, 16, 14, 8];
+    // const debtNames = [
+    //     "Food",
+    //     "Housing",
+    //     "Transportation",
+    //     "Apparel",
+    //     "Entertainment",
+    // ];
     const total = debtNumbers.reduce(
         (acc, currentValue) => acc + currentValue,
         0
@@ -49,6 +49,8 @@ const DonutChartContainer = () => {
 
     const data = arrayOfObjects;
 
+    
+
     const font = useFont(
         require("../../../../assets/fonts/Inter-Bold.ttf"),
         sw(20)
@@ -57,6 +59,8 @@ const DonutChartContainer = () => {
     if (!font) {
         return <View />;
     }
+
+    // console.log(decimals);
 
     return (
         <ScrollView

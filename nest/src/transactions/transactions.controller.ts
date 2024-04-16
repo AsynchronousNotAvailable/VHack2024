@@ -22,6 +22,40 @@ export class TransactionsController {
     return this.transactionsService.findByCategory(userId);
   }
 
+  @Get(':userId/:year/:month')
+  getTransactionsByMonth(
+    @Param('userId', ParseIntPipe) userId: number,
+    @Param('year', ParseIntPipe) year: number,
+    @Param('month', ParseIntPipe) month: number,
+  ) {
+    return this.transactionsService.getTransactionsByMonth(userId, year, month);
+  }
+
+  @Get(':userId/:year/:month/category')
+  getMonthlyTransactionsByCategory(
+    @Param('userId', ParseIntPipe) userId: number,
+    @Param('year', ParseIntPipe) year: number,
+    @Param('month', ParseIntPipe) month: number,
+  ) {
+    return this.transactionsService.getMonthlyTransactionsByCategory(
+      userId,
+      year,
+      month,
+    );
+  }
+
+  @Get(':userId/:year/:month/account')
+  getMonthlyTransactionsByAccount(
+    @Param('userId', ParseIntPipe) userId: number,
+    @Param('year', ParseIntPipe) year: number,
+    @Param('month', ParseIntPipe) month: number,
+  ) {
+    return this.transactionsService.getMonthlyTransactionsByAccount(
+      userId,
+      year,
+      month,
+    );
+  }
   // @Get(':id')
   // findOne(@Param('id') id: string) {
   //   return this.transactionsService.findOne(+id);

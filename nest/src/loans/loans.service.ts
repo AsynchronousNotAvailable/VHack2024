@@ -20,6 +20,7 @@ export class LoansService {
       data: {
         name: createLoanDto.name,
         end_date: createLoanDto.end_date,
+        repayment_date: createLoanDto.repayment_date,
         loan_amount: createLoanDto.loan_amount,
         installment_month: createLoanDto.installment_month,
         payment_remaining: createLoanDto.payment_remaining,

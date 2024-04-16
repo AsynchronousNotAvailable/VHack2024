@@ -11,6 +11,7 @@ import DebtMainBottomImage from '../Utils/DebtMainBottomImage';
 import * as Progress from 'react-native-progress';
 import axios from 'axios';
 import { GlobalContext } from '../../../context';
+import { Url } from '../../../url';
 // Can be passed into DonutChartContainer if we wanna make it dynamic
 // const chart_data = {
 //     labels: ['Netflix', 'Unifi', 'Electric', 'Car', 'House'],
@@ -171,12 +172,8 @@ function DebtMain({ navigation }) {
     };
 
     const { userId } = useContext(GlobalContext);
-    const [transactions, setTransactions] = useState([]);
-    const [transactionsCategory, setTransactionsCategory] = useState([]);
     const [bills, setBills] = useState([]);
     const [loans, setLoans] = useState([]);
-    let totalIncome = 0;
-    let totalExpense = 0;
     const [totalMonthlyLoanAmount, setTotalMonthlyLoanAmount] = useState(0);
     const [totalOverdueAmount, setTotalOverdueAmount] = useState(0);
     const [totalDebt, setTotalDebt] = useState(0);
@@ -186,43 +183,9 @@ function DebtMain({ navigation }) {
     const [totalMonthlyPayment, setTotalMonthlyPayment] = useState(0);
     const [mergedLoansAndBills, setMergedLoansAndBills] = useState([{ name: 'placeholder', amount: 0 }]);
 
-    transactions.forEach((transaction) => {
-        if (transaction.type === 'EXPENSE') {
-            totalExpense += transaction.amount;
-        } else {
-            totalIncome += transaction.amount;
-        }
-    });
-
-    const fetchAllTransactions = async () => {
-        try {
-            const response = await axios.get(`http://192.168.100.14:3000/transactions/${userId}`);
-            // console.log(response.data);
-
-            return response.data;
-        } catch (error) {
-            console.error('Error fetching transactions:', error);
-        }
-    };
-
-    const fetchTransactionCategory = async () => {
-        try {
-            const response = await axios.get(`http://192.168.100.14:3000/transactions/category/${userId}`);
-            // console.log(response.data);
-            const transactionsCategory = response.data;
-            const transformedTransactionsCat = transactionsCategory.map((transaction) => ({
-                spent: transaction._sum.amount,
-                category: transaction.category,
-            }));
-            return transformedTransactionsCat;
-        } catch (error) {
-            console.error('Error fetching transactions category:', error);
-        }
-    };
-
     const fetchAllBills = async () => {
         try {
-            const response = await axios.get(`http://192.168.100.14:3000/bills/${userId}`);
+            const response = await axios.get(`http://${Url}:3000/bills/${userId}`);
             // console.log(response.data);
             const bills = response.data;
             const transformedBills = bills.map((bill) => ({
@@ -238,7 +201,7 @@ function DebtMain({ navigation }) {
 
     const fetchAllLoans = async () => {
         try {
-            const response = await axios.get(`http://192.168.100.14:3000/loans/${userId}`);
+            const response = await axios.get(`http://${Url}:3000/loans/${userId}`);
             // console.log(response.data);
             const loans = response.data;
             const transformedLoans = loans.map((loan) => ({
@@ -334,30 +297,29 @@ function DebtMain({ navigation }) {
     };
 
     const fetchData = async () => {
-        const transactions = await fetchAllTransactions();
-        const transactionsCategory = await fetchTransactionCategory();
         const bills = await fetchAllBills();
         const loans = await fetchAllLoans();
-        setTransactions(transactions);
-        setTransactionsCategory(transactionsCategory);
         setBills(bills);
         setLoans(loans);
 
-        const totalMonthlyLoanAmount = loans.reduce((total, loan) => total + loan.amount, 0);
-        setTotalMonthlyLoanAmount(totalMonthlyLoanAmount);
+        const totalMonthlyLoanAmount = loans.reduce(
+            (total, loan) => total + calculateMonthlyLoanRepaymentAmount(loan),
+            0,
+        );
+        setTotalMonthlyLoanAmount(Math.round(totalMonthlyLoanAmount * 100) / 100);
 
         const totalDebt = loans.reduce((total, loan) => {
             const totalPayment = calculateTotalLoanPayment(loan);
             return total + totalPayment;
         }, 0);
-        setTotalDebt(Math.round(totalDebt, 0));
+        setTotalDebt(Math.round(totalDebt));
 
         const totalBalance = loans.reduce((total, loan) => {
             const totalPayment = calculateTotalBalance(loan);
             return total + totalPayment;
         }, 0);
         setTotalBalance(Math.round(totalBalance, 0));
-        setTotalPrinciple(Math.round(totalDebt - totalBalance, 0));
+        setTotalPrinciple(Math.round(totalDebt - totalBalance));
 
         const totalMonthlyBill = bills.reduce((total, bill) => {
             const totalPayment = calculateTotalMonthlyBills(bill);
@@ -391,6 +353,8 @@ function DebtMain({ navigation }) {
         console.log('DebtMain component mounted');
         fetchData();
     }, []);
+
+    console.log(mergedLoansAndBills);
 
     return (
         <LinearGradient

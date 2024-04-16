@@ -1,5 +1,6 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useContext, useEffect } from 'react';
 import {
+    Platform,
     Keyboard,
     ScrollView,
     StyleSheet,
@@ -9,13 +10,16 @@ import {
     TouchableOpacity,
     Image,
     SafeAreaView,
+    Alert,
 } from 'react-native';
+import DateTimePicker from '@react-native-community/datetimepicker';
 import { fonts, sw, sh } from '../../../styles/GlobalStyles';
 import AppBar from '../Utils/AppBar';
 import { TextInput as TextInputPaper } from 'react-native-paper';
 import { BottomButton } from '../Utils/RenderBottomButton';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import axios from 'axios';
 
 // import { InputOutline, InputStandard } from 'react-native-input-outline';
 
@@ -49,25 +53,51 @@ function DebtAddExistingLoan({ navigation, route }) {
     const [loanAmount, setLoanAmount] = useState('');
     const [tenureYears, setTenureYears] = useState('');
     const [interestRate, setInterestRate] = useState('');
-    const [startingYear, setStartingYear] = useState('');
+    const [repaymentDate, setRepaymentDate] = useState(new Date());
+    const [showDatePicker, setShowDatePicker] = useState(true);
+
+    const handleDateChange = (event, selectedDate) => {
+        setShowDatePicker(Platform.OS === 'ios');
+        if (selectedDate) {
+            setRepaymentDate(selectedDate);
+        }
+    };
+
+    const currentDate = new Date();
 
     // Reference for all constant
     const loanAmountRef = useRef(null);
     const tenureYearsRef = useRef(null);
     const interestRateRef = useRef(null);
-    const startingYearRef = useRef(null);
     const [error, setError] = useState(undefined);
 
+    const validateInputs = () => {
+        let isValid = true;
+        if (!/^\d+(\.\d{1,2})?$/.test(loanAmount) || parseFloat(loanAmount) <= 0) {
+            Alert.alert('Error', 'Loan amount must be a positive number.');
+            isValid = false;
+        } else if (!/^\d+(\.\d{1,2})?$/.test(tenureYears) || parseFloat(tenureYears) <= 0) {
+            Alert.alert('Error', 'Tenure must be a positive number with up to 2 decimal points only.');
+            isValid = false;
+        } else if (parseFloat(interestRate) < 0 || parseFloat(interestRate) > 100) {
+            Alert.alert('Error', 'Interest rate must be between 0 and 100.');
+            isValid = false;
+        }
+        return isValid;
+    };
+
     const DebtAddExistingLoan2Page = () => {
-        navigation.navigate('DebtAddExistingLoan2', {
-            loanName: loanName,
-            loanAmount: loanAmount,
-            tenureYears: tenureYears,
-            interestRate: interestRate,
-            startingYear: startingYear,
-            mockData1: route.params.mockData1,
-            setMockData1: route.params.setMockData1,
-        });
+        if (validateInputs()) {
+            navigation.navigate('DebtAddExistingLoan2', {
+                loanName: loanName,
+                loanAmount: loanAmount,
+                tenureYears: tenureYears,
+                interestRate: interestRate,
+                repaymentDate: repaymentDate,
+                mockData1: route.params.mockData1,
+                setMockData1: route.params.setMockData1,
+            });
+        }
     };
 
     const PreviousPage = () => {
@@ -104,7 +134,7 @@ function DebtAddExistingLoan({ navigation, route }) {
                             label="Enter Loan Amount"
                             mode="outlined"
                             ref={loanAmountRef}
-                            keyboardType="default"
+                            keyboardType="numeric"
                             returnKeyType="next"
                             autoCapitalize="none"
                             onChangeText={(loanAmount) => {
@@ -120,7 +150,7 @@ function DebtAddExistingLoan({ navigation, route }) {
                             label="Enter Tenure (Years)"
                             mode="outlined"
                             ref={tenureYearsRef}
-                            keyboardType="default"
+                            keyboardType="numeric"
                             returnKeyType="next"
                             autoCapitalize="none"
                             onChangeText={(tenureYears) => {
@@ -136,7 +166,7 @@ function DebtAddExistingLoan({ navigation, route }) {
                             label="Enter Interest Rate"
                             mode="outlined"
                             ref={interestRateRef}
-                            keyboardType="default"
+                            keyboardType="numeric"
                             returnKeyType="next"
                             autoCapitalize="none"
                             onChangeText={(interestRate) => {
@@ -146,22 +176,43 @@ function DebtAddExistingLoan({ navigation, route }) {
                                 startingYearRef.current?.focus();
                             }}
                         />
-                        <TextInputPaper
+                        {/* <TextInputPaper
                             style={styles.inputPaper}
                             placeholder=""
                             label="Start From (Year)"
                             mode="outlined"
                             ref={startingYearRef}
-                            keyboardType="default"
+                            keyboardType="numeric"
                             returnKeyType="next"
                             autoCapitalize="none"
                             onChangeText={(startingYear) => {
                                 setStartingYear(startingYear);
                             }}
-                            onSubmitEditing={() => {
-                                startingYearRef.current?.focus();
-                            }}
-                        />
+                        /> */}
+                        <View>
+                            <TextInputPaper
+                                style={styles.inputPaper}
+                                placeholder="Select Repayment Date"
+                                label="Select Repayment Date"
+                                mode="outlined"
+                                editable={false}
+                                value={
+                                    repaymentDate
+                                        ? repaymentDate.toLocaleDateString()
+                                        : currentDate.toLocaleDateString()
+                                }
+                            />
+                            {showDatePicker && (
+                                <DateTimePicker
+                                    value={repaymentDate ? repaymentDate : currentDate}
+                                    mode="date"
+                                    minimumDate={currentDate}
+                                    is24Hour={true}
+                                    display="default"
+                                    onChange={handleDateChange}
+                                />
+                            )}
+                        </View>
                     </View>
                 </View>
             </ScrollView>
