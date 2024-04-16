@@ -25,6 +25,8 @@ const DonutPath = ({
     decimals,
     index,
 }) => {
+
+    console.log(color);
     const innerRadius = radius - outerStrokeWidth / 2;
 
     const path = Skia.Path.Make();

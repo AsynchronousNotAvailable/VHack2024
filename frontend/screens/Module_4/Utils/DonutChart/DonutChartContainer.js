@@ -12,9 +12,9 @@ import { sw, sh, fonts } from "../../../../styles/GlobalStyles";
 
 
 const RADIUS = sw(100);
-const STROKE_WIDTH = sw(20);
+const STROKE_WIDTH = sw(10);
 const OUTER_STROKE_WIDTH = sw(40);
-const GAP = 0.02;
+const GAP = 0;
 
 const DonutChartContainer = ({n, debtNumbers, debtNames}) => {
     // const n = 5;
@@ -48,6 +48,8 @@ const DonutChartContainer = ({n, debtNumbers, debtNames}) => {
     }));
 
     const data = arrayOfObjects;
+
+    
 
     const font = useFont(
         require("../../../../assets/fonts/Inter-Bold.ttf"),

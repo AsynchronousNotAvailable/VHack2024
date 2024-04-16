@@ -29,10 +29,9 @@ const Expenses_Add_Budget = ({ navigation }) => {
     ];
 
     const categoryOptions = [
-        { key: '1', value: 'Salary' },
-        { key: '2', value: 'Shopping' },
-        { key: '3', value: 'Entertainment' },
-        { key: '4', value: 'Food' },
+        { key: '1', value: 'Shopping' },
+        { key: '2', value: 'Entertainment' },
+        { key: '3', value: 'Food' },
     ];
     const toggleSwitch1 = () => {
         setIsEnabled1(!isEnabled1);
@@ -69,8 +68,8 @@ const Expenses_Add_Budget = ({ navigation }) => {
             const newBudget = {
                 name: name,
                 amount: parseFloat(amount),
-                category: category,
-                account: account,
+                category: category.toUpperCase(),
+                account: account.toUpperCase(),
                 userId: 1,
             };
             console.log(newBudget);
@@ -176,7 +175,15 @@ const Expenses_Add_Budget = ({ navigation }) => {
                     <View style={{ position: 'relative' }}>
                         <TouchableOpacity
                             onPress={handleDropDownCategory}
-                            style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 99 }}
+                            style={{
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
+                                zIndex: 99,
+                                maxHeight: sh(70),
+                            }}
                         >
                             {/* This TouchableOpacity covers the entire area of SelectList */}
                         </TouchableOpacity>
@@ -197,7 +204,15 @@ const Expenses_Add_Budget = ({ navigation }) => {
                     <View style={{ position: 'relative' }}>
                         <TouchableOpacity
                             onPress={handleDropDownAccount}
-                            style={{ position: 'absolute', top: 0, left: 0, right: 0, bottom: 0, zIndex: 99 }}
+                            style={{
+                                position: 'absolute',
+                                top: 0,
+                                left: 0,
+                                right: 0,
+                                bottom: 0,
+                                zIndex: 99,
+                                maxHeight: sh(70),
+                            }}
                         >
                             {/* This TouchableOpacity covers the entire area of SelectList */}
                         </TouchableOpacity>

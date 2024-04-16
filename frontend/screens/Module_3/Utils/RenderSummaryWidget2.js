@@ -9,7 +9,7 @@ import HouseSVG from './HouseSVG';
 import UnifiSVG from './UnifiSVG';
 import PersonalSVG from './PersonalSVG';
 import EducationSVG from './EducationSVG';
-import BillSVG from './billSVG';
+import BillSVG from './BillSVG';
 
 const styles = StyleSheet.create({
     widgetContainer: {

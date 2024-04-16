@@ -40,7 +40,7 @@ const DonutChart = ({
     );
 
     // Placeholder for the value
-    const fontSize = font.measureText("$" + totalValue);
+    const fontSize = font.measureText("RM" + totalValue);
 
     const textX = useDerivedValue(() => {
         const _fontSize = font.measureText(targetText.value);

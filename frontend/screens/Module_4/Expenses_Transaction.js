@@ -15,7 +15,7 @@ function Expenses_Transaction({ navigation }) {
     const userId = 1;
     const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
     const [currentMonth, setCurrentMonth] = useState(4);
-    const [selectedCategory, setSelectedCategory] = useState('By Category');
+    const [selectedCategory, setSelectedCategory] = useState('1');
     const data = [
         { key: '1', value: 'By Category' },
         { key: '2', value: 'By Account' },
@@ -35,10 +35,10 @@ function Expenses_Transaction({ navigation }) {
         11: 'November',
         12: 'December',
     };
+
     const [categoryAmount, setCategoryAmount] = useState([]);
     const [categoryName, setCategoryName] = useState([]);
     const [monthlyTransactions, setMonthlyTransactions] = useState([]);
-    // const [isLoading, setIsLoading] = useState(true);
 
     const card_details_today = require('./MockData/Card_Details_Today.js');
     const card_details_ytd = require('./MockData/Card_Details_Yesterday.js');
@@ -55,7 +55,6 @@ function Expenses_Transaction({ navigation }) {
         } else {
             setCurrentMonth(currentMonth + 1);
         }
-        
     };
     const decreaseMonth = () => {
         if (currentMonth === 1) {
@@ -64,7 +63,6 @@ function Expenses_Transaction({ navigation }) {
         } else {
             setCurrentMonth(currentMonth - 1);
         }
-      
     };
 
     useEffect(() => {
@@ -83,8 +81,6 @@ function Expenses_Transaction({ navigation }) {
     }, [selectedCategory, currentMonth]);
     useFocusEffect(
         useCallback(() => {
-            
-
             const fetchAllData = async () => {
                 const monthTrans = await fetchMonthlyTransactions();
                 const currentTransactions = [];
@@ -99,19 +95,17 @@ function Expenses_Transaction({ navigation }) {
                     };
                     // console.log(processedTransaction);
                     currentTransactions.push(processedTransaction);
-                    // setMonthlyTransactions((prevTransactions) => [...prevTransactions, processedTransaction]);
                 });
                 setMonthlyTransactions(currentTransactions);
-                
-                
-                const [processedAmount, processedName] = selectedCategory === '1' ? await fetchMonthlyTransactionsByCategory() : await fetchMonthlyTransactionsByAccount();
+
+                const [processedAmount, processedName] =
+                    selectedCategory === '1'
+                        ? await fetchMonthlyTransactionsByCategory()
+                        : await fetchMonthlyTransactionsByAccount();
                 setCategoryAmount(processedAmount);
                 setCategoryName(processedName);
-                // setSelectedCategory('1');
 
                 console.log(processedAmount, processedName);
-
-                // setIsLoading(false);
             };
 
             const fetchMonthlyTransactions = async () => {
@@ -144,13 +138,11 @@ function Expenses_Transaction({ navigation }) {
                 const formattedTime = `${formattedHours}:${minutes} ${meridiem}`;
 
                 // Log the formatted date and time
-                // console.log(`Date: ${formattedDate}, Time: ${formattedTime}`);
+
                 return [formattedDate, formattedTime];
             };
 
             fetchAllData();
-
-            
         }, [currentMonth]),
     );
 
@@ -169,10 +161,6 @@ function Expenses_Transaction({ navigation }) {
         });
         console.log(amount, name);
         return [amount, name];
-        // setCategoryAmount(amount);
-        // setCategoryName(name);
-
-        // console.log(response.data);
     };
 
     const fetchMonthlyTransactionsByAccount = async () => {
@@ -328,8 +316,6 @@ function Expenses_Transaction({ navigation }) {
 
                 <View style={{ position: 'absolute', right: 0, top: 55, zIndex: 999 }}>
                     <SelectList
-                        // onSelect={(val)=> setFilter(val)}
-                        
                         dropdownStyles={{
                             position: 'absolute',
                             right: 20,

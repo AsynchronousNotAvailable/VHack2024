@@ -47,16 +47,7 @@ const Transaction_Container = ({ transactions }) => {
         else {
             dict[transaction.date].push(transaction);
         }
-        // if (transaction.date === today) {
-        //     todayTransactions.push(transaction);
-        // }
-        // else if(transaction.date === yesterday){
-        //     yesterdayTransactions.push(transaction);
-        // }
-        // else {
-        //     otherDayTransactions.push(transaction);
-        // }
-        // [{date: '2022-04-16', []}, ]
+        
     })
     
     //sort by descending
@@ -67,14 +58,23 @@ const Transaction_Container = ({ transactions }) => {
         return acc;
     }, {});
 
-    // console.log('SORTED', sortedDict);
+    const adjustTimeFormat = (timeString) => {
+        // Split the time string into hours, minutes, and AM/PM
+        const [time, period] = timeString.split(' ');
+        const [hours, minutes] = time.split(':');
 
+        // Convert hours to 24-hour format
+        let adjustedHours = parseInt(hours, 10);
+        if (period === 'PM' && adjustedHours !== 12) {
+            adjustedHours += 12;
+        } else if (period === 'AM' && adjustedHours === 12) {
+            adjustedHours = 0;
+        }
 
+        // Format the time string as "HH:mm:ss"
+        return `${adjustedHours.toString().padStart(2, '0')}:${minutes}:00`;
+    };
 
-
-    // console.log('TODAY', todayTransactions);
-    // console.log('YESTERDAY', yesterdayTransactions);
-    // console.log('OTHER DAY', otherDayTransactions);
 
     return (
         <View style={[styles.columnContainer, { marginHorizontal: sw(20), marginVertical: sh(10) }]}>
@@ -83,70 +83,26 @@ const Transaction_Container = ({ transactions }) => {
                     <Text style={[styles.cardTitle, { fontSize: 18, marginBottom: sh(10) }]}>
                         {date === getDate(TODAY) ? 'Today' : date === getYesterday(TODAY) ? 'Yesterday' : date}
                     </Text>
-                    {sortedDict[date].map((item, index) => (
-                        <Transaction_Card
-                            key={index}
-                            category={item.category}
-                            // name={item.name}
-                            description={item.description}
-                            type={item.type}
-                            amount={item.amount}
-                            time={item.time}
-                        />
-                    ))}
+                    {sortedDict[date]
+                        .sort(
+                            (a, b) =>
+                                new Date(`${getDate(TODAY)}T${adjustTimeFormat(b.time)}`) -
+                                new Date(`${getDate(TODAY)}T${adjustTimeFormat(a.time)}`),
+                        )
+                        .map((item, index) => (
+                            <Transaction_Card
+                                key={index}
+                                category={item.category}
+                                description={item.description}
+                                type={item.type}
+                                amount={item.amount}
+                                time={item.time}
+                            />
+                        ))}
                 </View>
             ))}
 
-            {/* {todayTransactions.length > 0 && (
-                <>
-                    <Text style={[styles.cardTitle, { fontSize: 18, marginBottom: sh(10) }]}>Today</Text>
-
-                    {todayTransactions.map((item, index) => (
-                        <Transaction_Card
-                            key={index}
-                            category={item.category}
-                            name={item.name}
-                            description={item.description}
-                            amount={item.amount}
-                            time={item.time}
-                        />
-                    ))}
-                </>
-            )} */}
-            {/* {yesterdayTransactions.length > 0 && (
-                <>
-                    <Text style={[styles.cardTitle, { fontSize: 18, marginBottom: sh(10) }]}>Yesterday</Text>
-
-                    {yesterdayTransactions.map((item, index) => (
-                        <Transaction_Card
-                            key={index}
-                            category={item.category}
-                            // name={item.name}
-                            description={item.description}
-                            type={item.type}
-                            amount={item.amount}
-                            time={item.time}
-                        />
-                    ))}
-                </>
-            )}
-            {otherDayTransactions.length > 0 && (
-                <>
-                    <Text style={[styles.cardTitle, { fontSize: 18, marginBottom: sh(10) }]}>Other</Text>
-
-                    {otherDayTransactions.map((item, index) => (
-                        <Transaction_Card
-                            key={index}
-                            category={item.category}
-                            // name={item.name}
-                            description={item.description}
-                            amount={item.amount}
-                            type={item.type}
-                            time={item.time}
-                        />
-                    ))}
-                </>
-            )} */}
+            
         </View>
     );
 };
