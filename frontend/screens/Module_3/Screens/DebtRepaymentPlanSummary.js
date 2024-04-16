@@ -20,6 +20,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
 import { GlobalContext } from '../../../context';
+import { Url } from '../../../url';
 
 const styles = StyleSheet.create({
     container: {
@@ -75,11 +76,12 @@ function DebtRepaymentPlanSummary({ navigation }) {
     const { userId } = useContext(GlobalContext);
     const [bills, setBills] = useState([]);
     const [loans, setLoans] = useState([]);
+    const [users, setUsers] = useState([]);
     const [planSummaryComponents, setPlanSummaryComponents] = useState([]);
 
     const fetchAllBills = async () => {
         try {
-            const response = await axios.get(`http://192.168.100.14:3000/bills/${userId}`);
+            const response = await axios.get(`http://${Url}:3000/bills/${userId}`);
             // console.log(response.data);
             const bills = response.data;
             const transformedBills = bills.map((bill) => ({
@@ -97,7 +99,7 @@ function DebtRepaymentPlanSummary({ navigation }) {
 
     const fetchAllLoans = async () => {
         try {
-            const response = await axios.get(`http://192.168.100.14:3000/loans/${userId}`);
+            const response = await axios.get(`http://${Url}:3000/loans/${userId}`);
             // console.log(response.data);
             const loans = response.data;
             const transformedLoans = loans.map((loan) => ({
@@ -118,7 +120,7 @@ function DebtRepaymentPlanSummary({ navigation }) {
 
     const fetchAllUsers = async () => {
         try {
-            const response = await axios.get(`http://192.168.100.14:3000/users/login/`);
+            const response = await axios.get(`http://${Url}:3000/users/${userId}`);
             console.log(response.data);
             const users = response.data;
             const transformedUsers = users.map((user) => ({
@@ -127,7 +129,7 @@ function DebtRepaymentPlanSummary({ navigation }) {
             }));
             return transformedUsers;
         } catch (error) {
-            console.error('Error fetching loans:', error);
+            console.error('Error fetching users:', error);
         }
     };
 
@@ -362,8 +364,9 @@ function DebtRepaymentPlanSummary({ navigation }) {
 
         setPlanSummaryComponents(updatedPlanSummaryComponents);
 
-        const users = await fetchAllUsers();
-        console.log(users);
+        // const users = await fetchAllUsers();
+        // setUsers(users);
+        // console.log(users);
     };
 
     useEffect(() => {
