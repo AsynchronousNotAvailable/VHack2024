@@ -76,8 +76,10 @@ model Budget {
 model Consultant {
   id          Int           @id @default(autoincrement())
   name        String
-  position    String
+  designation    String
   description String
+  about String
+  rating Float
   appointment Appointment[]
 }
 

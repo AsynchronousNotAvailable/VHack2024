@@ -17,6 +17,11 @@ export class ConsultantsController {
     return this.consultantsService.findOne(id);
   }
 
+  @Post('new')
+  createConsultant(@Body() createConsultantDto: CreateConsultantDto) {
+    return this.consultantsService.createConsultant(createConsultantDto);
+  } 
+
   // @Patch(':id')
   // update(@Param('id') id: string, @Body() updateConsultantDto: UpdateConsultantDto) {
   //   return this.consultantsService.update(+id, updateConsultantDto);

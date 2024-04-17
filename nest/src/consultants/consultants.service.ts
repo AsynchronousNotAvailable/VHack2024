@@ -17,14 +17,18 @@ export class ConsultantsService {
   }
 
   async findOne(id: number): Promise<Consultant> {
-    const consultant = await this.prisma.consultant.findUnique({ where: { id } });
+    const consultant = await this.prisma.consultant.findUnique({
+      where: { id },
+    });
     if (!consultant) {
-      throw new NotFoundException(`Consultant with ID ${id} not found`);  
-
+      throw new NotFoundException(`Consultant with ID ${id} not found`);
     }
     return consultant;
   }
 
+  async createConsultant(data: CreateConsultantDto): Promise<Consultant> {
+    return this.prisma.consultant.create({data});
+  }
   // update(id: number, updateConsultantDto: UpdateConsultantDto) {
   //   return `This action updates a #${id} consultant`;
   // }

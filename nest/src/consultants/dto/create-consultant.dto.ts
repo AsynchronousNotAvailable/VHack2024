@@ -1,5 +1,7 @@
 export class CreateConsultantDto {
     name: string;
-    position: string;
+    designation: string;
     description: string;
+    about: string;
+    rating: number;
 }

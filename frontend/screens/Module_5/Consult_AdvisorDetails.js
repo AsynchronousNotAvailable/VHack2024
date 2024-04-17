@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, Modal, TouchableOpacity, ScrollView } from 'react-native';
 import { fonts, sh, sw } from "../../styles/GlobalStyles";
 import { Ionicons } from '@expo/vector-icons';
+import { Url } from '../../url';
+import axios from 'axios';
 
 const Consult_AdvisorDetails = ({ navigation, route }) => {
     const { advisor } = route.params;
@@ -50,6 +52,32 @@ const Consult_AdvisorDetails = ({ navigation, route }) => {
 
     const handleTimeSelection = (time) => {
         setSelectedTime(time);
+    };
+
+    
+    const handleBookConsultation = async (selectedDay, selectedTime, advisor) => {
+        try {
+            console.log(selectedDay, selectedTime);
+            const day = new Date(selectedDay); // Assuming selectedDay is a Date object
+            // const time = selectedTime; // Assuming selectedTime is a string in the format "HH:mm A"
+            // Extract hours and minutes from selectedTime
+            const [hours, minutes] = selectedTime.split(':').map((str) => parseInt(str));
+            let [amPm] = selectedTime.split(' ');
+            if (amPm === 'PM' && hours < 12) hours += 12; // Convert 12-hour format to 24-hour format
+
+            // Set the time part of selectedDay
+            day.setHours(hours, minutes);
+
+            const newAppointment = {
+                time: day,
+                consultantId: advisor.id,
+                userId: 1,
+            };
+            const response = await axios.post(`http://${Url}:3000/appointments/new`, newAppointment);
+            navigation.goBack();
+        } catch (error) {
+            console.log(error.message);
+        }
     };
 
     useEffect(() => {
@@ -159,11 +187,13 @@ const Consult_AdvisorDetails = ({ navigation, route }) => {
             <Text style={styles.heading}>Select Time</Text>
             {renderTimeSlots()}
             <TouchableOpacity style={styles.bookButton} onPress={() => {
-                navigation.navigate('Consult_Main', {
-                    selectedDate: selectedDay,
-                    selectedTime: selectedTime,
-                    advisor: advisor
-                });
+                handleBookConsultation(selectedDay, selectedTime, advisor);
+                // navigation.navigate('Consult_Main', {
+                //     selectedDate: selectedDay,
+                //     selectedTime: selectedTime,
+                //     advisor: advisor
+                     
+                // });
             }}>
                 <Text style={styles.bookButtonText}>Book Consultation</Text>
             </TouchableOpacity>
