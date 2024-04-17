@@ -15,6 +15,8 @@ import { fonts, sw, sh } from '../../../styles/GlobalStyles';
 import Animated, { FadeInDown, FadeOutDown } from 'react-native-reanimated';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
+import axios from 'axios';
+import { Url } from '../../../url';
 
 const styles = StyleSheet.create({
     widgetContainer: {
@@ -90,9 +92,45 @@ export const SmallBottomButton = ({ value, navigation }) => {
     );
 };
 
-const PaymentStrategyContainer = ({ navigation, title, content1, content2, content3, content4, content5, index }) => {
+const PaymentStrategyContainer = ({
+    userId,
+    navigation,
+    title,
+    content1,
+    content2,
+    content3,
+    content4,
+    content5,
+    index,
+    extraPayment,
+    fetchData,
+}) => {
+    const updateSnowballStrategy = async () => {
+        try {
+            await axios.patch(`http://${Url}:3000/users/update/${userId}`, {
+                extra_payment: parseFloat(extraPayment),
+                strategy: 'SNOWBALL',
+            });
+        } catch (error) {
+            console.error('Error updating loan:', error);
+        }
+    };
+
+    const updateAvalancheStrategy = async () => {
+        try {
+            await axios.patch(`http://${Url}:3000/users/update/${userId}`, {
+                extra_payment: parseFloat(extraPayment),
+                strategy: 'AVALANCHE',
+            });
+        } catch (error) {
+            console.error('Error updating loan:', error);
+        }
+    };
+
     const DebtMainPage = () => {
-        navigation.navigate('DebtMain');
+        title == 'Debt Snowball' ? updateSnowballStrategy() : updateAvalancheStrategy();
+        fetchData();
+        navigation.navigate('DebtRepaymentPlanSummary');
     };
 
     return (

@@ -93,6 +93,7 @@ function DebtSummary({ navigation }) {
             // console.log(response.data);
             const bills = response.data;
             const transformedBills = bills.map((bill) => ({
+                id: bill.id,
                 name: bill.name,
                 amount: bill.amount,
                 repeating_option: bill.repeating_option,
@@ -111,6 +112,7 @@ function DebtSummary({ navigation }) {
             // console.log(response.data);
             const loans = response.data;
             const transformedLoans = loans.map((loan) => ({
+                id: loan.id,
                 name: loan.name,
                 end_date: loan.end_date,
                 amount: loan.loan_amount,
@@ -173,7 +175,7 @@ function DebtSummary({ navigation }) {
             amount,
             installment_month,
         );
-        return monthlyRepaymentAmount;
+        return Math.round(monthlyRepaymentAmount * 100) / 100;
     };
 
     const calculateTotalLoanPayment = (loan) => {
@@ -246,7 +248,7 @@ function DebtSummary({ navigation }) {
                 backgroundColor: '#FDD5D7',
                 itemName: loan.name,
                 expiryDate: formatDate(new Date(loan.end_date)),
-                currentLoan: calculateTotalPaidValue(loan),
+                currentLoan: calculateTotalBalance(loan),
                 totalLoan: calculateTotalLoanPayment(loan),
                 index: loanIndex++,
             };
@@ -254,15 +256,34 @@ function DebtSummary({ navigation }) {
         setLoanLists(updatedLoanLists);
 
         let billIndex = 1;
-        const updatedBillLists = bills.map((bill) => ({
-            image: logo.bill_logo,
-            backgroundColor: '#BDDCFF',
-            itemName: bill.name,
-            paymentDate: formatDate(new Date(bill.repayment_date)),
-            upcomingBills: bill.amount,
-            index: billIndex++,
-        }));
-        setBillLists(updatedBillLists);
+        const mergedBillList = [
+            ...loans.map((loan) => ({
+                userId: userId,
+                itemId: loan.id,
+                image: logo.loan_logo,
+                backgroundColor: '#FDD5D7',
+                itemName: loan.name,
+                displayDate: formatDate(new Date(loan.repayment_date)),
+                paymentDate: loan.repayment_date,
+                paymentRemaining: loan.payment_remaining,
+                upcomingBills: calculateMonthlyLoanRepaymentAmount(loan),
+                index: billIndex++,
+            })),
+            ...bills.map((bill) => ({
+                userId: userId,
+                itemId: bill.id,
+                image: logo.bill_logo,
+                backgroundColor: '#BDDCFF',
+                itemName: bill.name,
+                displayDate: formatDate(new Date(bill.repayment_date)),
+                paymentDate: bill.repayment_date,
+                paymentRemaining: 0,
+                upcomingBills: Math.round(bill.amount * 100) / 100,
+                index: billIndex++,
+            })),
+        ];
+
+        setBillLists(mergedBillList);
     };
 
     useEffect(() => {
@@ -270,8 +291,9 @@ function DebtSummary({ navigation }) {
         console.log('DebtMain component mounted');
     }, []);
 
-    console.log(loanLists);
-    console.log(billLists);
+    const handleWidgetPress = () => {
+        fetchData();
+    };
 
     const sortedLoanLists = [...loanLists].sort((a, b) => {
         const dateA = new Date(a.expiryDate.split('/').reverse().join('-'));
@@ -335,19 +357,37 @@ function DebtSummary({ navigation }) {
                     <Text style={styles.text}>Upcoming Bills</Text>
                     <PlusButton navigation={DebtAddUpcomingBillPage} />
                 </View>
-                {sortedBillLists.map(({ image, backgroundColor, itemName, paymentDate, upcomingBills, index }) => {
-                    return (
-                        <RenderWidget2
-                            image={image}
-                            backgroundColor={backgroundColor}
-                            itemName={itemName}
-                            paymentDate={paymentDate}
-                            upcomingBills={upcomingBills}
-                            index={index}
-                            key={index}
-                        />
-                    );
-                })}
+                {sortedBillLists.map(
+                    ({
+                        userId,
+                        itemId,
+                        image,
+                        backgroundColor,
+                        itemName,
+                        displayDate,
+                        paymentDate,
+                        paymentRemaining,
+                        upcomingBills,
+                        index,
+                    }) => {
+                        return (
+                            <RenderWidget2
+                                userId={userId}
+                                itemId={itemId}
+                                image={image}
+                                backgroundColor={backgroundColor}
+                                itemName={itemName}
+                                displayDate={displayDate}
+                                paymentDate={paymentDate}
+                                paymentRemaining={paymentRemaining}
+                                upcomingBills={upcomingBills}
+                                index={index}
+                                key={index}
+                                fetchData={handleWidgetPress}
+                            />
+                        );
+                    },
+                )}
                 <View style={{ height: sh(16) }}></View>
             </ScrollView>
         </SafeAreaView>

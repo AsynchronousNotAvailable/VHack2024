@@ -15,11 +15,11 @@ model User {
   monthly_income  Float?
   monthly_payment Float?
   monthly_loan    Float?
-  extra_payment Float?
   debt_free_date  DateTime?
   strategy        StrategyType?
   username        String
   user_type       UserType      @default(DEBTOR)
+  extra_payment   Float?
   appointment     Appointment[]
   bills           Bill[]
   budgets         Budget[]
@@ -77,10 +77,10 @@ model Budget {
 model Consultant {
   id          Int           @id @default(autoincrement())
   name        String
-  designation    String
   description String
-  about String
-  rating Float
+  about       String
+  rating      Float
+  designation String
   appointment Appointment[]
 }
 

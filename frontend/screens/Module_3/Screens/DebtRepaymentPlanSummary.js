@@ -76,8 +76,21 @@ function DebtRepaymentPlanSummary({ navigation }) {
     const { userId } = useContext(GlobalContext);
     const [bills, setBills] = useState([]);
     const [loans, setLoans] = useState([]);
-    const [users, setUsers] = useState([]);
+    const [user, setUser] = useState([]);
     const [planSummaryComponents, setPlanSummaryComponents] = useState([]);
+
+    const fetchUserDetails = async () => {
+        try {
+            const response = await axios.get(`http://${Url}:3000/users/${userId}`);
+            // console.log(response.data);
+            const user = response.data;
+            const { strategy, debt_free_date, extra_payment } = user;
+            const extractedData = { strategy, debt_free_date, extra_payment };
+            return extractedData;
+        } catch (error) {
+            console.error('Error fetching bills:', error);
+        }
+    };
 
     const fetchAllBills = async () => {
         try {
@@ -115,21 +128,6 @@ function DebtRepaymentPlanSummary({ navigation }) {
             return transformedLoans;
         } catch (error) {
             console.error('Error fetching loans:', error);
-        }
-    };
-
-    const fetchAllUsers = async () => {
-        try {
-            const response = await axios.get(`http://${Url}:3000/users/${userId}`);
-            console.log(response.data);
-            const users = response.data;
-            const transformedUsers = users.map((user) => ({
-                name: user.name,
-                strategy: user.strategy,
-            }));
-            return transformedUsers;
-        } catch (error) {
-            console.error('Error fetching users:', error);
         }
     };
 
@@ -238,6 +236,16 @@ function DebtRepaymentPlanSummary({ navigation }) {
         return Math.round(monthlyInterest * 100) / 100;
     };
 
+    const calculateInstallmentMonths = (loan, monthlyRepaymentAmount) => {
+        const monthlyInterestRate = Math.pow(1 + loan.interest_rate / 100, 1 / 12) - 1;
+        const loanAmount = loan.amount;
+        // Formula to calculate installment month
+        const n =
+            Math.log(monthlyRepaymentAmount / (monthlyRepaymentAmount - loanAmount * monthlyInterestRate)) /
+            Math.log(1 + monthlyInterestRate);
+        return Math.round(n * 100) / 100;
+    };
+
     const calculateInterestComponent = (loans) => {
         const currentDate = new Date();
         const next30DaysDate = new Date(currentDate);
@@ -286,23 +294,7 @@ function DebtRepaymentPlanSummary({ navigation }) {
         };
     };
 
-    const fetchData = async () => {
-        const bills = await fetchAllBills();
-        const loans = await fetchAllLoans();
-        setBills(bills);
-        setLoans(loans);
-
-        const payoffSummaryList = loans.map((loan) => ({
-            name: loan.name,
-            amount: loan.amount,
-            end_date: loan.end_date,
-            installment_month: loan.installment_month,
-            payment_remaining: loan.payment_remaining,
-            interest_rate: loan.interest_rate,
-            loan_status: loan.loan_status,
-            repayment_date: loan.repayment_date,
-        }));
-
+    const calculateNormalStrategy = (loans, bills) => {
         displayEndDateString = calculatePayoffComponent(loans, 'end_date', (useMax = true));
         displayRepaymentString = calculatePayoffComponent(loans, 'repayment_date', (useMax = false));
 
@@ -332,7 +324,7 @@ function DebtRepaymentPlanSummary({ navigation }) {
 
         const paymentComponents = calculatePaymentComponent(mergedPaymentList);
 
-        const updatedPlanSummaryComponents = [
+        const updatedNormalPlanSummaryComponents = [
             {
                 image: logo.repayment_plan_summary_logo_1,
                 itemName: 'Payoff',
@@ -362,11 +354,348 @@ function DebtRepaymentPlanSummary({ navigation }) {
             },
         ];
 
-        setPlanSummaryComponents(updatedPlanSummaryComponents);
+        return updatedNormalPlanSummaryComponents;
+    };
 
-        // const users = await fetchAllUsers();
-        // setUsers(users);
-        // console.log(users);
+    const calculateSnowball = (loans, extraPayment) => {
+        const snowballList = loans.map((loan) => ({
+            name: loan.name,
+            amount: loan.amount,
+            total_amount: calculateTotalLoanPayment(loan),
+            remaining_amount: calculateMonthlyLoanRepaymentAmount(loan) * loan.payment_remaining,
+            installment_month: loan.installment_month,
+            payment_remaining: loan.payment_remaining,
+            interest_rate: loan.interest_rate,
+            repayment_date: loan.repayment_date,
+        }));
+
+        const sortedList = snowballList.sort((a, b) => a.remaining_amount - b.remaining_amount);
+        const snowballItems = [];
+        let previousMonths = 0;
+        sortedList.forEach((loan) => {
+            const monthlyPayment = calculateMonthlyLoanRepaymentAmount(loan);
+            const adjustedMonthlyPayment = monthlyPayment + parseFloat(extraPayment);
+            let initialMonthsToPayOff = calculateInstallmentMonths(loan, monthlyPayment);
+            const monthsToPayOff = calculateInstallmentMonths(loan, adjustedMonthlyPayment);
+            const monthsToPayOffAfterPreviousItem = monthsToPayOff + previousMonths;
+            const interestSavedInitial =
+                initialMonthsToPayOff * monthlyPayment - monthsToPayOff * adjustedMonthlyPayment;
+            const interestSavedinTotal =
+                interestSavedInitial - (interestSavedInitial / monthsToPayOffAfterPreviousItem) * previousMonths;
+
+            previousMonths = monthsToPayOff;
+            const repaymentDate = new Date(loan.repayment_date);
+            const monthsPaid = loan.installment_month - loan.payment_remaining;
+            const startDate = new Date(repaymentDate);
+            startDate.setMonth(startDate.getMonth() - monthsPaid);
+            const payoffDate = new Date(startDate);
+            payoffDate.setMonth(payoffDate.getMonth() + Math.floor(monthsToPayOffAfterPreviousItem));
+
+            snowballItems.push({
+                name: loan.name,
+                loan_end_date: payoffDate,
+                interest_saved: interestSavedinTotal,
+            });
+        });
+
+        const dates = snowballItems.map((loan) => new Date(loan.loan_end_date));
+        const earliestDate = new Date(Math.min(...dates));
+        const latestDate = new Date(Math.max(...dates));
+        const currentDate = new Date();
+
+        const calculateDateDifference = (date, currentDate) => {
+            const timeDifference = date.getTime() - currentDate.getTime();
+            const years = Math.floor(timeDifference / (1000 * 60 * 60 * 24 * 365));
+            const months = Math.floor((timeDifference % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
+            let dateString;
+            if (years < 1 && months < 1) {
+                const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+                dateString = `${days} days`;
+            } else {
+                dateString = `${years} yr ${months} mo`;
+            }
+            return dateString;
+        };
+
+        const earliestDateString = calculateDateDifference(earliestDate, currentDate);
+        const latestDateString = calculateDateDifference(latestDate, currentDate);
+        const millisecondsDifference = latestDate.getTime() - currentDate.getTime();
+        const monthDifference = millisecondsDifference / (1000 * 60 * 60 * 24 * 30);
+        const totalInterestSaved = snowballItems.reduce((total, loan) => total + loan.interest_saved, 0);
+
+        return {
+            time_to_first_debt_paid_off: earliestDateString,
+            time_to_all_debt_paid_off: latestDateString,
+            month_difference: Math.floor(monthDifference),
+            interest_saved: Math.round(totalInterestSaved * 100) / 100,
+        };
+    };
+
+    const calculateSnowballStrategy = (loans, bills, extraPayment) => {
+        let extraPayment_final = 0;
+        if (extraPayment == null) {
+            extraPayment_final = 0;
+        } else {
+            extraPayment_final = extraPayment;
+        }
+        const snowballItems = calculateSnowball(loans, extraPayment_final);
+        const displayRepaymentString = calculatePayoffComponent(loans, 'repayment_date', (useMax = false));
+        const displayEndDateString = snowballItems['time_to_all_debt_paid_off'];
+
+        const interest_saved_per_month =
+            Math.round((snowballItems['interest_saved'] / snowballItems['month_difference']) * 100) / 100;
+        const loanInterestLists = loans.map((loan) => ({
+            name: loan.name,
+            monthly_interest_amount: calculateMonthlyInterest(loan),
+            monthly_payment_remaining: loan.payment_remaining,
+            repayment_date: loan.repayment_date,
+        }));
+
+        const interestComponents = calculateInterestComponent(loanInterestLists);
+        const interest_next_30_days =
+            Math.round((interestComponents['totalInterestNext30Days'] - interest_saved_per_month) * 100) / 100;
+        const interest_total =
+            Math.round((interestComponents['totalInterestRemainingMonths'] - snowballItems['interest_saved']) * 100) /
+            100;
+
+        const mergedPaymentList = [
+            ...loans.map((loan) => ({
+                name: loan.name,
+                repayment_date: loan.repayment_date,
+                payment_remaining: loan.payment_remaining,
+                payment: calculateMonthlyLoanRepaymentAmount(loan),
+            })),
+            ...bills.map((bill) => ({
+                name: bill.name,
+                repayment_date: bill.repayment_date,
+                payment: bill.amount,
+                payment_remaining: 1,
+            })),
+        ];
+        const paymentComponents = calculatePaymentComponent(mergedPaymentList);
+        const payment_next_30_days =
+            Math.round((paymentComponents['totalPaymentsNext30Days'] - interest_saved_per_month) * 100) / 100;
+        const payment_total =
+            Math.round((paymentComponents['totalPaymentsRemaining'] - snowballItems['interest_saved']) * 100) / 100;
+
+        const updatedNormalPlanSummaryComponents = [
+            {
+                image: logo.repayment_plan_summary_logo_1,
+                itemName: 'Payoff',
+                firstTitle: 'Next debt',
+                firstContent: displayRepaymentString,
+                secondTitle: 'All debts',
+                secondContent: displayEndDateString,
+                index: 1,
+            },
+            {
+                image: logo.repayment_plan_summary_logo_2,
+                itemName: 'Interest',
+                firstTitle: 'Next 30 days',
+                firstContent: `RM ${interest_next_30_days}`,
+                secondTitle: 'Total',
+                secondContent: `RM ${interest_total}`,
+                index: 2,
+            },
+            {
+                image: logo.repayment_plan_summary_logo_3,
+                itemName: 'Payments',
+                firstTitle: 'Next 30 days',
+                firstContent: `RM ${payment_next_30_days}`,
+                secondTitle: 'Total',
+                secondContent: `RM ${payment_total}`,
+                index: 3,
+            },
+        ];
+
+        return updatedNormalPlanSummaryComponents;
+    };
+
+    const calculateAvalanche = (loans, extraPayment) => {
+        const avalancheList = loans.map((loan) => ({
+            name: loan.name,
+            amount: loan.amount,
+            total_amount: calculateTotalLoanPayment(loan),
+            remaining_amount: calculateMonthlyLoanRepaymentAmount(loan) * loan.payment_remaining,
+            installment_month: loan.installment_month,
+            payment_remaining: loan.payment_remaining,
+            interest_rate: loan.interest_rate,
+            repayment_date: loan.repayment_date,
+        }));
+
+        const sortedList = avalancheList.sort((a, b) => b.remaining_amount - a.remaining_amount);
+        const avalancheItems = [];
+        let previousMonths = 0;
+        sortedList.forEach((loan) => {
+            const monthlyPayment = calculateMonthlyLoanRepaymentAmount(loan);
+            const adjustedMonthlyPayment = monthlyPayment + parseFloat(extraPayment);
+            let initialMonthsToPayOff = calculateInstallmentMonths(loan, monthlyPayment);
+            const monthsToPayOff = calculateInstallmentMonths(loan, adjustedMonthlyPayment);
+            const interestSavedinTotal =
+                initialMonthsToPayOff * monthlyPayment - monthsToPayOff * adjustedMonthlyPayment;
+            previousMonths = monthsToPayOff;
+
+            const repaymentDate = new Date(loan.repayment_date);
+            const monthsPaid = loan.installment_month - loan.payment_remaining;
+            const startDate = new Date(repaymentDate);
+            startDate.setMonth(startDate.getMonth() - monthsPaid);
+            const payoffDate = new Date(startDate);
+            payoffDate.setMonth(payoffDate.getMonth() + Math.floor(monthsToPayOff));
+
+            avalancheItems.push({
+                name: loan.name,
+                loan_end_date: payoffDate,
+                interest_saved: interestSavedinTotal,
+            });
+        });
+
+        const dates = avalancheItems.map((loan) => new Date(loan.loan_end_date));
+        const earliestDate = new Date(Math.min(...dates));
+        const latestDate = new Date(Math.max(...dates));
+        const currentDate = new Date();
+
+        const calculateDateDifference = (date, currentDate) => {
+            const timeDifference = date.getTime() - currentDate.getTime();
+            const years = Math.floor(timeDifference / (1000 * 60 * 60 * 24 * 365));
+            const months = Math.floor((timeDifference % (1000 * 60 * 60 * 24 * 365)) / (1000 * 60 * 60 * 24 * 30));
+            let dateString;
+            if (years < 1 && months < 1) {
+                const days = Math.floor(timeDifference / (1000 * 60 * 60 * 24));
+                dateString = `${days} days`;
+            } else {
+                dateString = `${years} yr ${months} mo`;
+            }
+            return dateString;
+        };
+
+        const earliestDateString = calculateDateDifference(earliestDate, currentDate);
+        const latestDateString = calculateDateDifference(latestDate, currentDate);
+        const millisecondsDifference = latestDate.getTime() - currentDate.getTime();
+        const monthDifference = millisecondsDifference / (1000 * 60 * 60 * 24 * 30);
+        const totalInterestSaved = avalancheItems.reduce((total, loan) => total + loan.interest_saved, 0);
+
+        return {
+            time_to_first_debt_paid_off: earliestDateString,
+            time_to_all_debt_paid_off: latestDateString,
+            month_difference: Math.floor(monthDifference),
+            interest_saved: Math.round(totalInterestSaved * 100) / 100,
+        };
+    };
+
+    const calculateAvalancheStrategy = (loans, bills, extraPayment) => {
+        let extraPayment_final = 0;
+        if (extraPayment == null) {
+            extraPayment_final = 0;
+        } else {
+            extraPayment_final = extraPayment;
+        }
+
+        const avalancheItems = calculateAvalanche(loans, extraPayment_final);
+        const displayRepaymentString = calculatePayoffComponent(loans, 'repayment_date', (useMax = false));
+        const displayEndDateString = avalancheItems['time_to_all_debt_paid_off'];
+
+        const interest_saved_per_month =
+            Math.round((avalancheItems['interest_saved'] / avalancheItems['month_difference']) * 100) / 100;
+        const loanInterestLists = loans.map((loan) => ({
+            name: loan.name,
+            monthly_interest_amount: calculateMonthlyInterest(loan),
+            monthly_payment_remaining: loan.payment_remaining,
+            repayment_date: loan.repayment_date,
+        }));
+
+        const interestComponents = calculateInterestComponent(loanInterestLists);
+        const interest_next_30_days =
+            Math.round((interestComponents['totalInterestNext30Days'] - interest_saved_per_month) * 100) / 100;
+        const interest_total =
+            Math.round((interestComponents['totalInterestRemainingMonths'] - avalancheItems['interest_saved']) * 100) /
+            100;
+
+        const mergedPaymentList = [
+            ...loans.map((loan) => ({
+                name: loan.name,
+                repayment_date: loan.repayment_date,
+                payment_remaining: loan.payment_remaining,
+                payment: calculateMonthlyLoanRepaymentAmount(loan),
+            })),
+            ...bills.map((bill) => ({
+                name: bill.name,
+                repayment_date: bill.repayment_date,
+                payment: bill.amount,
+                payment_remaining: 1,
+            })),
+        ];
+        const paymentComponents = calculatePaymentComponent(mergedPaymentList);
+        const payment_next_30_days =
+            Math.round((paymentComponents['totalPaymentsNext30Days'] - interest_saved_per_month) * 100) / 100;
+        const payment_total =
+            Math.round((paymentComponents['totalPaymentsRemaining'] - avalancheItems['interest_saved']) * 100) / 100;
+
+        const updatedNormalPlanSummaryComponents = [
+            {
+                image: logo.repayment_plan_summary_logo_1,
+                itemName: 'Payoff',
+                firstTitle: 'Next debt',
+                firstContent: displayRepaymentString,
+                secondTitle: 'All debts',
+                secondContent: displayEndDateString,
+                index: 1,
+            },
+            {
+                image: logo.repayment_plan_summary_logo_2,
+                itemName: 'Interest',
+                firstTitle: 'Next 30 days',
+                firstContent: `RM ${interest_next_30_days}`,
+                secondTitle: 'Total',
+                secondContent: `RM ${interest_total}`,
+                index: 2,
+            },
+            {
+                image: logo.repayment_plan_summary_logo_3,
+                itemName: 'Payments',
+                firstTitle: 'Next 30 days',
+                firstContent: `RM ${payment_next_30_days}`,
+                secondTitle: 'Total',
+                secondContent: `RM ${payment_total}`,
+                index: 3,
+            },
+        ];
+
+        return updatedNormalPlanSummaryComponents;
+    };
+
+    const fetchData = async () => {
+        const bills = await fetchAllBills();
+        const loans = await fetchAllLoans();
+        setBills(bills);
+        setLoans(loans);
+
+        const payoffSummaryList = loans.map((loan) => ({
+            name: loan.name,
+            amount: loan.amount,
+            end_date: loan.end_date,
+            installment_month: loan.installment_month,
+            payment_remaining: loan.payment_remaining,
+            interest_rate: loan.interest_rate,
+            loan_status: loan.loan_status,
+            repayment_date: loan.repayment_date,
+        }));
+
+        const updatedNormalPlanSummaryComponents = calculateNormalStrategy(loans, bills);
+
+        const user = await fetchUserDetails();
+        setUser(user);
+        console.log(user);
+
+        if (user.strategy == 'SNOWBALL' && user.extra_payment != null) {
+            const updatedNormalPlanSummaryComponents = calculateSnowballStrategy(loans, bills, user.extra_payment);
+            setPlanSummaryComponents(updatedNormalPlanSummaryComponents);
+        } else if (user.strategy == 'AVALANCHE' && user.extra_payment != null) {
+            const updatedNormalPlanSummaryComponents = calculateAvalancheStrategy(loans, bills, user.extra_payment);
+            setPlanSummaryComponents(updatedNormalPlanSummaryComponents);
+        } else {
+            const updatedNormalPlanSummaryComponents = calculateNormalStrategy(loans, bills);
+            setPlanSummaryComponents(updatedNormalPlanSummaryComponents);
+        }
     };
 
     useEffect(() => {
@@ -374,8 +703,15 @@ function DebtRepaymentPlanSummary({ navigation }) {
         fetchData();
     }, []);
 
+    const handleWidgetPress = () => {
+        fetchData();
+    };
+
     const DebtRepaymentPlanChoicePage = () => {
-        navigation.navigate('DebtRepaymentPlanChoice', { extraPayment: extraPayment });
+        navigation.navigate('DebtRepaymentPlanChoice', {
+            extraPayment: extraPayment,
+            fetchHomeScreenData: handleWidgetPress,
+        });
     };
     const PreviousPage = () => {
         navigation.goBack();

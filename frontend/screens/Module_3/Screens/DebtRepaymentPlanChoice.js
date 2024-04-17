@@ -36,10 +36,11 @@ const styles = StyleSheet.create({
 });
 
 function DebtRepaymentPlanChoice({ navigation, route }) {
-    const { extraPayment } = route.params;
+    const { extraPayment, fetchHomeScreenData } = route.params;
 
     const { userId } = useContext(GlobalContext);
     const [loans, setLoans] = useState([]);
+    const [user, setUser] = useState([]);
     const [totalMonthlyLoanAmount, setTotalMonthlyLoanAmount] = useState(0);
     const [totalOverdueAmount, setTotalOverdueAmount] = useState(0);
     const [totalDebt, setTotalDebt] = useState(0);
@@ -47,6 +48,19 @@ function DebtRepaymentPlanChoice({ navigation, route }) {
     const [totalBalance, setTotalBalance] = useState(0);
     const [totalMonthlyPayment, setTotalMonthlyPayment] = useState(0);
     const [paymentStrategyChoice, setPaymentStrategyChoice] = useState([]);
+
+    const fetchUserDetails = async () => {
+        try {
+            const response = await axios.get(`http://${Url}:3000/users/${userId}`);
+            // console.log(response.data);
+            const user = response.data;
+            const { strategy, debt_free_date } = user;
+            const extractedData = { strategy, debt_free_date };
+            return extractedData;
+        } catch (error) {
+            console.error('Error fetching bills:', error);
+        }
+    };
 
     const fetchAllLoans = async () => {
         try {
@@ -290,6 +304,7 @@ function DebtRepaymentPlanChoice({ navigation, route }) {
 
         const updatedPaymentStrategyChoice = [
             {
+                userId: userId,
                 title: 'Debt Snowball',
                 content1: 'Prioritize lowest balance first',
                 content2: 'The most quick wins',
@@ -299,6 +314,7 @@ function DebtRepaymentPlanChoice({ navigation, route }) {
                 index: 1,
             },
             {
+                userId: userId,
                 title: 'Debt Avalanche',
                 content1: 'Prioritize lowest balance first',
                 content2: 'The most quick wins',
@@ -309,6 +325,9 @@ function DebtRepaymentPlanChoice({ navigation, route }) {
             },
         ];
 
+        const user = await fetchUserDetails();
+        setUser(user);
+
         setPaymentStrategyChoice(updatedPaymentStrategyChoice);
     };
 
@@ -316,6 +335,11 @@ function DebtRepaymentPlanChoice({ navigation, route }) {
         console.log('DebtMain component mounted');
         fetchData();
     }, []);
+
+    const handleWidgetPress = () => {
+        fetchHomeScreenData();
+        fetchData();
+    };
 
     const DebtMainPage = () => {
         navigation.navigate('DebtMain');
@@ -332,21 +356,26 @@ function DebtRepaymentPlanChoice({ navigation, route }) {
                     navigation={PreviousPage}
                 /> */}
                 <Text style={styles.titleStyle}>Select a payment priority</Text>
-                {paymentStrategyChoice.map(({ title, content1, content2, content3, content4, content5, index }) => {
-                    return (
-                        <PaymentStrategyContainer
-                            navigation={navigation}
-                            title={title}
-                            content1={content1}
-                            content2={content2}
-                            content3={content3}
-                            content4={content4}
-                            content5={content5}
-                            index={index}
-                            key={index}
-                        />
-                    );
-                })}
+                {paymentStrategyChoice.map(
+                    ({ userId, title, content1, content2, content3, content4, content5, index }) => {
+                        return (
+                            <PaymentStrategyContainer
+                                userId={userId}
+                                navigation={navigation}
+                                title={title}
+                                content1={content1}
+                                content2={content2}
+                                content3={content3}
+                                content4={content4}
+                                content5={content5}
+                                index={index}
+                                key={index}
+                                extraPayment={extraPayment}
+                                fetchData={handleWidgetPress}
+                            />
+                        );
+                    },
+                )}
             </ScrollView>
         </SafeAreaView>
     );

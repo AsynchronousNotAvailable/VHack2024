@@ -210,6 +210,8 @@ function DebtMain({ navigation }) {
                 installment_month: loan.installment_month,
                 payment_remaining: loan.payment_remaining,
                 interest_rate: loan.interest_rate,
+                loan_status: loan.loan_status,
+                repayment_date: loan.repayment_date,
             }));
             return transformedLoans;
         } catch (error) {
@@ -345,8 +347,19 @@ function DebtMain({ navigation }) {
                 amount: bill.amount,
             })),
         ];
-
         setMergedLoansAndBills(mergedList);
+
+        const currentDate = new Date();
+        const updatedTotalOverdueAmount = loans.reduce((total, loan) => {
+            const repaymentDate = new Date(loan.repayment_date);
+            if (repaymentDate <= currentDate) {
+                return total + calculateMonthlyLoanRepaymentAmount(loan);
+            } else {
+                return total;
+            }
+        }, 0);
+        console.log(updatedTotalOverdueAmount);
+        setTotalOverdueAmount(Math.round(updatedTotalOverdueAmount * 100) / 100);
     };
 
     useEffect(() => {

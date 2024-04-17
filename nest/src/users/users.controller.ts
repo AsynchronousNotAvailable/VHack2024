@@ -6,7 +6,7 @@ import { LoginUserDto } from './dto/login-user.dto';
 
 @Controller('users')
 export class UsersController {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
   @Post('signup')
   create(@Body() createUserDto: CreateUserDto) {
@@ -22,7 +22,7 @@ export class UsersController {
   getUserDetails(@Param('id', ParseIntPipe) id: number) {
     return this.usersService.findOne(id);
   }
-  
+
 
   @Patch('update/:userId')
   updateUser(@Param('userId', ParseIntPipe) userId: number, @Body() updateUserDto: UpdateUserDto) {
