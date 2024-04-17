@@ -6,6 +6,7 @@ export class CreateUserDto {
     username: string;
     password: string;
     monthly_income?: number;
+    extra_payment? : number;
     monthly_payment?: number;
     monthly_loan?: number;
     debt_free_date?: Date;

@@ -15,6 +15,7 @@ model User {
   monthly_income  Float?
   monthly_payment Float?
   monthly_loan    Float?
+  extra_payment Float?
   debt_free_date  DateTime?
   strategy        StrategyType?
   username        String
