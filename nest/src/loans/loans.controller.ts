@@ -22,9 +22,9 @@ export class LoansController {
     return this.loansService.findOne(+id);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateLoanDto: UpdateLoanDto) {
-    return this.loansService.update(+id, updateLoanDto);
+  @Patch('/update/:userId/:loanId')
+  update(@Param('userId', ParseIntPipe) userId: number,@Param('loanId', ParseIntPipe) loanId: number, @Body() updateLoanDto: UpdateLoanDto) {
+    return this.loansService.update(userId, loanId, updateLoanDto);
   }
 
   @Delete(':id')

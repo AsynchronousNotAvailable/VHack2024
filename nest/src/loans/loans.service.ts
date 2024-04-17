@@ -50,8 +50,18 @@ export class LoansService {
     return `This action returns a #${id} loan`;
   }
 
-  update(id: number, updateLoanDto: UpdateLoanDto) {
-    return `This action updates a #${id} loan`;
+  async update(userId: number, loanId: number, updateLoanDto: UpdateLoanDto) {
+    //update loan by id
+    const updatedLoan = await this.prisma.loan.update({
+      where: { id: loanId, userId: userId},
+      data: {
+        repayment_date: updateLoanDto.repayment_date,
+        loan_status: updateLoanDto.loan_status,
+        payment_remaining: updateLoanDto.payment_remaining,
+      },
+    });
+
+    return updatedLoan;
   }
 
   remove(id: number) {

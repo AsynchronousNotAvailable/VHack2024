@@ -24,9 +24,9 @@ export class UsersController {
   }
   
 
-  @Patch('update/:id')
-  updateUser(@Param('id', ParseIntPipe) id: number, @Body() updateUserDto: UpdateUserDto) {
-    return this.usersService.updateUser(id, updateUserDto);
+  @Patch('update/:userId')
+  updateUser(@Param('userId', ParseIntPipe) userId: number, @Body() updateUserDto: UpdateUserDto) {
+    return this.usersService.updateUser(userId, updateUserDto);
   }
 
 }
