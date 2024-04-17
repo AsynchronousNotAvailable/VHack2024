@@ -15,6 +15,7 @@ import { fonts, sw, sh, logo } from '../../../styles/GlobalStyles';
 import AppBar from '../Utils/AppBar';
 import RenderRepaymentPlanSummaryItem from '../Utils/RenderRepaymentPlanSummaryItem';
 import DebtRepaymentPlanSummaryImage from '../Utils/DebtRepaymentPlanSummaryImage';
+import RenderStepByStepRepaymentPlanWidget from '../Utils/RenderStepByStepRepaymentPlanWidget';
 import { mockData3 } from '../MockData/mockData';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -47,6 +48,25 @@ const styles = StyleSheet.create({
         shadowOffset: { width: 0, height: 0 },
         shadowOpacity: 0.05,
     },
+    repaymentPlanSelectStrategyContainer: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        width: '90%',
+        height: sh(100),
+        marginHorizontal: sw(20),
+        marginVertical: sh(10),
+        backgroundColor: '#F6F7FA',
+        borderRadius: sw(10),
+    },
+    repaymentPlanContainerSelectStrategyTitle: {
+        fontSize: sw(15),
+        fontFamily: fonts.interRegular,
+        fontWeight: 'bold',
+        color: '#8C949A',
+        margin: sw(20),
+    },
     repaymentPlanContainerTitle: {
         fontSize: sw(16),
         fontFamily: fonts.interMedium,
@@ -78,6 +98,7 @@ function DebtRepaymentPlanSummary({ navigation }) {
     const [loans, setLoans] = useState([]);
     const [user, setUser] = useState([]);
     const [planSummaryComponents, setPlanSummaryComponents] = useState([]);
+    const [stepByStepPlan, setStepByStepPlan] = useState([]);
 
     const fetchUserDetails = async () => {
         try {
@@ -424,6 +445,7 @@ function DebtRepaymentPlanSummary({ navigation }) {
         const totalInterestSaved = snowballItems.reduce((total, loan) => total + loan.interest_saved, 0);
 
         return {
+            stepByStepItems: snowballItems,
             time_to_first_debt_paid_off: earliestDateString,
             time_to_all_debt_paid_off: latestDateString,
             month_difference: Math.floor(monthDifference),
@@ -575,6 +597,7 @@ function DebtRepaymentPlanSummary({ navigation }) {
         const totalInterestSaved = avalancheItems.reduce((total, loan) => total + loan.interest_saved, 0);
 
         return {
+            stepByStepItems: avalancheItems,
             time_to_first_debt_paid_off: earliestDateString,
             time_to_all_debt_paid_off: latestDateString,
             month_difference: Math.floor(monthDifference),
@@ -663,6 +686,35 @@ function DebtRepaymentPlanSummary({ navigation }) {
         return updatedNormalPlanSummaryComponents;
     };
 
+    const prepareStepByStepPlan = (items) => {
+        const formatDate = (dateString) => {
+            const date = new Date(dateString);
+            const options = { month: 'long', day: 'numeric', year: 'numeric' };
+            return date.toLocaleDateString('en-US', options);
+        };
+        const currentDate = new Date();
+        let stepByStepPlan = [];
+        items.forEach((loan) => {
+            const loanEndDate = new Date(loan.loan_end_date);
+            const monthsDifference =
+                (loanEndDate.getFullYear() - currentDate.getFullYear()) * 12 +
+                (loanEndDate.getMonth() - currentDate.getMonth());
+            const formattedLoanEndDate = formatDate(loanEndDate);
+            stepByStepPlan.push({
+                name: loan.name,
+                endDate: loanEndDate,
+                formattedEndDate: formattedLoanEndDate,
+                monthDifference: monthsDifference,
+            });
+        });
+
+        stepByStepPlan.sort((a, b) => {
+            return a.endDate - b.endDate;
+        });
+
+        return stepByStepPlan;
+    };
+
     const fetchData = async () => {
         const bills = await fetchAllBills();
         const loans = await fetchAllLoans();
@@ -680,17 +732,22 @@ function DebtRepaymentPlanSummary({ navigation }) {
             repayment_date: loan.repayment_date,
         }));
 
-        const updatedNormalPlanSummaryComponents = calculateNormalStrategy(loans, bills);
-
         const user = await fetchUserDetails();
         setUser(user);
         console.log(user);
 
         if (user.strategy == 'SNOWBALL' && user.extra_payment != null) {
+            const snowballItems = calculateSnowball(loans, user.extra_payment);
+            const updatedStepByStepPlan = prepareStepByStepPlan(snowballItems['stepByStepItems']);
             const updatedNormalPlanSummaryComponents = calculateSnowballStrategy(loans, bills, user.extra_payment);
+            setStepByStepPlan(updatedStepByStepPlan);
             setPlanSummaryComponents(updatedNormalPlanSummaryComponents);
         } else if (user.strategy == 'AVALANCHE' && user.extra_payment != null) {
+            const avalancheItems = calculateAvalanche(loans, user.extra_payment);
+            const updatedStepByStepPlan = prepareStepByStepPlan(avalancheItems['stepByStepItems']);
             const updatedNormalPlanSummaryComponents = calculateAvalancheStrategy(loans, bills, user.extra_payment);
+            console.log(updatedStepByStepPlan);
+            setStepByStepPlan(updatedStepByStepPlan);
             setPlanSummaryComponents(updatedNormalPlanSummaryComponents);
         } else {
             const updatedNormalPlanSummaryComponents = calculateNormalStrategy(loans, bills);
@@ -771,9 +828,33 @@ function DebtRepaymentPlanSummary({ navigation }) {
                     },
                 )}
                 <Text style={[styles.titleStyle, { marginTop: sh(40) }]}>Step-by-Step Repayment Plan</Text>
-                <View style={styles.repaymentPlanContainer}>
-                    <Text style={styles.repaymentPlanContainerTitle}>House Loan</Text>
-                </View>
+                {user.strategy === 'SNOWBALL' ? (
+                    <React.Fragment>
+                        {stepByStepPlan.map(({ name, endDate, formattedEndDate, monthDifference }) => (
+                            <RenderStepByStepRepaymentPlanWidget
+                                loanName={name}
+                                payment_month_remaining={monthDifference}
+                                payment_end_date={formattedEndDate}
+                            />
+                        ))}
+                    </React.Fragment>
+                ) : user.strategy === 'AVALANCHE' ? (
+                    <React.Fragment>
+                        {stepByStepPlan.map(({ name, endDate, formattedEndDate, monthDifference }) => (
+                            <RenderStepByStepRepaymentPlanWidget
+                                loanName={name}
+                                payment_month_remaining={monthDifference}
+                                payment_end_date={formattedEndDate}
+                            />
+                        ))}
+                    </React.Fragment>
+                ) : (
+                    <View style={styles.repaymentPlanSelectStrategyContainer}>
+                        <Text style={styles.repaymentPlanContainerSelectStrategyTitle}>
+                            - Please select a strategy -
+                        </Text>
+                    </View>
+                )}
             </ScrollView>
         </SafeAreaView>
     );
