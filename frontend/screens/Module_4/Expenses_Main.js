@@ -14,7 +14,7 @@ import BudgetCard from './Utils/BudgetCard';
 import { Url } from '../../url';
 
 function Expenses_Main({ navigation }) {
-
+    const currentMonth = new Date().getMonth();
     useFocusEffect(
         useCallback(() => {
             const fetchData = async () => {
@@ -82,9 +82,9 @@ function Expenses_Main({ navigation }) {
     //     // "Nov",
     //     // "Dec",
     // ];
-    const data = [{ value: 35 }, { value: 40 }, { value: 30 }, { value: 15 }, { value: 30 }, { value: 20 }];
+    const data = [{ value: 3500 }, { value: 4000 }, { value: 2900 }, { value: 1800 }, { value: 3505 }, { value: 4500 }];
 
-    const xAxisLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+    const xAxisLabels = ['Nov' , 'Dec', 'Jan', 'Feb', 'Mar', 'Apr'];
 
     const yLabels = ['Poor', 'Fair', 'Good', 'Very Good', 'Excellent'];
 
@@ -121,7 +121,7 @@ function Expenses_Main({ navigation }) {
 
     const fetchTransactionCategory = async () => {
         try {
-            const response = await axios.get(`http://${Url}:3000/transactions/category/${userId}`);
+            const response = await axios.get(`http://${Url}:3000/transactions/category/${userId}/${currentMonth}`);
             // console.log(response.data);
             const transactionsCategory = response.data;
             const transformedTransactionsCat = transactionsCategory.map((transaction) => ({
@@ -137,6 +137,7 @@ function Expenses_Main({ navigation }) {
 
     const fetchAllBudgets = async () => {
         try {
+            console.log(currentMonth+1);
             const response = await axios.get(`http://${Url}:3000/budgets/category/${userId}`);
             // console.log(response.data);
             const budgets = response.data;
@@ -164,7 +165,7 @@ function Expenses_Main({ navigation }) {
                 >
                     <View style={styles.balanceContainer}>
                         <Text style={[styles.cardTitle, { fontSize: 18 }]}>Total Balance</Text>
-                        <Text style={[styles.cardDescription, { fontSize: 30 }]}>RM {totalBalance}</Text>
+                        <Text style={[styles.cardDescription, { fontSize: 30 }]}>RM {totalBalance.toFixed(2)}</Text>
                     </View>
 
                     <View style={styles.rowContainer}>
@@ -173,14 +174,14 @@ function Expenses_Main({ navigation }) {
                                 <Image source={require('../../assets/images/expenses_arrow_up.png')} />
                                 <Text style={[styles.subTitleText, { fontSize: 16, color: '#D0DAE5' }]}>Income</Text>
                             </View>
-                            <Text style={[styles.subTitleText, { fontSize: 20 }]}>RM {totalIncome}</Text>
+                            <Text style={[styles.subTitleText, { fontSize: 20 }]}>RM {totalIncome.toFixed(2)}</Text>
                         </View>
                         <View style={styles.columnContainer}>
                             <View style={styles.subTitleContainer}>
                                 <Image source={require('../../assets/images/expenses_arrow_down.png')} />
                                 <Text style={[styles.subTitleText, { fontSize: 16, color: '#D0DAE5' }]}>Expenses</Text>
                             </View>
-                            <Text style={[styles.subTitleText, { fontSize: 20 }]}>RM {totalExpense}</Text>
+                            <Text style={[styles.subTitleText, { fontSize: 20 }]}>RM {totalExpense.toFixed(2)}</Text>
                         </View>
                     </View>
                 </LinearGradient>
@@ -254,7 +255,7 @@ function Expenses_Main({ navigation }) {
                         data={data}
                         width={sw(400)}
                         rulesLength={sw(330)}
-                        maxValue={50}
+                        maxValue={5000}
                         startFillColor="rgb(46, 217, 255)"
                         startOpacity={0.8}
                         endFillColor="rgb(203, 241, 250)"

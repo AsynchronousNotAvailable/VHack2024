@@ -17,9 +17,9 @@ export class TransactionsController {
     return this.transactionsService.findAllForUser(userId);
   }
 
-  @Get('category/:userId')
-  findByCategory(@Param('userId', ParseIntPipe) userId: number) {
-    return this.transactionsService.findByCategory(userId);
+  @Get('category/:userId/:month')
+  findByCategory(@Param('userId', ParseIntPipe) userId: number, @Param('month', ParseIntPipe) month: number){
+    return this.transactionsService.findByCategory(userId, month);
   }
 
   @Get(':userId/:year/:month')
