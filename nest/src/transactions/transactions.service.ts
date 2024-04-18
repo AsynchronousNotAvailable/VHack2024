@@ -124,6 +124,7 @@ export class TransactionsService {
   }
 
   async findByCategory(userId: number, month: number) {
+    console.log(month);
     const userExist = await this.user.findOne(userId);
     if (!userExist) {
       throw new NotFoundException('User not found');
@@ -137,11 +138,13 @@ export class TransactionsService {
       where: {
         userId: userId,
         date: {
-          gte: new Date(2024, month - 1, 1),
-          lt: new Date(2024, month, 1),
+          gte: new Date(2024, month, 1),
+          lt: new Date(2024, month+1, 1),
         },
       },
     });
+
+    console.log(transactionCategory);
 
     return transactionCategory;
   }
