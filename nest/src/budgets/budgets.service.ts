@@ -3,7 +3,7 @@ import { CreateBudgetDto } from './dto/create-budget.dto';
 import { UpdateBudgetDto } from './dto/update-budget.dto';
 import {
   AccountType,
-  Budget,
+  budget,
   Prisma,
   TransactionCategory,
 } from '@prisma/client';
@@ -13,7 +13,7 @@ import { PrismaService } from 'src/prisma.service';
 export class BudgetsService {
   constructor(private readonly prisma: PrismaService) {}
 
-  async createBudget(createBudgetDto: CreateBudgetDto): Promise<Budget> {
+  async createBudget(createBudgetDto: CreateBudgetDto): Promise<budget> {
     const user = await this.prisma.user.findUnique({
       where: { id: createBudgetDto.userId },
     });
@@ -40,7 +40,7 @@ export class BudgetsService {
     return createdBudget;
   }
 
-  async findAllForUser(userId: number): Promise<Budget[]> {
+  async findAllForUser(userId: number): Promise<budget[]> {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
     });

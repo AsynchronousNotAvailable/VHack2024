@@ -3,7 +3,7 @@ import { CreateLoanDto } from './dto/create-loan.dto';
 import { UpdateLoanDto } from './dto/update-loan.dto';
 import { PrismaService } from 'src/prisma.service';
 import { UsersService } from 'src/users/users.service';
-import { Loan } from '@prisma/client';
+import { loan } from '@prisma/client';
 
 @Injectable()
 export class LoansService {
@@ -11,7 +11,7 @@ export class LoansService {
     private readonly prisma: PrismaService,
     private readonly user: UsersService,
   ) {}
-  async createLoan(createLoanDto: CreateLoanDto): Promise<Loan> {
+  async createLoan(createLoanDto: CreateLoanDto): Promise<loan> {
     const userExist = await this.user.findOne(createLoanDto.userId);
     if (!userExist) {
       throw new NotFoundException('User not found');
@@ -35,7 +35,7 @@ export class LoansService {
     return createdLoan;
   }
 
-  async findAllForUser(userId: number): Promise<Loan[]> {
+  async findAllForUser(userId: number): Promise<loan[]> {
     const userExist = await this.user.findOne(userId);
     if (userExist) {
       return this.prisma.loan.findMany({

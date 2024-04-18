@@ -3,7 +3,7 @@ import { CreateTransactionDto } from './dto/create-transaction.dto';
 import { UpdateTransactionDto } from './dto/update-transaction.dto';
 import { PrismaService } from 'src/prisma.service';
 import { UsersService } from 'src/users/users.service';
-import { Transaction } from '@prisma/client';
+import { transaction } from '@prisma/client';
 
 @Injectable()
 export class TransactionsService {
@@ -13,7 +13,7 @@ export class TransactionsService {
   ) {}
   async createTransaction(
     createTransactionDto: CreateTransactionDto,
-  ): Promise<Transaction> {
+  ): Promise<transaction> {
     // Check if the user exists
     const userExist = await this.user.findOne(createTransactionDto.userId);
     if (!userExist) {
@@ -37,7 +37,7 @@ export class TransactionsService {
     return createdTransaction;
   }
 
-  async findAllForUser(userId: number): Promise<Transaction[]> {
+  async findAllForUser(userId: number): Promise<transaction[]> {
     const userExist = await this.user.findOne(userId);
     if (userExist) {
       return this.prisma.transaction.findMany({
@@ -52,7 +52,7 @@ export class TransactionsService {
     userId: number,
     year: number,
     month: number,
-  ): Promise<Transaction[]> {
+  ): Promise<transaction[]> {
     const userExist = await this.user.findOne(userId);
     if (!userExist) {
       throw new NotFoundException('User not found');

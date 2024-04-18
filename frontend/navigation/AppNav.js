@@ -60,6 +60,7 @@ import ProfileIcon from '../assets/TabIcon/ProfileIcon.png';
 import ProfileCTOSPage from '../screens/Module_6/Screens/ProfileCTOSPage';
 import { Image } from 'react-native';
 import { fonts } from '../styles/GlobalStyles';
+import Chat from '../screens/Module_5/sendMessageToChatGPT';
 
 
 function AppNav() {
@@ -415,7 +416,7 @@ function AppNav() {
                 />
                 <ConsultStack.Screen
                     name="Consult_AIChatbot"
-                    component={Consult_AIChatbot}
+                    component={Chat}
                     options={({ route }) => ({ title: route.params.username, headerTitleAlign: 'center' })}
                 />
             </ConsultStack.Navigator>

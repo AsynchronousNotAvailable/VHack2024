@@ -2,30 +2,30 @@ import { ConflictException, Injectable, NotFoundException } from '@nestjs/common
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { PrismaService } from 'src/prisma.service';
-import { User } from '@prisma/client';
+import { user } from '@prisma/client';
 import { LoginUserDto } from './dto/login-user.dto';
 
 @Injectable()
 export class UsersService {
   constructor(private readonly prisma: PrismaService) {}
-  async createUser(createUserDto: CreateUserDto): Promise<User> {
-    const userExist = await this.prisma.user.findFirst({ where: { email: createUserDto.email } });
+  async createUser(createuserDto: CreateUserDto): Promise<user> {
+    const userExist = await this.prisma.user.findFirst({ where: { email: createuserDto.email } });
     if (userExist) {
-      throw new ConflictException(`User already registered`);
+      throw new ConflictException(`user already registered`);
     }
 
-    return this.prisma.user.create({ data: createUserDto});
+    return this.prisma.user.create({ data: createuserDto});
   }
 
-  async login(loginUserDto: LoginUserDto): Promise<User> {
+  async login(loginuserDto: LoginUserDto): Promise<user> {
     const userExist = await this.prisma.user.findFirst({
-      where: { email: loginUserDto.email },
+      where: { email: loginuserDto.email },
     });
     if (!userExist) {
-      throw new NotFoundException('User not found');
+      throw new NotFoundException('user not found');
     }
     
-    if (userExist.password !== loginUserDto.password) {
+    if (userExist.password !== loginuserDto.password) {
       throw new ConflictException('Invalid credentials');
     }
     console.log(userExist.user_type);
@@ -36,18 +36,18 @@ export class UsersService {
   //   return `This action returns all users`;
   // }
 
-  async findOne(id: number): Promise<User> {
+  async findOne(id: number): Promise<user> {
     const user = await this.prisma.user.findUnique({ where: { id } });
     return user;
   }
 
-  async updateUser(userId: number, updateUserDto: UpdateUserDto): Promise<User> {
+  async updateUser(userId: number, updateuserDto: UpdateUserDto): Promise<user> {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
     if (!user) {
-      throw new NotFoundException(`User with ID ${userId} not found`);
+      throw new NotFoundException(`user with ID ${userId} not found`);
     }
 
-    return this.prisma.user.update({ where: { id: userId }, data: updateUserDto });
+    return this.prisma.user.update({ where: { id: userId }, data: updateuserDto });
   }
 
   
