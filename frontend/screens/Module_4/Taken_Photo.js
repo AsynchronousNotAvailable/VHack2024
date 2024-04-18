@@ -1,6 +1,7 @@
 import { View, Text, TouchableOpacity, Image, ActivityIndicator} from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { fonts, sh, sw } from '../../styles/GlobalStyles';
+import { Url } from '../../url';
 
 const Taken_Photo = ({ navigation, route }) => {
     const [isGoBackCamera, setIsGoBackCamera] = useState(false);
@@ -24,7 +25,7 @@ const Taken_Photo = ({ navigation, route }) => {
         });
 
         try {
-            const response = await fetch('http://192.168.1.108:5000/process_receipt', {
+            const response = await fetch(`http://${Url}:8000/vhack_app/process_receipt`, {
                 method: 'POST',
                 body: formData,
                 headers: {

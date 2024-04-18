@@ -21,4 +21,6 @@ urlpatterns = [
     #         }
 
     path('chatbot/get_data', views.get_data, name='get_data'),
+
+    path('process_receipt', views.extract_text, name='process_receipt'),
 ]
