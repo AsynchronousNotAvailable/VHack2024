@@ -694,6 +694,7 @@ function DebtRepaymentPlanSummary({ navigation }) {
         };
         const currentDate = new Date();
         let stepByStepPlan = [];
+        let index = 0;
         items.forEach((loan) => {
             const loanEndDate = new Date(loan.loan_end_date);
             const monthsDifference =
@@ -705,11 +706,18 @@ function DebtRepaymentPlanSummary({ navigation }) {
                 endDate: loanEndDate,
                 formattedEndDate: formattedLoanEndDate,
                 monthDifference: monthsDifference,
+                index: index,
             });
+            index++;
         });
 
         stepByStepPlan.sort((a, b) => {
             return a.endDate - b.endDate;
+        });
+
+        // Reassign index property based on the sorted sequence
+        stepByStepPlan.forEach((item, i) => {
+            item.index = i;
         });
 
         return stepByStepPlan;
@@ -830,21 +838,23 @@ function DebtRepaymentPlanSummary({ navigation }) {
                 <Text style={[styles.titleStyle, { marginTop: sh(40) }]}>Step-by-Step Repayment Plan</Text>
                 {user.strategy === 'SNOWBALL' ? (
                     <React.Fragment>
-                        {stepByStepPlan.map(({ name, endDate, formattedEndDate, monthDifference }) => (
+                        {stepByStepPlan.map(({ name, endDate, formattedEndDate, monthDifference, index }) => (
                             <RenderStepByStepRepaymentPlanWidget
                                 loanName={name}
                                 payment_month_remaining={monthDifference}
                                 payment_end_date={formattedEndDate}
+                                index={index}
                             />
                         ))}
                     </React.Fragment>
                 ) : user.strategy === 'AVALANCHE' ? (
                     <React.Fragment>
-                        {stepByStepPlan.map(({ name, endDate, formattedEndDate, monthDifference }) => (
+                        {stepByStepPlan.map(({ name, endDate, formattedEndDate, monthDifference, index }) => (
                             <RenderStepByStepRepaymentPlanWidget
                                 loanName={name}
                                 payment_month_remaining={monthDifference}
                                 payment_end_date={formattedEndDate}
+                                index={index}
                             />
                         ))}
                     </React.Fragment>

@@ -102,6 +102,7 @@ const PaymentStrategyContainer = ({
     content4,
     content5,
     index,
+    debt_free_date,
     extraPayment,
     fetchData,
 }) => {
@@ -121,6 +122,7 @@ const PaymentStrategyContainer = ({
             await axios.patch(`http://${Url}:3000/users/update/${userId}`, {
                 extra_payment: parseFloat(extraPayment),
                 strategy: 'AVALANCHE',
+                debt_free_date: debt_free_date,
             });
         } catch (error) {
             console.error('Error updating loan:', error);

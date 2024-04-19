@@ -1,10 +1,15 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { colors, fonts, sh, sw } from "../../../styles/GlobalStyles";
+import { colors, fonts, sh, sw } from '../../../styles/GlobalStyles';
 
-function DebtFreeCountdownCard() {
-    const targetDate = new Date('2044-03-01');
+function DebtFreeCountdownCard({ debtFreeDate }) {
+    let targetDate = new Date('2044-03-01');
+    if (debtFreeDate != null) {
+        targetDate = new Date(debtFreeDate);
+    }
+    console.log('Target Date: ' + targetDate);
+
     const currentDate = new Date();
     const diffInMilliSeconds = Math.abs(targetDate - currentDate);
     let years = diffInMilliSeconds / (1000 * 60 * 60 * 24 * 365);
@@ -50,7 +55,6 @@ function DebtFreeCountdownCard() {
         </View>
     );
 }
-
 
 const styles = StyleSheet.create({
     container: {

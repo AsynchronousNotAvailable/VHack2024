@@ -217,6 +217,7 @@ function DebtRepaymentPlanChoice({ navigation, route }) {
             time_to_first_debt_paid_off: earliestDateString,
             time_to_all_debt_paid_off: latestDateString,
             interest_saved: Math.round(totalInterestSaved * 100) / 100,
+            debt_free_date: latestDate,
         };
     };
 
@@ -270,6 +271,7 @@ function DebtRepaymentPlanChoice({ navigation, route }) {
             time_to_first_debt_paid_off: earliestDateString,
             time_to_all_debt_paid_off: latestDateString,
             interest_saved: Math.round(totalInterestSaved * 100) / 100,
+            debt_free_date: latestDate,
         };
     };
 
@@ -300,7 +302,7 @@ function DebtRepaymentPlanChoice({ navigation, route }) {
         setTotalMonthlyPayment(totalMonthlyPayment);
 
         const snowballItems = calculateSnowball(loans, extraPayment);
-        const avalanchelItems = calculateAvalanche(loans, extraPayment);
+        const avalancheItems = calculateAvalanche(loans, extraPayment);
 
         const updatedPaymentStrategyChoice = [
             {
@@ -312,16 +314,18 @@ function DebtRepaymentPlanChoice({ navigation, route }) {
                 content4: `Time to all debt paid off: ${snowballItems['time_to_all_debt_paid_off']}`,
                 content5: `Interest saved: RM ${snowballItems['interest_saved']}`,
                 index: 1,
+                debt_free_date: snowballItems['debt_free_date'],
             },
             {
                 userId: userId,
                 title: 'Debt Avalanche',
                 content1: 'Prioritize lowest balance first',
                 content2: 'The most quick wins',
-                content3: `Time to first debt paid off: ${avalanchelItems['time_to_first_debt_paid_off']}`,
-                content4: `Time to all debt paid off: ${avalanchelItems['time_to_all_debt_paid_off']}`,
-                content5: `Interest saved: RM ${avalanchelItems['interest_saved']}`,
+                content3: `Time to first debt paid off: ${avalancheItems['time_to_first_debt_paid_off']}`,
+                content4: `Time to all debt paid off: ${avalancheItems['time_to_all_debt_paid_off']}`,
+                content5: `Interest saved: RM ${avalancheItems['interest_saved']}`,
                 index: 2,
+                debt_free_date: avalancheItems['debt_free_date'],
             },
         ];
 
@@ -357,7 +361,7 @@ function DebtRepaymentPlanChoice({ navigation, route }) {
                 /> */}
                 <Text style={styles.titleStyle}>Select a payment priority</Text>
                 {paymentStrategyChoice.map(
-                    ({ userId, title, content1, content2, content3, content4, content5, index }) => {
+                    ({ userId, title, content1, content2, content3, content4, content5, index, debt_free_date }) => {
                         return (
                             <PaymentStrategyContainer
                                 userId={userId}
@@ -369,6 +373,7 @@ function DebtRepaymentPlanChoice({ navigation, route }) {
                                 content4={content4}
                                 content5={content5}
                                 index={index}
+                                debt_free_date={debt_free_date}
                                 key={index}
                                 extraPayment={extraPayment}
                                 fetchData={handleWidgetPress}

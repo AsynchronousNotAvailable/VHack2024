@@ -9,8 +9,8 @@ datasource db {
 }
 
 model user {
-  id              Int           @id @default(autoincrement())
-  email           String        @unique
+  id              Int           @id(map: "User_pkey") @default(autoincrement())
+  email           String        @unique(map: "User_email_key")
   password        String
   monthly_income  Float?
   monthly_payment Float?
@@ -28,7 +28,7 @@ model user {
 }
 
 model loan {
-  id                Int           @id @default(autoincrement())
+  id                Int           @id(map: "Loan_pkey") @default(autoincrement())
   name              String
   end_date          DateTime
   loan_amount       Float
@@ -38,32 +38,32 @@ model loan {
   loan_status       PaymentStatus @default(UNPAID)
   userId            Int
   repayment_date    DateTime
-  user              user          @relation(fields: [userId], references: [id])
+  user              user          @relation(fields: [userId], references: [id], map: "Loan_userId_fkey")
 }
 
 model bill {
-  id               Int           @id @default(autoincrement())
+  id               Int           @id(map: "Bill_pkey") @default(autoincrement())
   name             String
   amount           Float
   repeating_option RepeatOption
   bill_status      PaymentStatus @default(UNPAID)
   userId           Int
   repayment_date   DateTime
-  user             user          @relation(fields: [userId], references: [id])
+  user             user          @relation(fields: [userId], references: [id], map: "Bill_userId_fkey")
 }
 
 model budget {
-  id       Int                 @id @default(autoincrement())
+  id       Int                 @id(map: "Budget_pkey") @default(autoincrement())
   name     String
   amount   Float
   category TransactionCategory
   account  AccountType
   userId   Int
-  user     user                @relation(fields: [userId], references: [id])
+  user     user                @relation(fields: [userId], references: [id], map: "Budget_userId_fkey")
 }
 
 model consultant {
-  id          Int           @id @default(autoincrement())
+  id          Int           @id(map: "Consultant_pkey") @default(autoincrement())
   name        String
   description String
   about       String
@@ -73,16 +73,16 @@ model consultant {
 }
 
 model appointment {
-  id           Int        @id @default(autoincrement())
+  id           Int        @id(map: "Appointment_pkey") @default(autoincrement())
   time         DateTime
   consultantId Int
   userId       Int
-  consultant   consultant @relation(fields: [consultantId], references: [id])
-  user         user       @relation(fields: [userId], references: [id])
+  consultant   consultant @relation(fields: [consultantId], references: [id], map: "Appointment_consultantId_fkey")
+  user         user       @relation(fields: [userId], references: [id], map: "Appointment_userId_fkey")
 }
 
 model transaction {
-  id          Int                 @id @default(autoincrement())
+  id          Int                 @id(map: "Transaction_pkey") @default(autoincrement())
   date        DateTime
   account     AccountType
   category    TransactionCategory
@@ -90,7 +90,7 @@ model transaction {
   amount      Float
   type        TransactionType
   userId      Int
-  user        user                @relation(fields: [userId], references: [id])
+  user        user                @relation(fields: [userId], references: [id], map: "Transaction_userId_fkey")
 }
 
 enum TransactionType {
