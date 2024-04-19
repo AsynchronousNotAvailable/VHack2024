@@ -10,6 +10,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import axios from 'axios';
 import { GlobalContext } from '../../../context';
+import { Url } from '../../../url';
 
 const styles = StyleSheet.create({
     container: {
@@ -89,7 +90,7 @@ function DebtSummary({ navigation }) {
 
     const fetchAllBills = async () => {
         try {
-            const response = await axios.get(`http://192.168.100.14:3000/bills/${userId}`);
+            const response = await axios.get(`http://${Url}:3000/bills/${userId}`);
             // console.log(response.data);
             const bills = response.data;
             const transformedBills = bills.map((bill) => ({
@@ -108,7 +109,7 @@ function DebtSummary({ navigation }) {
 
     const fetchAllLoans = async () => {
         try {
-            const response = await axios.get(`http://192.168.100.14:3000/loans/${userId}`);
+            const response = await axios.get(`http://${Url}:3000/loans/${userId}`);
             // console.log(response.data);
             const loans = response.data;
             const transformedLoans = loans.map((loan) => ({
