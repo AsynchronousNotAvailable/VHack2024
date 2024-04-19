@@ -12,7 +12,7 @@ const DonutChart = ({n, gap, decimals, colors, totalValue, strokeWidth, outerStr
     const path = Skia.Path.Make();
     path.addCircle(radius, radius, innerRadius);
 
-    const targetText = useDerivedValue(() => `$${Math.round(totalValue.value * 100) / 100}`, []);
+    const targetText = useDerivedValue(() => `RM ${Math.round(totalValue.value * 100) / 100}`, []);
 
     // Placeholder for the value
     const fontSize = font.measureText('$' + totalValue);

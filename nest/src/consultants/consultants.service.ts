@@ -3,7 +3,7 @@ import { CreateConsultantDto } from './dto/create-consultant.dto';
 import { UpdateConsultantDto } from './dto/update-consultant.dto';
 import { PrismaService } from 'src/prisma.service';
 import { Cons } from 'rxjs';
-import { Consultant } from '@prisma/client';
+import { consultant } from '@prisma/client';
 
 @Injectable()
 export class ConsultantsService {
@@ -12,11 +12,11 @@ export class ConsultantsService {
   //   return 'This action adds a new consultant';
   // }
 
-  async findAll(): Promise<Consultant[]> {
+  async findAll(): Promise<consultant[]> {
     return this.prisma.consultant.findMany();
   }
 
-  async findOne(id: number): Promise<Consultant> {
+  async findOne(id: number): Promise<consultant> {
     const consultant = await this.prisma.consultant.findUnique({
       where: { id },
     });
@@ -26,7 +26,7 @@ export class ConsultantsService {
     return consultant;
   }
 
-  async createConsultant(data: CreateConsultantDto): Promise<Consultant> {
+  async createConsultant(data: CreateConsultantDto): Promise<consultant> {
     return this.prisma.consultant.create({data});
   }
   // update(id: number, updateConsultantDto: UpdateConsultantDto) {

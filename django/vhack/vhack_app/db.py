@@ -1,6 +1,5 @@
 import os
 from dotenv import load_dotenv
-from supabase import create_client, Client
 import psycopg2
 from datetime import datetime
 import pandas as pd
@@ -10,7 +9,7 @@ load_dotenv()
 
 def execute_query(sql_query: str = None):
     try:
-        conn = psycopg2.connect(os.environ.get("DATABASE_URL"))
+        conn = psycopg2.connect(os.environ.get("DIRECT_URL"))
         cur = conn.cursor()
         cur.execute(sql_query)
         result = cur.fetchall()
@@ -43,7 +42,7 @@ def fetch_and_upload():
     """
     try:
         # Connect to the database
-        conn = psycopg2.connect(os.environ.get("DATABASE_URL"))
+        conn = psycopg2.connect(os.environ.get("DIRECT_URL"))
         cur = conn.cursor()
         
         # Construct and execute the fetch query
@@ -83,3 +82,4 @@ def fetch_and_upload():
 # fetch_and_upload(table_name="YourTableName", local_file_path="path/to/your/local/folder/filename.csv")
 # temp = execute_query("SELECT CATEGORY, SUM(WITHDRAWAL_AMT) AS TOTAL_EXPENSES FROM Transaction WHERE CATEGORY IN ('Lifestyle Purchases', 'Childcare', 'Education', 'Insurance') GROUP BY CATEGORY'")
 # print(temp)
+

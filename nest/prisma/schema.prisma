@@ -8,7 +8,7 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model User {
+model user {
   id              Int           @id @default(autoincrement())
   email           String        @unique
   password        String
@@ -20,14 +20,14 @@ model User {
   username        String
   user_type       UserType      @default(DEBTOR)
   extra_payment   Float?
-  appointment     Appointment[]
-  bills           Bill[]
-  budgets         Budget[]
-  loans           Loan[]
-  transactions    Transaction[]
+  appointment     appointment[]
+  bills           bill[]
+  budgets         budget[]
+  loans           loan[]
+  Transaction     transaction[]
 }
 
-model Loan {
+model loan {
   id                Int           @id @default(autoincrement())
   name              String
   end_date          DateTime
@@ -38,10 +38,10 @@ model Loan {
   loan_status       PaymentStatus @default(UNPAID)
   userId            Int
   repayment_date    DateTime
-  user              User          @relation(fields: [userId], references: [id])
+  user              user          @relation(fields: [userId], references: [id])
 }
 
-model Bill {
+model bill {
   id               Int           @id @default(autoincrement())
   name             String
   amount           Float
@@ -49,10 +49,39 @@ model Bill {
   bill_status      PaymentStatus @default(UNPAID)
   userId           Int
   repayment_date   DateTime
-  user             User          @relation(fields: [userId], references: [id])
+  user             user          @relation(fields: [userId], references: [id])
 }
 
-model Transaction {
+model budget {
+  id       Int                 @id @default(autoincrement())
+  name     String
+  amount   Float
+  category TransactionCategory
+  account  AccountType
+  userId   Int
+  user     user                @relation(fields: [userId], references: [id])
+}
+
+model consultant {
+  id          Int           @id @default(autoincrement())
+  name        String
+  description String
+  about       String
+  rating      Float
+  designation String
+  appointment appointment[]
+}
+
+model appointment {
+  id           Int        @id @default(autoincrement())
+  time         DateTime
+  consultantId Int
+  userId       Int
+  consultant   consultant @relation(fields: [consultantId], references: [id])
+  user         user       @relation(fields: [userId], references: [id])
+}
+
+model transaction {
   id          Int                 @id @default(autoincrement())
   date        DateTime
   account     AccountType
@@ -61,36 +90,7 @@ model Transaction {
   amount      Float
   type        TransactionType
   userId      Int
-  user        User                @relation(fields: [userId], references: [id])
-}
-
-model Budget {
-  id       Int                 @id @default(autoincrement())
-  name     String
-  amount   Float
-  category TransactionCategory
-  account  AccountType
-  userId   Int
-  user     User                @relation(fields: [userId], references: [id])
-}
-
-model Consultant {
-  id          Int           @id @default(autoincrement())
-  name        String
-  description String
-  about       String
-  rating      Float
-  designation String
-  appointment Appointment[]
-}
-
-model Appointment {
-  id           Int        @id @default(autoincrement())
-  time         DateTime
-  consultantId Int
-  userId       Int
-  consultant   Consultant @relation(fields: [consultantId], references: [id])
-  user         User       @relation(fields: [userId], references: [id])
+  user        user                @relation(fields: [userId], references: [id])
 }
 
 enum TransactionType {

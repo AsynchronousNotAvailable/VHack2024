@@ -20,7 +20,7 @@ CREATE TYPE "UserType" AS ENUM ('DEBTOR', 'CONSULTANT');
 CREATE TYPE "PaymentStatus" AS ENUM ('PAID', 'UNPAID');
 
 -- CreateTable
-CREATE TABLE "User" (
+CREATE TABLE "user" (
     "id" SERIAL NOT NULL,
     "email" TEXT NOT NULL,
     "password" TEXT NOT NULL,
@@ -31,12 +31,13 @@ CREATE TABLE "User" (
     "strategy" "StrategyType",
     "username" TEXT NOT NULL,
     "user_type" "UserType" NOT NULL DEFAULT 'DEBTOR',
+    "extra_payment" DOUBLE PRECISION,
 
-    CONSTRAINT "User_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "user_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Loan" (
+CREATE TABLE "loan" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "end_date" TIMESTAMP(3) NOT NULL,
@@ -48,11 +49,11 @@ CREATE TABLE "Loan" (
     "userId" INTEGER NOT NULL,
     "repayment_date" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Loan_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "loan_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Bill" (
+CREATE TABLE "bill" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
     "amount" DOUBLE PRECISION NOT NULL,
@@ -61,11 +62,45 @@ CREATE TABLE "Bill" (
     "userId" INTEGER NOT NULL,
     "repayment_date" TIMESTAMP(3) NOT NULL,
 
-    CONSTRAINT "Bill_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "bill_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
-CREATE TABLE "Transaction" (
+CREATE TABLE "budget" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "amount" DOUBLE PRECISION NOT NULL,
+    "category" "TransactionCategory" NOT NULL,
+    "account" "AccountType" NOT NULL,
+    "userId" INTEGER NOT NULL,
+
+    CONSTRAINT "budget_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "consultant" (
+    "id" SERIAL NOT NULL,
+    "name" TEXT NOT NULL,
+    "description" TEXT NOT NULL,
+    "about" TEXT NOT NULL,
+    "rating" DOUBLE PRECISION NOT NULL,
+    "designation" TEXT NOT NULL,
+
+    CONSTRAINT "consultant_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "appointment" (
+    "id" SERIAL NOT NULL,
+    "time" TIMESTAMP(3) NOT NULL,
+    "consultantId" INTEGER NOT NULL,
+    "userId" INTEGER NOT NULL,
+
+    CONSTRAINT "appointment_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "transaction" (
     "id" SERIAL NOT NULL,
     "date" TIMESTAMP(3) NOT NULL,
     "account" "AccountType" NOT NULL,
@@ -75,58 +110,26 @@ CREATE TABLE "Transaction" (
     "type" "TransactionType" NOT NULL,
     "userId" INTEGER NOT NULL,
 
-    CONSTRAINT "Transaction_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "Budget" (
-    "id" SERIAL NOT NULL,
-    "name" TEXT NOT NULL,
-    "amount" DOUBLE PRECISION NOT NULL,
-    "category" "TransactionCategory" NOT NULL,
-    "account" "AccountType" NOT NULL,
-    "userId" INTEGER NOT NULL,
-
-    CONSTRAINT "Budget_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "Consultant" (
-    "id" SERIAL NOT NULL,
-    "name" TEXT NOT NULL,
-    "position" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
-
-    CONSTRAINT "Consultant_pkey" PRIMARY KEY ("id")
-);
-
--- CreateTable
-CREATE TABLE "Appointment" (
-    "id" SERIAL NOT NULL,
-    "time" TIMESTAMP(3) NOT NULL,
-    "consultantId" INTEGER NOT NULL,
-    "userId" INTEGER NOT NULL,
-
-    CONSTRAINT "Appointment_pkey" PRIMARY KEY ("id")
+    CONSTRAINT "transaction_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex
-CREATE UNIQUE INDEX "User_email_key" ON "User"("email");
+CREATE UNIQUE INDEX "user_email_key" ON "user"("email");
 
 -- AddForeignKey
-ALTER TABLE "Loan" ADD CONSTRAINT "Loan_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "loan" ADD CONSTRAINT "loan_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Bill" ADD CONSTRAINT "Bill_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "bill" ADD CONSTRAINT "bill_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Transaction" ADD CONSTRAINT "Transaction_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "budget" ADD CONSTRAINT "budget_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Budget" ADD CONSTRAINT "Budget_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "appointment" ADD CONSTRAINT "appointment_consultantId_fkey" FOREIGN KEY ("consultantId") REFERENCES "consultant"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Appointment" ADD CONSTRAINT "Appointment_consultantId_fkey" FOREIGN KEY ("consultantId") REFERENCES "Consultant"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "appointment" ADD CONSTRAINT "appointment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "Appointment" ADD CONSTRAINT "Appointment_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "transaction" ADD CONSTRAINT "transaction_userId_fkey" FOREIGN KEY ("userId") REFERENCES "user"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
