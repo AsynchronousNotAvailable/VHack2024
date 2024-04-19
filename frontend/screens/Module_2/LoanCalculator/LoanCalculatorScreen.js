@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet, Alert, ScrollView, TouchableOpacity } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 import { colors, fonts, sh, sw } from "../../../styles/GlobalStyles";
+import { SelectList } from 'react-native-dropdown-select-list';
 
 
 
@@ -56,22 +57,50 @@ function LoanCalculatorScreen({ navigation }) {
     };
 
 
+    const categoryOptions = [
+        { key: '1', value: 'Car' },
+        { key: '2', value: 'House' },
+        { key: '3', value: 'Other' },
+       
+    ];
 
 
 
     return (
-
         <ScrollView style={styles.container}>
             <Text style={styles.header}>What’s Your Next Big Purchase?</Text>
-            <Picker
+            <View style={{ position: 'absolute', right: sw(40), top: sh(65), zIndex: 999 }}>
+                <SelectList
+                    boxStyles={[styles.input, { backgroundColor: 'lightblue', marginVertical: sh(15) }]}
+                    dropdownStyles={styles.dropdownInput}
+                    inputStyles={styles.textInput}
+                    dropdownTextStyles={styles.textInput}
+                    setSelected={(val) => setPurchaseType(val)}
+                    data={categoryOptions}
+                    search={false}
+                    save="value"
+                    placeholder="Select Category"
+                />
+            </View>
+
+            {/* <Picker
                 selectedValue={purchaseType}
                 style={styles.input}
                 onValueChange={(itemValue, itemIndex) => setPurchaseType(itemValue)}
             >
-                <Picker.Item label="Car" value="car" />
-                <Picker.Item label="House" value="house" />
-                <Picker.Item label="Others" value="others" />
-            </Picker>
+                <Picker.Item
+                    label="Car"
+                    value="car"
+                />
+                <Picker.Item
+                    label="House"
+                    value="house"
+                />
+                <Picker.Item
+                    label="Others"
+                    value="others"
+                />
+            </Picker> */}
 
             <Text style={styles.title}>Calculate Your Loan</Text>
 
@@ -109,7 +138,10 @@ function LoanCalculatorScreen({ navigation }) {
                     keyboardType="numeric"
                 />
             </View>
-            <TouchableOpacity onPress={calculateLoan} style={styles.calculateButton}>
+            <TouchableOpacity
+                onPress={calculateLoan}
+                style={styles.calculateButton}
+            >
                 <Text style={styles.buttonText}>Calculate</Text>
             </TouchableOpacity>
             {/* {monthlyPayment && (
@@ -138,7 +170,7 @@ const styles = StyleSheet.create({
     header: {
         fontSize: 20,
         fontWeight: 'bold',
-        marginVertical: 15,
+        marginVertical: sh(10),
         color: '#444',
         textAlign: 'center',
         fontFamily: fonts.interMedium,
@@ -151,8 +183,35 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 24,
         textAlign: 'center',
-        marginBottom: 30,
+        marginBottom: 70,
         fontFamily: fonts.interMedium,
+    },
+    dropdownInput: {
+        position: 'absolute',
+        top: sh(60),
+        backgroundColor: 'lightblue',
+        opacity: 0.9,
+        zIndex: 99,
+        alignSelf: 'center',
+        paddingVertical: sh(0),
+        paddingHorizontal: sw(10),
+        borderRadius: 10,
+        borderColor: '#DADADA',
+        borderWidth: 1,
+        width: '90%',
+    },
+    input: {
+        alignSelf: 'center',
+        paddingVertical: sh(13),
+        paddingHorizontal: sw(20),
+        borderRadius: 10,
+        borderColor: '#DADADA',
+        borderWidth: 1,
+        fontSize: 18,
+        marginVertical: sh(15),
+        width: '80%',
+        color: 'black',
+        fontFamily: fonts.interRegular,
     },
     inputContainer: {
         flexDirection: 'row',
@@ -170,13 +229,7 @@ const styles = StyleSheet.create({
         color: '#333',
         fontFamily: fonts.interMedium,
     },
-    input: {
-        flex: 1,
-        height: 50,
-        fontSize: 18,
-        color: '#333',
-        paddingHorizontal: 12,
-    },
+    
     calculateButton: {
         backgroundColor: '#5F84A1',
         paddingVertical: 12,
@@ -197,14 +250,12 @@ const styles = StyleSheet.create({
         fontFamily: fonts.interMedium,
     },
 
-
     resultText: {
         marginTop: 20,
         fontSize: 18,
         color: '#333',
     },
     stressGaugeContainer: {
-
         height: 20,
         width: '100%',
         borderRadius: 10,
@@ -222,7 +273,7 @@ const styles = StyleSheet.create({
         marginTop: 20,
         borderRadius: 10,
         backgroundColor: '#ffffff',
-        shadowColor: "#000",
+        shadowColor: '#000',
         shadowOffset: {
             width: 0,
             height: 2,

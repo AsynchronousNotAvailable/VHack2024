@@ -76,9 +76,9 @@ const generateRandomColors = (length) => {
 
 const DonutChartContainer = ({ mergedLoansAndBills }) => {
     const RADIUS = sw(100);
-    const STROKE_WIDTH = sw(30);
-    const OUTER_STROKE_WIDTH = sw(46);
-    const GAP = 0.04;
+    const STROKE_WIDTH = sw(20);
+    const OUTER_STROKE_WIDTH = sw(36);
+    const GAP = 0;
     const CHART_CONTAINER_WIDTH_HEIGHT = RADIUS * 2 + 10;
 
     const n = 6;
